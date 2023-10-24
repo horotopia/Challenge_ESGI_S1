@@ -44,3 +44,11 @@ Ce projet vise à développer une plateforme de gestion de devis et de factures 
 - Administrateur : Gestion des utilisateurs, des entreprises, accès total à toutes les fonctionnalités, rapports financiers globaux.
 - Entreprise : Création, modification et suppression de devis et de factures, gestion des clients, gestion des produits, envoi automatisé de devis et factures, suivi des paiements.
 - Comptable : Accès aux données financières sous forme de datavisualisation, suivi des paiements, génération de rapports financiers.
+
+## Contraintes par Matière
+- Utilisation de Symfony pour la création du panel d'administration complet.
+- Intégration de TailWindCSS et SASS pour le design.
+- Création de composants et templates (Accordéon, Barre de navigation, Tableau).
+- Intégration de 2 éléments de datavisualisation dans le dashboard (VsCard avec QrCode).
+- Gestion de thème en proposant 2 thèmes personnalisés avec un switch sur le front, en plus du thème darkMode de TailWind.
+- Intégration mobile-first pour une expérience utilisateur optimale.
