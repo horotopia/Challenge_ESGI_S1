@@ -1,7 +1,6 @@
 # Challenge_ESGI_S1
-Saas équipement médical  
-## Guirado Léo  : horotopia@hotmail.com
-## Ilyes Kabrine : ilyeskabrine0@gmail.com  
-## Ilyesse HAMCHERIF (@ihbzk) : ilyesse@bhgroupe.fr / hamcherif.ilyesse@gmail.com
-Ali Khelifa  
-Email:akhelifa7@myges.fr
+## Projet : SaaS Équipement Médical  
+### Léo GUIRADO (horotopia) : horotopia@hotmail.com
+### Ilyes KABRINE (ilyeskabrine) : ilyeskabrine0@gmail.com  
+### Ilyesse HAMCHERIF (@ihbzk) : ilyesse@bhgroupe.fr / hamcherif.ilyesse@gmail.com
+### Ali KHELIFA (alikhelifa15) : akhelifa7@myges.fr
