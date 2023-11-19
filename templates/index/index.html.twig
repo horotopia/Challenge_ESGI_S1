@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fast Invoice: Gestion de devis et factures pour équipements médicaux{% endblock %}
+{% block og_title %}Fast Invoice: Gestion de devis et factures pour équipements médicaux{% endblock %}
+{% block description %}Optimisez la gestion de vos devis et factures d'équipements médicaux avec Fast Invoice. Une solution fiable et adaptée à vos besoins qui simplifie la vie.{% endblock %}
+{% block og_description %}Optimisez la gestion de vos devis et factures d'équipements médicaux avec Fast Invoice. Une solution fiable et adaptée à vos besoins qui simplifie la vie.{% endblock %}
+{% block keywords %}Fast Invoice{% endblock %}
+
+{% block body %}
+<header id="jumbotron" class="px-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 d-flex flex-column justify-content-center p-0">
+                <h1 class="mb-3 text-center text-sm-start">Simplifier vous le travail avec Fast Invoice</h1>
+                <p class="text-center text-sm-start">Gestion de devis et facture dans le secteur des équipements médicaux.​</p>
+                <div class="btn-wrapper mt-1 text-center text-sm-start">
+                    <a href="#" class="btn btn-primary" aria-label="Essayer gratuitement">Essayer gratuitement</a>
+                    <a href="{{ path("app_contact") }}" class="btn btn-outline-primary" aria-label="Nous contacter pour une démonstration de notre logiciel Fast Invoice">Nous contacter</a>
+                </div>
+            </div>
+            <div class="col-md-6" id="jumbotron_anim">
+                <div id="anim_replacement" class="mt-5 mt-md-0">
+                    <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="px-4">
+    <div class="container">
+        <h2 class="text-center">Des outils indispensables adaptés pour tous vos besoins</h2>
+        <div class="row">
+            <div class="col-md-6 center-y mt-5 mt-md-0">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="es outils indispensables adaptés pour tous vos besoins" class="img-fluid">
+            </div>
+            <div class="col-md-6 center-y">
+                <h3>Devis et factures</h3>
+                <ul>
+                    <li>Créer un devis, une facture, un produit, un client, tout !</li>
+                    <li>Les modifier, les supprimer, les archiver</li>
+                    <li>Suivi de vos activités et celles de vos clients</li>
+                    <li>Un outil indispensable pour toute entreprise !</li>
+                </ul>
+                <a href="#" class="btn btn-outline-primary mt-4 px5 py5 fs-14" aria-label="En savoir plus">En savoir plus</a>
+            </div>
+        </div>
+        <p>Suivi centralisé des demandes avec accès facilité aux documents, des rapports et analyses pour une gestion optimale.</p>
+    </div>
+</section>
+
+{% include "blocks/free-trial.html.twig" %}
+
+<section class="besoins px-4">
+    <div class="container">
+        <h2 class="mb-50">Un service proche de ses clients</h2>
+        <div class="row card-row">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="card mb-3">
+                    <div class="card-body p-0">
+                        <h3><i class="fa fa-dollar-sign theme-icon"></i> Version gratuite</h3>
+                        <p>Fast Invoice est utilisable gratuitement, sans limites de temps !</p>
+                        <p>Vous testez ainsi sereinement pour adopter si nécessaire un pack Premium en toute confiance. Cette version gratuite vous offrira un aperçu détaillé de Fast Invoice.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <h3><i class="fa fa-users theme-icon"></i> Utilisateurs illimités</h3>
+                        <p>Avec les formules Premium le nombre d'utilisateurs est illimité et sans surcoût !</p>
+                        <p>Ne vous souciez plus du nombre de licences accordées, avec Fast Invoice vous créez et supprimez vos utilisateurs au gré de l'évolution de votre structure.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <h3><i class="fa fa-phone theme-icon"></i> Service client de qualité</h3>
+                        <p>Nous sommes fiers de fournir un service pour traiter chaque demande avec réactivité.</p>
+                        <p>Avec notre <a href="{{ path("app_contact") }}">formulaire de contact</a>, vous aurez une réponse en moins de 24 heures ouvrées. Nous avons une ligne directe et une FAQ disponible sur notre site.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "blocks/trust.html.twig" %}
+
+<section class="besoins px-4">
+    <div class="container">
+        <h2 class="mb-50">Tous vos besoins dans un seul logiciel</h2>
+        <div class="row card-row">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="card mb-3">
+                    <div class="card-body p-0">
+                        <h3><i class="fa fa-dollar-sign theme-icon"></i> Statistiques avancées</h3>
+                        <p>Dans chaque module de Fast Invoice, profitez de statistiques détaillées pour optimiser la productivité et les prises de décisions dans votre entreprise.</p>
+                        <p>Ces chiffres vous permettront une meilleure vue de votre société et de fiabiliser vos actions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <h3><i class="fa fa-users theme-icon"></i> Import de vos données</h3>
+                        <p>Configuration simple via un fichier pour importer les données de tous vos clients et transactions.</p>
+                        <p>Le fichier importera les données de tous vos collaborateurs (Nom, prénom, clients, email, téléphone, entreprise…). Nous pouvons également vous paramétrer la solution intégralement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="px-4">
+    <div class="container">
+        <h2>La gestion des devis et factures : un outil indispensable</h2>
+        <div class="row">
+            <div class="col-md-6 center-y mt-5 mt-md-0">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+            </div>
+            <div class="col-md-6 center-y">
+                <h3>Fast Invoice est la solution idéale</h3>
+                <ul>
+                    <li>Créer et suivre les devis et factures en ligne</li>
+                    <li>Accéder rapidement aux informations financières</li>
+                    <li>Suivre les paiements et effectuer des relances automatiques</li>
+                    <li>Exporter les données vers la comptabilité</li>
+                </ul>
+                <h3>Un outil dédié aux collaborateurs :</h3>
+                <ul>
+                    <li>Enregistrez et facturez vos heures de travail</li>
+                    <li>Planifiez et suivez les entretiens liés aux transactions</li>
+                    <li>Gérez les commandes de vos clients en toute simplicité</li>
+                    <li>Planifiez des alertes liées aux transactions</li>
+                </ul>
+                <p>Fast Invoice s’adapte à vos cas particuliers: Facturation horaire possible, suivi des commandes, alertes personnalisées.</p>
+                <a href="#" class="btn btn-outline-primary mt-4 px5 py5 fs-14" aria-label="Essayer gratuitement">Essayer gratuitement</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="px-4">
+    <div class="container">
+        <h2>Simplifier la gestion de vos notes de frais</h2>
+        <h3>Dématérialiser la gestion de vos factures</h3>
+        <p>Sur mobile ou sur PC, créer en 1 clic vos devis et factures. En quelques secondes, notre solution reconnait les caractères de votre document.</p>
+        <ul>
+            <li>L’administrateur est alerté de cette demande</li>
+            <li>Il valide ou refuse le document crée</li>
+            <li>L’utilisateur peut suivre en ligne l’état d’avancement de sa demande</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-6 center-y mt-5 mt-md-0">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+            </div>
+            <div class="col-md-6 center-y mt-5 mt-md-0">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "blocks/device-compatibility.html.twig" %}
+
+{% include "blocks/opinion.html.twig" %}
+
+{% endblock %}
