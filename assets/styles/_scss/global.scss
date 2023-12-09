@@ -1,0 +1,61 @@
+* {
+    font-family: "Lexend Deca", sans-serif;
+}
+
+h1 {
+    margin-bottom: 50px;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 50px;
+    color: black;
+
+    @media (max-width: 992px) {
+        font-size: 34px !important;
+        line-height: 40px;
+        padding-bottom: 24px;
+    }
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 40px;
+    color: black;
+
+    @media (max-width: 992px) {
+        font-size: 25px !important;
+        line-height: 31px;
+    }
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 25px;
+    color: black;
+
+    @media (max-width: 992px) {
+        font-size: 20px !important;
+    }
+}
+
+a {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+p,
+ul,
+li,
+small,
+span {
+    color: black;
+
+    @media (max-width: 992px) {
+        font-size: 16px !important;
+        line-height: 22px;
+    }
+}
