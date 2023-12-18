@@ -1,3 +1,27 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@layer base {
+
+    :root {
+        font-family: "Lexend Deca", sans-serif;
+        --text-color: theme(colors.black);
+    }
+}
+
+@layer components {
+
+    section, header {
+        @apply flex;
+        @apply justify-center;
+        @apply items-center;
+        @apply my-24;
+        @apply px-16;
+    }
+
+    p {
+        @apply text-left;
+        @apply text-text-color;
+    }
+}

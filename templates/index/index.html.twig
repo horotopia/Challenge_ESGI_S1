@@ -9,32 +9,32 @@
 {% block body %}
 <header id="jumbotron" class="px-4">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 d-flex flex-column justify-content-center p-0">
-                <h1 class="mb-3 text-center text-sm-start">Simplifier vous le travail avec Fast Invoice</h1>
-                <p class="text-center text-sm-start">Gestion de devis et facture dans le secteur des équipements médicaux.​</p>
-                <div class="btn-wrapper mt-1 text-center text-sm-start">
-                    <a href="#" class="btn btn-primary" aria-label="Essayer gratuitement">Essayer gratuitement</a>
-                    <a href="{{ path("app_contact") }}" class="btn btn-outline-primary" aria-label="Nous contacter pour une démonstration de notre logiciel Fast Invoice">Nous contacter</a>
+        <div class="w-full flex">
+            <div class="sm:w-full md:w-1/2 flex flex-col justify-center p-0 px-4">
+                <h1 class="mb-4 text-5xl font-medium text-left leading-[3.125rem]">Simplifier vous le travail avec Fast Invoice</h1>
+                <p class="mb-4 text-left text-light">Gestion de devis et facture dans le secteur des équipements médicaux.​</p>
+                <div class="w-full mt-1 text-left flex">
+                    <a href="#" class="text-white hover:text-theme-600 bg-gradient-to-b from-theme-600 hover:from-transparent to-theme-500 hover:to-transparent py-2.5 px-4 w-fit rounded-3xl border hover:border-theme-600 transition-all hover:transition-all ease-out hover:ease-out duration-[250ms] hover:duration-[250ms]" aria-label="Essayer gratuitement">Essayer gratuitement</a>
+                    <a href="{{ path("app_contact") }}" class="text-theme-600 hover:text-white hover:bg-gradient-to-b hover:from-theme hover:to-theme-500 py-2.5 px-4 w-fit rounded-3xl border border-theme-600 transition-all hover:transition-all ease-out hover:ease-out duration-[250ms] hover:duration-[250ms] ml-5" aria-label="Nous contacter pour une démonstration de notre logiciel Fast Invoice">Nous contacter</a>
                 </div>
             </div>
-            <div class="col-md-6" id="jumbotron_anim">
+            <div class="sm:w-full md:w-1/2 px-4" id="jumbotron_anim">
                 <div id="anim_replacement" class="mt-5 mt-md-0">
-                    <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                    <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="Simplifier vous le travail avec Fast Invoice" class="w-full">
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<section class="px-4">
+<section>
     <div class="container">
-        <h2 class="text-center">Des outils indispensables adaptés pour tous vos besoins</h2>
-        <div class="row">
-            <div class="col-md-6 center-y mt-5 mt-md-0">
-                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="es outils indispensables adaptés pour tous vos besoins" class="img-fluid">
+        <h2 class="text-center mb-20">Des outils indispensables adaptés pour tous vos besoins</h2>
+        <div class="w-full flex">
+            <div class="sm:w-full md:w-1/2 center-y mt-5 mt-md-0 px-4">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="es outils indispensables adaptés pour tous vos besoins" class="w-full">
             </div>
-            <div class="col-md-6 center-y">
+            <div class="sm:w-full md:w-1/2 center-y px-4">
                 <h3>Devis et factures</h3>
                 <ul>
                     <li>Créer un devis, une facture, un produit, un client, tout !</li>
@@ -51,11 +51,11 @@
 
 {% include "blocks/free-trial.html.twig" %}
 
-<section class="besoins px-4">
+<section class="besoins">
     <div class="container">
         <h2 class="mb-50">Un service proche de ses clients</h2>
-        <div class="row card-row">
-            <div class="col-md-4 mb-3 mb-md-0">
+        <div class="w-full flex card-w-full flex">
+            <div class="sm:w-full md:w-1/3 mb-3 mb-md-0 px-4">
                 <div class="card mb-3">
                     <div class="card-body p-0">
                         <h3><i class="fa fa-dollar-sign theme-icon"></i> Version gratuite</h3>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3 mb-md-0">
+            <div class="sm:w-full md:w-1/3 mb-3 mb-md-0 px-4">
                 <div class="card">
                     <div class="card-body p-0">
                         <h3><i class="fa fa-users theme-icon"></i> Utilisateurs illimités</h3>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="sm:w-full md:w-1/3 px-4">
                 <div class="card">
                     <div class="card-body p-0">
                         <h3><i class="fa fa-phone theme-icon"></i> Service client de qualité</h3>
@@ -88,11 +88,11 @@
 
 {% include "blocks/trust.html.twig" %}
 
-<section class="besoins px-4">
+<section>
     <div class="container">
         <h2 class="mb-50">Tous vos besoins dans un seul logiciel</h2>
-        <div class="row card-row">
-            <div class="col-md-6 mb-3 mb-md-0">
+        <div class="w-full flex card-w-full flex">
+            <div class="sm:w-full md:w-1/2 mb-3 mb-md-0 px-4">
                 <div class="card mb-3">
                     <div class="card-body p-0">
                         <h3><i class="fa fa-dollar-sign theme-icon"></i> Statistiques avancées</h3>
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3 mb-md-0">
+            <div class="sm:w-full md:w-1/2 mb-3 mb-md-0 px-4">
                 <div class="card">
                     <div class="card-body p-0">
                         <h3><i class="fa fa-users theme-icon"></i> Import de vos données</h3>
@@ -114,14 +114,14 @@
     </div>
 </section>
 
-<section class="px-4">
+<section>
     <div class="container">
         <h2>La gestion des devis et factures : un outil indispensable</h2>
-        <div class="row">
-            <div class="col-md-6 center-y mt-5 mt-md-0">
-                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+        <div class="w-full flex">
+            <div class="sm:w-full md:w-1/2 center-y mt-5 mt-md-0 px-4 px-4">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="w-full">
             </div>
-            <div class="col-md-6 center-y">
+            <div class="sm:w-full md:w-1/2 center-y px-4">
                 <h3>Fast Invoice est la solution idéale</h3>
                 <ul>
                     <li>Créer et suivre les devis et factures en ligne</li>
@@ -143,7 +143,7 @@
     </div>
 </section>
 
-<section class="px-4">
+<section>
     <div class="container">
         <h2>Simplifier la gestion de vos notes de frais</h2>
         <h3>Dématérialiser la gestion de vos factures</h3>
@@ -153,12 +153,12 @@
             <li>Il valide ou refuse le document crée</li>
             <li>L’utilisateur peut suivre en ligne l’état d’avancement de sa demande</li>
         </ul>
-        <div class="row">
-            <div class="col-md-6 center-y mt-5 mt-md-0">
-                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+        <div class="w-full flex">
+            <div class="sm:w-full md:w-1/2 center-y mt-5 mt-md-0 px-4">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="w-full">
             </div>
-            <div class="col-md-6 center-y mt-5 mt-md-0">
-                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="img-fluid">
+            <div class="sm:w-full md:w-1/2 center-y mt-5 mt-md-0 px-4">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png" alt="La gestion des devis et factures : un outil indispensable" class="w-full">
             </div>
         </div>
     </div>
