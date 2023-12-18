@@ -11,7 +11,7 @@ class SupportController extends AbstractController
     #[Route('/support', name: 'app_support')]
     public function index(): Response
     {
-        return $this->render('support/index.html.twig', [
+        return $this->render('front/support/index.html.twig', [
             'controller_name' => 'SupportController',
         ]);
     }

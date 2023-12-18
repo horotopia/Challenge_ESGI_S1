@@ -11,7 +11,7 @@ class TarifsController extends AbstractController
     #[Route('/tarifs', name: 'app_tarifs')]
     public function index(): Response
     {
-        return $this->render('tarifs/index.html.twig', [
+        return $this->render('front/tarifs/index.html.twig', [
             'controller_name' => 'TarifsController',
         ]);
     }
