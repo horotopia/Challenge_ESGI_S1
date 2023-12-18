@@ -11,7 +11,7 @@ class CGVController extends AbstractController
     #[Route('/conditions-generales-de-vente', name: 'app_cgv')]
     public function index(): Response
     {
-        return $this->render('cgv/index.html.twig', [
+        return $this->render('front/cgv/index.html.twig', [
             'controller_name' => 'CGVController',
         ]);
     }

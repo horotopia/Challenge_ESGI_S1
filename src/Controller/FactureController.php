@@ -11,7 +11,7 @@ class FactureController extends AbstractController
     #[Route('/facture', name: 'app_facture')]
     public function index(): Response
     {
-        return $this->render('facture/index.html.twig', [
+        return $this->render('front/facture/index.html.twig', [
             'controller_name' => 'FactureController',
         ]);
     }

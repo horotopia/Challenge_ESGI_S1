@@ -11,7 +11,7 @@ class DevisController extends AbstractController
     #[Route('/devis', name: 'app_devis')]
     public function index(): Response
     {
-        return $this->render('devis/index.html.twig', [
+        return $this->render('front/devis/index.html.twig', [
             'controller_name' => 'DevisController',
         ]);
     }
