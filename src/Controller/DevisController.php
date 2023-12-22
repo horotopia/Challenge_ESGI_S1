@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DevisController extends AbstractController
 {
-    #[Route('/devis', name: 'app_devis')]
+    #[Route('/admin/devis', name: 'app_back_devis')]
     public function index(): Response
     {
-        return $this->render('front/devis/index.html.twig', [
+        return $this->render('back/devis/index.html.twig', [
             'controller_name' => 'DevisController',
         ]);
     }
