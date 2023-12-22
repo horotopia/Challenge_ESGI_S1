@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FactureController extends AbstractController
+class StatistiquesController extends AbstractController
 {
-    #[Route('/admin/facture', name: 'app_back_facture')]
+    #[Route('/admin/statistiques', name: 'app_back_statistiques')]
     public function index(): Response
     {
-        return $this->render('back/facture/index.html.twig', [
-            'controller_name' => 'FactureController',
+        return $this->render('back/statistiques/index.html.twig', [
+            'controller_name' => 'StatistiquesController',
         ]);
     }
 }
