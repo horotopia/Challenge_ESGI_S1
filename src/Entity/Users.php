@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\Table(name: '`users`')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -32,9 +32,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Entreprise $id_entreprise = null;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $id_entreprise = null;
 
     public function getId(): ?int
     {
@@ -118,15 +117,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdEntreprise(): ?Entreprise
+    public function getIdEntreprise(): ?int
     {
         return $this->id_entreprise;
     }
 
-    public function setIdEntreprise(?Entreprise $id_entreprise): static
+    public function setIdEntreprise(?int $id_entreprise): self
     {
         $this->id_entreprise = $id_entreprise;
-
         return $this;
     }
 }

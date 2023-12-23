@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CGVController extends AbstractController
 {
-    #[Route('/conditions-generales-de-vente', name: 'app_cgv')]
+    #[Route('/conditions-generales-de-vente', name: 'front_app_cgv')]
     public function index(): Response
     {
         return $this->render('front/cgv/index.html.twig', [
