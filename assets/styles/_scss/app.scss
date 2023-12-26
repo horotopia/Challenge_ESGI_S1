@@ -32,6 +32,9 @@ $ecrans: (
   background: rgb(245,253,255);
   background: linear-gradient(350deg, rgba(245,253,255,1) 0%, rgba(255,255,255,1) 50%, rgba(245,253,255,1) 100%);
 }
+.waterGradient{
+  background: linear-gradient(180deg, #0090F5 0%, #017AC2 100%);
+}
 .btn-wrapper{
   display: flex;
   flex-direction: row;
@@ -66,6 +69,39 @@ $ecrans: (
   width: 360px;
   height: 543px;
   border-radius: 8px;
-  background: #FFF;
+  background: #ffffff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.12);
+}
+.annualCheckbox:checked + label {
+  @apply bg-white;
+  @apply bg-white;
+  @apply bg-white;
+  span {
+    @apply transform translate-x-6;
+  }
+}
+
+.checkbox-wrapper{
+  .checkbox-label {
+    @apply bg-[#E0E7EC] border-solid border-2 border-gray-300 rounded-full cursor-pointer block h-12 w-12 relative;
+
+    &:after {
+      content: "";
+      @apply border-[7px]  border-solid border-white block absolute top-3.5 left-2 w-8 h-4 opacity-0 transform rotate-[-45deg];
+      border-top: none;
+      border-right: none;
+    }
+  }
+
+  input[type="checkbox"] {
+    @apply hidden opacity-0;
+
+    &:checked + .checkbox-label {
+      @apply bg-[#0A69A6] border-[#0A69A6];
+
+      &:after {
+        @apply opacity-100;
+      }
+    }
+  }
 }

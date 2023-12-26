@@ -47,7 +47,7 @@ class Produit
     private ?string $user_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?categorie $id_categorie = null;
+    private ?Categorie $id_categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?entreprise $id_entreprise = null;
@@ -185,12 +185,12 @@ class Produit
         return $this;
     }
 
-    public function getIdCategorie(): ?categorie
+    public function getIdCategorie(): ?Categorie
     {
         return $this->id_categorie;
     }
 
-    public function setIdCategorie(?categorie $id_categorie): static
+    public function setIdCategorie(?Categorie $id_categorie): static
     {
         $this->id_categorie = $id_categorie;
 

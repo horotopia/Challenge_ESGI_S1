@@ -1,11 +1,17 @@
-<h1>Hi! Please confirm your email!</h1>
+{% block title %}
+    Confirmation de l'e-mail : Gestion des solutions pour équipements médicaux
+{% endblock %}
 
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
+{% block body %}
+    <h4 class="bg-blue-400 text-center">Salut ! Veuillez confirmer votre adresse e-mail : {{ user.email }} !</h4>
 
-<p>
-    Cheers!
-</p>
+    <p class="text-center">
+        Veuillez activer votre compte  en cliquant sur le lien suivant : <br><br>
+        <a href="{{ absolute_url(path(routeName, { token: token, id: user.id })) }}" class="bg-green-400 text-white p-5 rounded">Confirmer mon e-mail.</a>.
+        Ce lien expirera le: <span class="text-red-600">{{ lifeTimeToken }}.</span>
+    </p>
+
+    <p>
+        Merci !
+    </p>
+{% endblock %}
