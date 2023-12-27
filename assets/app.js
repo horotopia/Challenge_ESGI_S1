@@ -2,6 +2,8 @@
 import './styles/_scss/app.scss';
 import './styles/_scss/global.scss';
 import './styles/_scss/elements/_navbar.scss';
+import './styles/_scss/elements/_navbar-admin.scss';
 import './styles/_scss/elements/_footer.scss';
 
 import './styles/js/navbar.js';
+import './styles/js/navbar-admin.js';
