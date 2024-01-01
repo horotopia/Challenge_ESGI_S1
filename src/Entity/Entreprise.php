@@ -31,7 +31,7 @@ class Entreprise
     private ?string $siteInternet = null;
 
     #[ORM\Column( nullable: true)]
-    private ?int $telephone = null;
+    private ?string  $telephone=null ;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;

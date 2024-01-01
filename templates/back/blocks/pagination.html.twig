@@ -1,0 +1,60 @@
+{# default Sliding pagination control implementation #}
+{% if pageCount > 1 %}
+    <div class=" flex flex-row items-center justify-between">
+        {% if first is defined and current != first %}
+            <span class="first px-1">
+                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+  <path d="M8.35938 9.80677C8.65625 10.0125 9.07188 10.0593 9.425 9.92133C9.77813 9.78334 10 9.48912 10 9.16626V0.83445C10 0.511593 9.775 0.217375 9.425 0.0793798C9.075 -0.0586158 8.65938 -0.014353 8.35938 0.193942L2.35938 4.35985L2 4.6098V0.83445C2 0.373597 1.55313 0.0012691 1 0.0012691C0.446875 0.0012691 0 0.373597 0 0.83445V9.16626C0 9.62711 0.446875 9.99944 1 9.99944C1.55313 9.99944 2 9.62711 2 9.16626V5.39091L2.35938 5.64086L8.35938 9.80677Z"
+        fill="black"/>
+</svg></a>
+            </span>
+        {% endif %}
+
+        {% if previous is defined %}
+            <span class="previous px-1">
+                <a rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+  <path d="M0.488091 5.7063C-0.162697 5.31584 -0.162697 4.68173 0.488091 4.29127L7.15215 0.292933C7.63113 0.00555328 8.3444 -0.0787866 8.96915 0.0773983C9.59391 0.233583 10 0.595932 10 1.00201V8.99868C10 9.40164 9.59391 9.76711 8.96915 9.92329C8.3444 10.0795 7.63113 9.99201 7.15215 9.70776L0.488091 5.70942V5.7063Z"
+        fill="black"/>
+</svg></a>
+            </span>
+        {% endif %}
+        <span class="px-1">Page</span>
+        <select onchange="window.location.href=this.value;" class=" rounded border-2 border-gray-500 outline-none">
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <option value="{{ path(route, query|merge({(pageParameterName): page})) }}">
+                        {{ page }}
+                    </option>
+                {% else %}
+                    <option value="{{ path(route, query|merge({(pageParameterName): page})) }}" selected>
+                        {{ page }}
+                    </option>
+                {% endif %}
+
+            {% endfor %}
+
+        </select>
+        <span class="px-1">sur<span class="px-1">{{pageCount}}</span></span>
+        {% if next is defined %}
+            <span class="next px-1">
+                <a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+  <path d="M9.51191 5.7063C10.1627 5.31584 10.1627 4.68173 9.51191 4.29127L2.84785 0.292933C2.36887 0.00555328 1.6556 -0.0787866 1.03085 0.0773983C0.406091 0.233583 0 0.595932 0 1.00201V8.99868C0 9.40164 0.406091 9.76711 1.03085 9.92329C1.6556 10.0795 2.36887 9.99201 2.84785 9.70776L9.51191 5.70942V5.7063Z"
+        fill="black"/>
+</svg></a>
+            </span>
+        {% endif %}
+
+        {% if last is defined and current != last %}
+            <span class="last px-1">
+                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+  <path d="M1.64062 9.80677C1.34375 10.0125 0.928125 10.0593 0.575 9.92133C0.221875 9.78333 0 9.48912 0 9.16626V0.83445C0 0.511593 0.225 0.217375 0.575 0.0793798C0.925 -0.0586158 1.34063 -0.014353 1.64062 0.193942L7.64062 4.35985L8 4.6098V0.83445C8 0.373597 8.44688 0.0012691 9 0.0012691C9.55313 0.0012691 10 0.373597 10 0.83445V9.16626C10 9.62711 9.55313 9.99944 9 9.99944C8.44688 9.99944 8 9.62711 8 9.16626V5.39091L7.64062 5.64086L1.64062 9.80677Z"
+        fill="black"/>
+</svg></a>
+            </span>
+        {% endif %}
+    </div>
+{% endif %}
