@@ -19,12 +19,10 @@
         <meta property="og:description" content="{% block og_description %}{% endblock %}" />
         <meta property="og:url" content="" />
         <meta property="og:site_name" content="" />
-
-        <link rel="canonical" href="" />
-        
         <link rel="icon" type="image/x-icon" href="https://image.noelshack.com/fichiers/2023/46/7/1700429800-favicon.png" />
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500&display=swap" rel="stylesheet">
@@ -45,7 +43,8 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
-
+            <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const toggleBtn = document.getElementById('navbarAdminToggle');
@@ -123,6 +122,36 @@
                 activeNavItems.forEach(function(item) {
                     item.addEventListener('click', handleClick);
                 });
+                function toggleDropdown() {
+                    const dropdown = document.getElementById('myDropdown');
+                    dropdown.classList.toggle('hidden');
+                }
+
+                window.addEventListener('click', function(event) {
+                    const dropdown = document.getElementById('myDropdown');
+                    const button = document.getElementById('dropdownButton');
+
+                    if (event.target === button || event.target.closest('#myDropdown')) {
+                        return;
+                    }
+
+                    dropdown.classList.add('hidden');
+                });
+                document.addEventListener('DOMContentLoaded', function() {
+                    const alerts = document.querySelectorAll('.alert');
+                    alerts.forEach((alert) => {
+                        alert.classList.remove('hidden');
+                        setTimeout(() => {
+                            alert.classList.add('hidden');
+                        }, 2000);
+                    });
+                });
+                $(document).ready(function() {
+                    $('.select2').select2({ width: '32rem' });
+                    $('.select2-container--default .select2-selection--multiple')
+                        .css('padding-bottom', '0.75rem');
+                });
+
             </script>
         {% endblock %}
     </head>
