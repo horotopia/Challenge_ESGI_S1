@@ -7,3 +7,8 @@ import './styles/_scss/elements/_footer.scss';
 
 import './styles/js/navbar.js';
 import './styles/js/navbar-admin.js';
+
+import 'datatables.net-dt/css/jquery.dataTables.css';
+import 'datatables.net-dt/js/dataTables.dataTables';
+
+import 'jquery';

@@ -21,5 +21,10 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "datatables.net-dt": "^1.13.8",
+        "jquery": "^3.7.1",
+        "popper.js": "^1.16.1"
     }
 }
