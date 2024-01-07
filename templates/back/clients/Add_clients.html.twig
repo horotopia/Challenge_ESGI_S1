@@ -1,6 +1,6 @@
 {% extends 'back/base.html.twig' %}
 
-{% block title %}Modifier l'entreprise{% endblock %}
+{% block title %}Ajouter un client{% endblock %}
 
 {% block body %}
 
@@ -13,12 +13,12 @@
             <h2 class="text-[#D9DDDF] text-3xl font-extrabold flex items-center">
                 {{ controller_name }}
             </h2>
-            <a href="{{ path('app_back_utilisateurs') }}"> <img src="https://i.goopics.net/6k2k8k.png" alt="Icon back" class="w-6 cursor-pointer ml-5"></a>
+            <a href="{{ path('app_back_clients') }}"> <img src="https://i.goopics.net/6k2k8k.png" alt="Icon back" class="w-6 cursor-pointer ml-5"></a>
 
         </div>
         {{ form_start(form) }}
         <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
-            <div class="flex flex-row justify-around items-center">
+            <div class="flex flex-row justify-around ">
                 <div class=" flex flex-col justify-center">
                     {{ form_label(form.nom,'Nom') }}
                     {{ form_widget(form.nom, {'attr': {
@@ -42,13 +42,13 @@
                         {% endfor %}
                     {% endif %}
 
-                    {{ form_label(form.site_internet,'Site internet') }}
-                    {{ form_widget(form.site_internet, {'attr': {
+                    {{ form_label(form.prenom,'Prénom') }}
+                    {{ form_widget(form.prenom, {'attr': {
                         'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                     }}) }}
-                    {{ form_help(form.site_internet) }}
-                    {% if form.site_internet.vars.errors|length > 0 %}
-                        {% for error in form.site_internet.vars.errors %}
+                    {{ form_help(form.prenom) }}
+                    {% if form.prenom.vars.errors|length > 0 %}
+                        {% for error in form.prenom.vars.errors %}
                             <span class="text-xs text-red-500">{{ error.message }}</span>
                         {% endfor %}
                     {% endif %}
@@ -63,20 +63,20 @@
                         {% endfor %}
                     {% endif %}
 
-                    {{ form_label(form.pays,'Pays') }}
-                    {{ form_widget(form.pays, {'attr': {
+                    {{ form_label(form.ville,'Ville') }}
+                    {{ form_widget(form.ville, {'attr': {
                         'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                     }}) }}
-                    {{ form_help(form.pays) }}
-                    {% if form.pays.vars.errors|length > 0 %}
-                        {% for error in form.pays.vars.errors %}
+                    {{ form_help(form.ville) }}
+                    {% if form.ville.vars.errors|length > 0 %}
+                        {% for error in form.ville.vars.errors %}
                             <span class="text-xs text-red-500">{{ error.message }}</span>
                         {% endfor %}
                     {% endif %}
 
                 </div>
 
-                <div class="flex flex-col justify-center">
+                <div class="flex flex-col ">
                     {{ form_label(form.adresse,'Adresse') }}
                     {{ form_widget(form.adresse, {'attr': {
                         'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
@@ -99,48 +99,35 @@
                         {% endfor %}
                     {% endif %}
 
-                    {{ form_label(form.logo,'Logo') }}
-                    {{ form_widget(form.logo, {'attr': {
-                        'class': 'flex flex-col  bg-gray-50 w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
-                    }}) }}
-                    {{ form_help(form.logo) }}
-                    {% if form.logo.vars.errors|length > 0 %}
-                        {% for error in form.logo.vars.errors %}
-                            <span class="text-xs text-red-500">{{ error.message }}</span>
-                        {% endfor %}
-                    {% endif %}
 
-
-                    {{ form_label(form.compte_bancaire,'RIB') }}
-                    {{ form_widget(form.compte_bancaire, {'attr': {
+                    {{ form_label(form.create_at,'Date de création') }}
+                    {{ form_widget(form.create_at, {'attr': {
                         'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                     }}) }}
-                    {{ form_help(form.compte_bancaire) }}
-                    {% if form.compte_bancaire.vars.errors|length > 0 %}
-                        {% for error in form.compte_bancaire.vars.errors %}
+                    {{ form_help(form.create_at) }}
+                    {% if form.create_at.vars.errors|length > 0 %}
+                        {% for error in form.create_at.vars.errors %}
                             <span class="text-xs text-red-500">{{ error.message }}</span>
                         {% endfor %}
                     {% endif %}
-
-                    {{ form_label(form.siret,'Siret') }}
-                    {{ form_widget(form.siret, {'attr': {
+                    {{ form_label(form.id_entreprise,'Nom entrepise') }}
+                    {{ form_widget(form.id_entreprise, {'attr': {
                         'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                     }}) }}
-                    {{ form_help(form.siret) }}
-                    {% if form.siret.vars.errors|length > 0 %}
-                        {% for error in form.siret.vars.errors %}
+                    {{ form_help(form.id_entreprise) }}
+                    {% if form.create_at.vars.errors|length > 0 %}
+                        {% for error in form.id_entreprise.vars.errors %}
                             <span class="text-xs text-red-500">{{ error.message }}</span>
                         {% endfor %}
                     {% endif %}
-
 
 
 
                 </div>
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end">
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                    Modifier
+                    Ajouter
                 </button>
             </div>
         </div>

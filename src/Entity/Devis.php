@@ -46,7 +46,7 @@ class Devis
     #[ORM\ManyToOne(inversedBy: 'devis')]
     private ?client $id_client = null;
 
-    #[ORM\ManyToMany(targetEntity: produit::class, inversedBy: 'devis')]
+    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'devis')]
     private Collection $id_produit;
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Facture::class)]
@@ -191,7 +191,7 @@ class Devis
         return $this->id_produit;
     }
 
-    public function addIdProduit(produit $idProduit): static
+    public function addIdProduit(Produit $idProduit): static
     {
         if (!$this->id_produit->contains($idProduit)) {
             $this->id_produit->add($idProduit);
