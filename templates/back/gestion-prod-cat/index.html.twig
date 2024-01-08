@@ -2,6 +2,7 @@
 
 {% block javascripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 {% endblock %}
 
 {% block title %}{% endblock %}
@@ -98,7 +99,7 @@
    
 
 
-<table id="myTable" class="display DataTable">
+<table id="myTable" class="table table-striped table-bordered">
     <thead>
         <tr>
         <th>id</th>
@@ -160,6 +161,9 @@
 </style>
 
 <script>
+
+   
+
     // Fonction pour afficher le formulaire avec une animation de haut en bas
     function afficherFormulaire(formulaireId) {
         var formulaire = document.getElementById(formulaireId);
