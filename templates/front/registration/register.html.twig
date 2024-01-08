@@ -26,39 +26,77 @@
                 {{ form_start(registrationForm) }}
                 <div class="flex flex-row  justify-around items-center">
                     <div>
-                        {{ form_row(registrationForm.email, {
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                        {% if registrationForm.email.vars.errors|length > 0 %}
+                            {% for error in registrationForm.email.vars.errors %}
+                                <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.email, {
                             'attr': {
-
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'exemple@test.fr'
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 ml-8 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'exemple@gmail.com'
                             }
                         }) }}
+                        {{ form_help(registrationForm.email) }}
 
-
-                        {{ form_row(registrationForm.telephone,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.telephone, 'Telephone', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                        {{ form_help(registrationForm.telephone) }}
+                        {% if registrationForm.telephone.vars.errors|length > 0 %}
+                            {% for error in registrationForm.telephone.vars.errors %}
+                                <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.telephone, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 ml-8 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                                 'placeholder': '+33102030405'
                             }
                         }) }}
+
                     </div>
                     <div>
-                    {{ form_row(registrationForm.id_entreprise.nom,{
-                        'label_attr':{'class' : 'text-base  ml-3'},
-                        'attr': {
-                            'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                            'placeholder': 'Nom de votre entreprise'
-                        }
-                    }) }}
-                    {{ form_row(registrationForm.id_entreprise.siret,{
-                        'label_attr':{'class' : 'text-base  ml-3'},
-                        'attr': {
-                            'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                            'placeholder': 'Siret de votre entreprise'
-                        }
-                    }) }}
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.id_entreprise.nom, 'Nom entreprise', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                        {{ form_help(registrationForm.id_entreprise.nom) }}
+                        {% if registrationForm.id_entreprise.nom.vars.errors|length > 0 %}
+                            {% for error in registrationForm.id_entreprise.nom.vars.errors %}
+                                <span class="text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.id_entreprise.nom, {
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Nom  de votre entreprise'
+                            }
+                        }) }}
+
+                        <div>
+                            <div class="flex flex-col">
+                            {{ form_label(registrationForm.id_entreprise.siret, 'Siret', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                            {{ form_help(registrationForm.id_entreprise.siret) }}
+                            {% if registrationForm.id_entreprise.siret.vars.errors|length > 0 %}
+                                {% for error in registrationForm.id_entreprise.siret.vars.errors %}
+                                    <span class="text-xs text-red-500">{{ error.message }}</span>
+                                {% endfor %}
+                            {% endif %}
+                            </div>
+                            {{ form_widget(registrationForm.id_entreprise.siret, {
+                                'attr': {
+                                    'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                    'placeholder': 'Siret de votre entreprise'
+                                }
+                            }) }}
+
+                        </div>
+
+
+
 
 
                     </div>
