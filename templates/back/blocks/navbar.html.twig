@@ -19,13 +19,38 @@
 	</div>
 	<div class="flex items-center justify-center gap-4">
 		<div class="profile flex flex-row">
-			<div class="profile-info flex flex-col items-end">
-				<p class="font-bold">Adrien Morin</p>
+			<div class="profile-info flex flex-col items-end mr-2 mt-4">
 				<p class="text-gray-400">ESGI</p>
+				<div class="flex items-center justify-center gap-4 ">
+					<div class="relative">
+
+						<a  id="dropdownButton" onclick="toggleDropdown()" class="bg-transparent border-0 border-gray-400 text-gray-800 font-semibold pb-2 rounded inline-flex items-center">
+							{% if app.user %}
+								{% if app.user.nom is not empty and app.user.prenom is not empty %}
+									{{ app.user.nom }} {{ app.user.prenom }}
+								{% else %}
+									Merci d'ajouter votre nom et prénom
+								{% endif %}
+							{% endif %}
+							<img src="https://i.goopics.net/83o0tn.png" alt="Icon dropdown" class="w-3.5 mt-0.5 pt-0.5">
+
+						</a>
+						<div id="myDropdown" class="hidden absolute right-0 mt-3 py-2 w-44 bg-white rounded-md shadow-xl z-10">
+							<a href="{{ path('app_logout') }}" class="flex items-center px-2 py-2 text-gray-800 hover:bg-gray-200">
+								<img src="https://i.goopics.net/gkjig4.png" class="w-5 flex mr-2" alt="Profil">
+								Déconnexion
+							</a>
+							<a href="#" class="flex items-center px-2 py-2 text-gray-800 hover:bg-gray-200">
+								<img src="https://i.goopics.net/wm2q14.png" class="w-5 flex mr-2" alt="Profil">
+								Profil
+							</a>
+						</div>
+					</div>
+
 			</div>
 		</div>
 		<div class="profile-avatar">
 			<img src="https://www.esgi.fr/ecole-informatique/Adrien-Morin_png.png" alt="Avatar Adrien Morin" class="w-16 h-16 object-cover rounded-full bg-theme-600">
 		</div>
-	</div>
+
 </nav>

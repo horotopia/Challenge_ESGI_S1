@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\inscription;
 
 use App\Entity\Entreprise;
 use App\Entity\Users;

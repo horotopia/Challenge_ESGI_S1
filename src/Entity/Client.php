@@ -34,22 +34,22 @@ class Client
     private ?int $code_postal = null;
 
     #[ORM\Column]
-    private ?int $telephone = null;
+    private ?string $telephone = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $create_at = null;
+    private ?\DateTime $create_at = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $update_at = null;
+    #[ORM\Column(nullable:true)]
+    private ?\DateTime $update_at = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable:true)]
     private ?string $user_create = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: true)]
     private ?string $user_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
-    private ?entreprise $id_entreprise = null;
+    private ?Entreprise $id_entreprise = null;
 
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
     private Collection $devis;
@@ -152,24 +152,24 @@ class Client
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?\DateTime
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeImmutable $create_at): static
+    public function setCreateAt(\DateTime $create_at): static
     {
         $this->create_at = $create_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTime
     {
         return $this->update_at;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdateAt(\DateTime $update_at): static
     {
         $this->update_at = $update_at;
 
@@ -200,12 +200,12 @@ class Client
         return $this;
     }
 
-    public function getIdEntreprise(): ?entreprise
+    public function getIdEntreprise(): ?Entreprise
     {
         return $this->id_entreprise;
     }
 
-    public function setIdEntreprise(?entreprise $id_entreprise): static
+    public function setIdEntreprise(?Entreprise $id_entreprise): static
     {
         $this->id_entreprise = $id_entreprise;
 

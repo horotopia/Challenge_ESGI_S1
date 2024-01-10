@@ -50,7 +50,7 @@ class Produit
     private ?Categorie $id_categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?entreprise $id_entreprise = null;
+    private ?Entreprise $id_entreprise = null;
 
     #[ORM\ManyToMany(targetEntity: Devis::class, mappedBy: 'id_produit')]
     private Collection $devis;
@@ -197,12 +197,12 @@ class Produit
         return $this;
     }
 
-    public function getIdEntreprise(): ?entreprise
+    public function getIdEntreprise(): ?Entreprise
     {
         return $this->id_entreprise;
     }
 
-    public function setIdEntreprise(?entreprise $id_entreprise): static
+    public function setIdEntreprise(?Entreprise $id_entreprise): static
     {
         $this->id_entreprise = $id_entreprise;
 

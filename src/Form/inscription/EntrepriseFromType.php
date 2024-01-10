@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\inscription;
 
 use App\Entity\Entreprise;
 use Symfony\Component\Form\AbstractType;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Regex;
+
 
 class EntrepriseFromType extends AbstractType
 {
@@ -19,7 +18,15 @@ class EntrepriseFromType extends AbstractType
             ->add('nom', TextType::class,[
             'label'=>'Nom entrprise'])
 
-            ->add('siret', TextType::class);
+            ->add('siret', TextType::class, [
+                'constraints' => [
+                    new Length([
+                        'min' => 14,
+                        'max' => 14,
+                        'exactMessage' => 'Le numéro SIRET doit contenir exactement 14 chiffres',
+                    ]),
+                ],
+            ]);
 
     }
 
