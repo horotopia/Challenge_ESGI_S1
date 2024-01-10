@@ -1,23 +1,149 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
+{% block title %}Inscription - Gestion des solutions pour équipements médicaux{% endblock %}
+{% block og_title %}Inscription - Gestion des solutions pour équipements médicaux{% endblock %}
+{% block description %}Découvrez comment vous inscrire sur Fast Invoice pour simplifier la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block og_description %}Découvrez comment vous inscrire sur Fast Invoice pour simplifier la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block keywords %}Fast Invoice, inscription, équipements médicaux{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
 
-    <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+    <section class="relative mt-[27rem]">
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <a href="{{ path("app_index") }}" aria-label="Logo Fast Invoice" tabindex="1" class=" absolute top-0 left-1/2 transform -translate-x-1/2 mt-[-18rem]">
+            <img src="https://i.goopics.net/g0scmw.png" alt="Logo Fast Invoice" class="w-[180px]">
+        </a>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        <div class="container relative z-10 flex flex-col items-center">
+
+            <div class="h-[28.5rem] w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
+
+                <div class="w-[42.5rem]   p-5 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
+                    <h4 class="mb-0 text-center font-medium text-2xl text-white">Inscription</h4>
+                </div>
+
+
+                {{ form_start(registrationForm) }}
+                <div class="flex flex-row  justify-around items-center">
+                    <div>
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                        {% if registrationForm.email.vars.errors|length > 0 %}
+                            {% for error in registrationForm.email.vars.errors %}
+                                <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 ml-8 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'exemple@gmail.com'
+                            }
+                        }) }}
+                        {{ form_help(registrationForm.email) }}
+
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.telephone, 'Telephone', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                        {{ form_help(registrationForm.telephone) }}
+                        {% if registrationForm.telephone.vars.errors|length > 0 %}
+                            {% for error in registrationForm.telephone.vars.errors %}
+                                <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.telephone, {
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 ml-8 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': '+33102030405'
+                            }
+                        }) }}
+
+                    </div>
+                    <div>
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.id_entreprise.nom, 'Nom entreprise', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                        {{ form_help(registrationForm.id_entreprise.nom) }}
+                        {% if registrationForm.id_entreprise.nom.vars.errors|length > 0 %}
+                            {% for error in registrationForm.id_entreprise.nom.vars.errors %}
+                                <span class="text-xs text-red-500">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.id_entreprise.nom, {
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Nom  de votre entreprise'
+                            }
+                        }) }}
+
+                        <div>
+                            <div class="flex flex-col">
+                            {{ form_label(registrationForm.id_entreprise.siret, 'Siret', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                            {{ form_help(registrationForm.id_entreprise.siret) }}
+                            {% if registrationForm.id_entreprise.siret.vars.errors|length > 0 %}
+                                {% for error in registrationForm.id_entreprise.siret.vars.errors %}
+                                    <span class="text-xs text-red-500">{{ error.message }}</span>
+                                {% endfor %}
+                            {% endif %}
+                            </div>
+                            {{ form_widget(registrationForm.id_entreprise.siret, {
+                                'attr': {
+                                    'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                    'placeholder': 'Siret de votre entreprise'
+                                }
+                            }) }}
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+                {{ form_row(registrationForm.plainPassword,{
+                    'label_attr':{'class' : 'text-base  ml-10'},
+                    'attr': {
+                        'class' :'w-[590px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                        'placeholder': 'Saisir votre mot de passe'
+                    }
+                })}}
+                {% for flash_error in app.flashes('verify_email_error') %}
+                    <div class="text-sm ml-5 text-red-500" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                <div class="flex flex-row justify-around items-center mt-2">
+                    <label for="{{ registrationForm.agreeTerms.vars.id }}" class=" flex flex-row-reverse items-center">
+                        <p class="ml-1">J’accepte les<a href="{{ path('app_mentions_legales') }}"
+                                                          class="text-[#007AC2]"> CGU</a></p>
+                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'w-[1.125rem] h-[1.125rem]'}}) }}
+                    </label>
+
+                    <button type="submit" class="btn-primary">Essai de 14 jours</button>
+                </div>
+                <p class="text-center mt-3">Déjà inscrit ?<a href="{{ path('app_login') }}" class="text-[#007AC2]"> Connectez-vous<a/></p>
+                {{ form_end(registrationForm) }}
+
+            </div>
+
+        </div>
+
+        <div class=" w-full absolute top-0 left-0 z-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-full"  viewBox="0 0 1536 349" fill="none">
+                <path d="M576.812 17.833C248.419 47.4356 115.962 -16.7206 0 10.7681V349H1536V54.4311C1536 54.4311 1362.06 22.6843 1178.12 10.7681C878.214 -8.65999 724.764 4.49602 576.812 17.833Z"
+                      fill="url(#paint0_linear_30_888)"/>
+                <defs>
+                    <linearGradient id="paint0_linear_30_888" x1="768" y1="-125.944" x2="768" y2="349"
+                                    gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#F3F3F3"/>
+                        <stop offset="1" stop-color="#EDEDED" stop-opacity="0.01"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+    </section>
+
+
+
 {% endblock %}

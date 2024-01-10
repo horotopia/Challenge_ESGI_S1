@@ -47,10 +47,10 @@ class Produit
     private ?string $user_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?categorie $id_categorie = null;
+    private ?Categorie $id_categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?entreprise $id_entreprise = null;
+    private ?Entreprise $id_entreprise = null;
 
     #[ORM\ManyToMany(targetEntity: Devis::class, mappedBy: 'id_produit')]
     private Collection $devis;
@@ -185,24 +185,24 @@ class Produit
         return $this;
     }
 
-    public function getIdCategorie(): ?categorie
+    public function getIdCategorie(): ?Categorie
     {
         return $this->id_categorie;
     }
 
-    public function setIdCategorie(?categorie $id_categorie): static
+    public function setIdCategorie(?Categorie $id_categorie): static
     {
         $this->id_categorie = $id_categorie;
 
         return $this;
     }
 
-    public function getIdEntreprise(): ?entreprise
+    public function getIdEntreprise(): ?Entreprise
     {
         return $this->id_entreprise;
     }
 
-    public function setIdEntreprise(?entreprise $id_entreprise): static
+    public function setIdEntreprise(?Entreprise $id_entreprise): static
     {
         $this->id_entreprise = $id_entreprise;
 

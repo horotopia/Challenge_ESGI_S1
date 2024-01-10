@@ -1,20 +1,222 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TarifsController!{% endblock %}
+{% block title %}Tarifs Fast Invoice: Gestion des solutions pour équipements médicaux{% endblock %}
+{% block og_title %}Tarifs Fast Invoice: Gestion des solutions pour équipements médicaux{% endblock %}
+{% block description %}Découvrez nos tarifs et comment Fast Invoice simplifie la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block og_description %}Découvrez nos tarifs et comment Fast Invoice simplifie la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block keywords %}Fast Invoice, tarifs, gestion équipements médicaux{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <header id="jumbotron" class="flex flex-col justify-center items-center">
+        <div class="container">
+            <div class="py-16 linearGradientColor sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+                <div class="sm:w-full pl-20 pr-10  md:pl-32 md:pr-20 lg:w-2/4 lg:pl-1 lg:pr-12 2xl:p-16 ">
+                    <h1 class="mb-3 text-start p-0 sm: m-0  lg:text-3xl 2xl:text-4xl">Des formules simples et flexibles</h1>
+                    <p class="pt-1 text-start text-gray-400 2xl:text-xl">Gestion de devis et facture dans le secteur des équipements médicaux.</p>
+                    <div class="flex flex-row mt-2">
+                        <div class="flex flex-row">
+                            <img src="https://i.goopics.net/wx3469.png" alt="Icône Dollar" class="mr-2">
+                            <p class="text-xs mr-5 text-[#6A7981]">Essai 14 jours</p>
+                        </div>
+                        <div class="flex flex-row">
+                            <img src="https://i.goopics.net/wx3469.png" alt="Icône Dollar" class="mr-2">
+                            <p class="text-xs text-[#6A7981]">Aucune carte de crédit demandée</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-2/4  xl:w-2/4" id="jumbotron_anim">
+                    <div id="anim_replacement" class="mt-5">
+                        <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png"
+                             alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="container">
+        <div class="  flex flex-col items-center justify-center">
+            <h1 class="mb-0 mt-5">Combien coûte notre outil ?</h1>
+            <p class="mt-8 text-center text-[#6A7981] text-lg">Nous vous proposons des formules tarifaires claires et sans mauvaises surprises <br>
+                Choisissez parmi les options disponibles ci-dessous ou essayez toutes les fonctionnalités <a href="#" class="text-[#017AC2]">GRATUITEMENT pendant 14 jours</a>.</p>
+            <div class=" mt-20 flex flex-row justify-around items-center">
+                <div class=" w-[250] flex flex-col justify-between px-12">
+                    <p class=" mb-10 text-[#6A7981] text-lg">Construisez votre formule en sélectionnant les modules dont vous avez <br>besoin (2 modules minimum).</p>
+                    <div>
+                        <div class="flex flex-row justify-around items-center ">
+                            <div class=" px-4 py-3 w-48 h-52 rounded-xl shadow-lg flex flex-col  items-center bg-[#F3F5F8]  small_card">
+                                <p class="text-center text-sm ">Gestion de devis et de factures</p>
+                                <h3 class="text-3xl font-bold  mt-5">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5 ">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-1" class="hidden" />
+                                        <label for="checkbox-1" class="checkbox-label"></label>
+                                    </div>
+                                </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                            </div>
+                            <div class="px-4 py-3 w-48 h-52  rounded-xl shadow-lg flex flex-col items-center bg-[#F3F5F8] small_card">
+                                <p class="text-center text-sm ">Gestion de clients</p>
+                                <h3 class="text-3xl font-bold mt-10">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-2" class="hidden" />
+                                        <label for="checkbox-2" class="checkbox-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-4 py-3 w-48 h-52  rounded-xl shadow-lg flex flex-col  items-center bg-[#F3F5F8] small_card">
+                                <p class="text-center text-sm">Gestion des produits et des catégories</p>
+                                <h3 class="text-3xl font-bold mt-5">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-3" class="hidden" />
+                                        <label for="checkbox-3" class="checkbox-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-around items-center mt-10">
+                            <div class="px-4 py-3 w-48 h-52  rounded-xl shadow-lg flex flex-col  items-center bg-[#F3F5F8] small_card">
+                                <p class="text-center text-sm">Envoi d'e-mails automatiques</p>
+                                <h3 class="text-3xl font-bold mt-5 ">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-4" class="hidden" />
+                                        <label for="checkbox-4" class="checkbox-label"></label>
+                                    </div>
+                                </div>
+                            </div >
+                            <div class="px-4 py-3 w-48 h-52  rounded-xl shadow-lg flex flex-col  items-center bg-[#F3F5F8] small_card">
+                                <p class="text-center text-sm">Suivi des paiements et
+                                    de leurs statuts</p>
+                                <h3 class="text-3xl font-bold mt-5">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-5" class="hidden" />
+                                        <label for="checkbox-5" class="checkbox-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-4 py-3 w-48 h-52 rounded-xl shadow-lg flex flex-col  items-center bg-[#F3F5F8] small_card">
+                                <p class="text-center text-sm">Génération de rapports financiers</p>
+                                <h3 class="text-3xl font-bold mt-5">1.4 €</h3>
+                                <p class="text-xs  text-center mt-1.5">/Mois <br>/Utilisateurs</p>
+                                <div class="checkbox-wrapper mt-2">
+                                    <div class="relative">
+                                        <input type="checkbox" id="checkbox-6" class="hidden" />
+                                        <label for="checkbox-6" class="checkbox-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 py-3 w-[437px] h-[560px] rounded-xl shadow-lg flex flex-col  items-center waterGradient big_card" >
+                    <h2 class="py-8 text-white">Offre sur mesure</h2>
+                    <div class="flex flex-row justify-around items-center">
+                        <p class="mr-5 text-white">Mensuelle</p>
+                        <div>
+                            <input type="checkbox" class="hidden annualCheckbox" id="annualCheckbox">
+                            <label for="annualCheckbox" class="inline-block box-border w-16 h-8 rounded-full p-1 bg-white transition duration-500">
+                                <span class="inline-block w-6 h-6 rounded-full bg-[#017AC2] transition-transform"></span>
+                            </label>
+                        </div>
+                        <p class="ml-5 text-white">Annuelle</p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/srv/app/src/Controller/TarifsController.php'|file_link(0) }}">src/Controller/TarifsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/srv/app/templates/tarifs/index.html.twig'|file_link(0) }}">templates/tarifs/index.html.twig</a></code></li>
-    </ul>
-</div>
+                    </div>
+                    <h3 class="text-6xl text-white font-bold mt-11" id="bigCardPrice">0 €</h3>
+                    <p class="text-white text-center mt-6 ">/Mois <br>/Utilisateurs</p>
+                    <a href="#" class="flex w-226px py-3 px-5 justify-center items-center gap-2 rounded-full bg-[#0F4F75] text-white text-center mt-10">
+                        J’essaye gratuitement
+                    </a>
+
+                    <div class="flex flex-row items-center mt-11">
+                        <div class="w-[27px] h-[27px] rounded-full flex flex-row justify-around items-center bg-white mr-3">
+                            <p class="text-[#017AC2] text-xl font-bold">$</p>
+                        </div>
+                        <p class="text-sm text-white">Essai 14 jours</p>
+                    </div>
+                    <div class="flex flex-row mt-3">
+                        <div class="w-[27px] h-[27px] rounded-full flex flex-row justify-around items-center bg-white mr-3">
+                            <p class="text-[#017AC2] text-xl font-bold">$</p>
+                        </div>
+                        <p class="text-sm text-white">Aucune carte de crédit demandée</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h1 class="text-center mt-20 mb-0">Caractéristiques de nos modules</h1>
+            <div class="py-16  sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+                <div class="lg:w-2/4  xl:w-2/4" id="jumbotron_anim">
+                    <div id="anim_replacement" class="mt-5">
+                        <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png"
+                             alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                    </div>
+                </div>
+                <div class="sm:w-full pl-20 pr-10  md:pl-32 md:pr-20 lg:w-2/4 lg:pl-1 lg:pr-12 2xl:p-3 ml-10 ">
+                    <h1 class="mb-3 text-start p-0 sm: m-0  lg:text-3xl 2xl:text-4xl">Devis et factures</h1>
+                    <div class="flex flex-col">
+                        <div class="flex flex-row  items-center mt-3"><img src="https://i.goopics.net/eqjmir.png" class="mr-5"><p class="text-lg text-[#6A7981]">  Créer un devis, une facture, un produit, un client, tout !</p></div>
+                        <div class="flex flex-row  items-center mt-5"> <img src="https://i.goopics.net/eqjmir.png" class="mr-5"><p class="text-lg text-[#6A7981]"> Les modifier, les supprimer, les archiver</p></div>
+                        <div class="flex flex-row  items-center mt-5"><img src="https://i.goopics.net/eqjmir.png" class="mr-5"> <p class="text-lg text-[#6A7981]">  Suivi de vos activités et celles de vos clients</p></div>
+                        <div class="flex flex-row  items-center mt-5"><img src="https://i.goopics.net/eqjmir.png" class="mr-5"><p class="text-lg text-[#6A7981]">  Un outil indispensable pour toute entreprise !</p></div>
+
+                    </div>
+                    <a href="#" class="btn-outline-primary mt-10">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h1 class="text-center mt-10 mb-0">Les avantages Fast Invoice</h1>
+            <div class="py-16  sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+
+                    <div class="flex flex-col">
+                        <div class="flex flex-row  items-center mt-3"><img src="https://i.goopics.net/iyi9rf.png" class="mr-5"><p class="text-lg text-[#6A7981]">  Support téléphonique réactif</p></div>
+                        <div class="flex flex-row  items-center mt-5"> <img src="https://i.goopics.net/iyi9rf.png" class="mr-5"><p class="text-lg text-[#6A7981]"> Logiciel clé en main (Paramétré avec vos données)</p></div>
+                        <div class="flex flex-row  items-center mt-5"><img src="https://i.goopics.net/iyi9rf.png" class="mr-5"> <p class="text-lg text-[#6A7981]">  FAQ et aide en ligne</p></div>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex flex-row  items-center mt-3"><img src="https://i.goopics.net/iyi9rf.png" class="mr-5"><p class="text-lg text-[#6A7981]">Essai 14 jours</p></div>
+                        <div class="flex flex-row  items-center mt-5"> <img src="https://i.goopics.net/iyi9rf.png" class="mr-5"><p class="text-lg text-[#6A7981]">Conformité RGPD</p></div>
+                        <div class="flex flex-row  items-center mt-5"><img src="https://i.goopics.net/iyi9rf.png" class="mr-5"> <p class="text-lg text-[#6A7981]">Hébergement des données sécurisé en Europe</p></div>
+                    </div>
+
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="py-16  sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+                <div class="sm:w-full pl-20 pr-10  md:pl-32 md:pr-20 lg:w-2/4 lg:pl-1 lg:pr-12 2xl:p-10 ">
+                    <h1 class="mb-3 text-start p-0 sm: m-0 lg:text-3xl 2xl:text-4xl ">Ils nous font confiance</h1>
+                    <p class="pt-1  text-start font-normal text-gray-400 2xl:pr-24"> Nos clients témoignent. Plus de 1500 entreprises nous confient
+                        la dématérialisation de leur gestion de facture et de devis au quotidien. </p>
+                    <div class=" mt-5 ">
+                        <a href="#" class="btn btn-primary  " aria-label="Accéder aux avis"> <img src="https://i.goopics.net/xvflh4.png" alt="Accéder aux avis">Accéder aux avis</a>
+                    </div>
+                </div>
+                <div class="lg:w-2/4  xl:w-2/4" id="jumbotron_anim">
+                    <div id="anim_replacement" class="mt-5">
+                        <img src="https://image.noelshack.com/fichiers/2023/50/3/1702507925-bloc-de-droite.png"
+                             alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div></section>
+
+
 {% endblock %}
