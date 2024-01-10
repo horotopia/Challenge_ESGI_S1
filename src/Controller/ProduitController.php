@@ -6,6 +6,7 @@ use App\Entity\Produit;
 use App\Form\ProduitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +31,8 @@ class ProduitController extends AbstractController
         $produit->setQuantiteDisponible($formProduit->get('quantite_disponible')->getData());
         $produit->setCreateAt($currentDateTime);
         $produit->setUpdateAt($currentDateTime);
+        $produit->setUserCreate(1);
+        $produit->setUserUpdate(1);
         $produit->setIdCategorie($formProduit->get('id_categorie')->getData());
         
         $entityManager->persist($produit);
@@ -46,4 +49,15 @@ class ProduitController extends AbstractController
              'produits' => $produits,
         ]);
     }
+
+    #[Route('/admin/produit/delete-prod/{id}', name: 'delete_produit')]
+    public function deleteCategorie(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator,Produit $produit)
+    {
+        $entityManager->remove($produit);
+        $entityManager->flush();
+    
+        return new JsonResponse(['success' => true]);
+    }
+
+
 }
