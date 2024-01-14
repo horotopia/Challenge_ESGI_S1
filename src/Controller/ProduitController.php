@@ -4,6 +4,7 @@ namespace App\Controller;
 use DateTimeImmutable;
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,8 +15,10 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class ProduitController extends AbstractController
 {
     #[Route('/admin/produit', name: 'app_produit')]
-    public function addProduit(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator): Response
+    public function addProduit(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator,Security $security): Response
     {
+        $user = $security->getUser();
+        $userId = $user->getId();
         $produit = new Produit();
         $formProduit=$this->createForm(ProduitType::class,$produit);
         $formProduit->handleRequest($request);
@@ -30,6 +33,8 @@ class ProduitController extends AbstractController
         $produit->setQuantiteDisponible($formProduit->get('quantite_disponible')->getData());
         $produit->setCreateAt($currentDateTime);
         $produit->setUpdateAt($currentDateTime);
+        $produit->setUserCreate($userId);
+        $produit->setUserUpdate($userId);
         $produit->setIdCategorie($formProduit->get('id_categorie')->getData());
         
         $entityManager->persist($produit);

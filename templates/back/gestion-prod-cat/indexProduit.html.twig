@@ -1,9 +1,7 @@
 {% extends 'back/base.html.twig' %} 
 
 {% block javascripts %}
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block title %}{% endblock %}
@@ -12,10 +10,11 @@
 
 
 {% block body %}
+
  
   <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
-        <div id="newPruduct" class="container relative z-10 flex flex-col items-center ">
+        <div id="newProduct" class="container relative z-10 flex flex-col items-center hidden">
 
             <div class="w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
 
@@ -119,19 +118,20 @@
 
                 <div class="flex flex-row justify-center">
                     
-                 <div>
-                    {{ form_row(formProduit.Enregistrer,{
-                            'label_attr':{'class' : ' btn-primary text-base  ml-10'},
+                 
+
+                <div class="flex flex-row justify-center">
+                    {# <button type="submit" class="btn-primary">Enregistrer</button> #}
+                
+                    
+                        {{ form_row(formProduit.Enregistrer,{
                             'attr': {
-                                'class': 'mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Description'
+                                'class': 'btn-primary mt-4 mb-8',
                             }
-                        }) }}
-                    </div>
+                               }) 
+                        }}
                     
-                        
-                    
-                    <button  class=" mt-4  " onclick="cacherFormulaire('newPruduct')">Annuler</button> 
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('newProduct')">Annuler</span> 
                    
                 </div>
 
@@ -154,7 +154,7 @@
     </div>
 
     <div class="flex justify-end sm:w-1/2 ">
-        <button class="btn-primary " onclick="afficherFormulaire('newCategory')"> Nouveau Produit </button>
+        <button class="btn-primary " onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
     </div>
 </div>
      
@@ -165,43 +165,50 @@
 
 
 
-<h2>Produits</h2>
- {% for produit in produits %}
-    {{produit.nom}}
- {% endfor %}
 
-<table id="myTable" class="display DataTable">
-    <thead>
-        <tr>
-        <th>id</th>
-            <th>nom</th>
-            <th>description</th>
-            <th>prix</th>
-            <th>Qté</th>
-            <th>tva</th>
-            <th>quantité</th>
-
-        </tr>
-    </thead>
-    <tbody>
-    {% for produit in produits %}
-        <tr>
-            <td>{{produit.id}}</td>
-            <td>{{produit.nom}}</td>
-            <td>{{produit.description}}</td>
-            <td>{{produit.description}}</td>
-            <td>{{produit.tva}}</td>
-            <td>{{produit.tva}}</td>
-
-            <td><span>update</span></td>
-            <td><span  onclick="deleteCat({{ produit.id }})" data-id="{{ produit.id }}">Delete</span></td>
-        </tr>
-    {% endfor %}
-    
-    </tbody>
-</table>
+ 
 
 
+
+<div class="drop-shadow-lg mx-5 mt-6 bg-white p-10 ">
+
+        <div class="overflow-x-auto mt-3">
+            <table class="min-w-full table-auto bg-white border border-gray-200">
+                <thead>
+                <tr>
+                    <th class="px-4 py-2 border border-gray-200">Numéro</th>
+                    <th class="px-4 py-2 border border-gray-200">Produit</th>
+                    <th class="px-4 py-2 border border-gray-200">Description</th>
+                     <th class="px-4 py-2 border border-gray-200">prix</th>
+                    <th class="px-4 py-2 border border-gray-200">tva</th>
+                    <th class="px-4 py-2 border border-gray-200">Quantité</th>
+                    <th class="px-4 py-2 border border-gray-200">Date création</th>
+                    <th class="px-4 py-2 border border-gray-200">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for produit in produits %}
+                    <tr>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.id }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.nom}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.description}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.description}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.tva}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.tva}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ produit.tva}}</td>
+                        
+
+                        
+                        <td class="px-8 py-2  border border-gray-200 flex justify-center items-center">
+                            <span onclick="deleteProduit({{ produit.id }})" ><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
+                            <a href=""><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+</div>
 
 
 <style>
@@ -268,8 +275,9 @@
     }
 
     // AJAX for deleting a category
-    function deleteCat(id) {
+    function deleteProduit(id) {
         var categoryId = $(this).data('id');
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
         console.log(id);
         $.ajax({
             type: 'DELETE',
@@ -286,6 +294,7 @@
                 }
             }
         });
+        }
     };
     
 

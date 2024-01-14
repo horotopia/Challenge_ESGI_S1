@@ -6,6 +6,7 @@ use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<Categorie>
  *
@@ -24,7 +25,7 @@ class CategorieRepository extends ServiceEntityRepository
 //    /**
 //     * @return Categorie[] Returns an array of Categorie objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findCategorieCountProduits($value): array
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')
@@ -35,6 +36,34 @@ class CategorieRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+   
+//    public function getCategoriesWithProductCount()
+//     {
+//         $sql = '
+//             SELECT c.*, COUNT(p.id) as productCount
+//             FROM categorie c
+//             LEFT JOIN produit p ON c.id = p.id_categorie_id
+//             GROUP BY c.id
+//         ';
+
+//         $query = $this->getEntityManager()->createNativeQuery($sql, new \Doctrine\ORM\Query\ResultSetMapping());
+
+//         return $query->getResult();
+//     }
+
+public function getCategoriesWithProductCount()
+    {
+        $cat= $this->createQueryBuilder('c')
+            ->select('c', 'COUNT(p.id) as productCount')
+            ->leftJoin('c.produits', 'p') // Assurez-vous que le champ 'produits' correspond à la relation dans votre entité Categorie
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+            
+            return $cat;
+    }
+
+
 
 //    public function findOneBySomeField($value): ?Categorie
 //    {

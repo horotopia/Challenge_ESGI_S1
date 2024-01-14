@@ -14,6 +14,7 @@ class UsersFixtures extends Fixture
        /* $faker = Factory::create();
 
         for ($i = 0; $i < 5; $i++) {
+
             $user = new Users();
             $user->setNom($faker->firstName);
             $user->setPrenom($faker->lastName);
@@ -23,10 +24,10 @@ class UsersFixtures extends Fixture
             $randomDate = $faker->dateTimeBetween('-50 years', 'now');
             $user->setCreatedAt(\DateTimeImmutable::createFromMutable($randomDate));
             $user->setIsVerified(true);
-            $user->setRoles(['ROLE_COMPTABLE']);
+            $user->setRoles(['ROLE_ENTREPRISE']);
             $manager->persist($user);
         }
 
-        $manager->flush();*/
+        $manager->flush(); */
     }
 }

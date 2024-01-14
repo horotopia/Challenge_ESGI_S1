@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Entity\Produit;
+use App\Repository\CategorieRepository;
 use App\Form\CategorieType;
 use App\Form\ProduitType;
 use DataTables\DataTablesFactory;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CategorieController extends AbstractController
 {
     #[Route('/admin/gestion-prod-cat', name: 'app_categorie')]
-    public function addCategorie(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator): Response
+    public function addCategorie(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator ,CategorieRepository $catRepo): Response
     {
         $categorie= new Categorie();
         $form=$this->createForm(CategorieType::class,$categorie);
@@ -41,9 +42,10 @@ class CategorieController extends AbstractController
             return $this->redirectToRoute('app_categorie');
 
         }
-        $categories = $entityManager->getRepository(Categorie::class)->findAll();
-        
-
+        // $categories = $entityManager->getRepository(Categorie::class)->findAll();
+        $categories = $entityManager->getRepository(Categorie::class)->getCategoriesWithProductCount();
+            // $categories=$catRepo->getCategoriesWithProductCount();
+ 
         return $this->render('back/gestion-prod-cat/index.html.twig', [
             'formCategorie' => $form->createView(),
             'categories' => $categories,

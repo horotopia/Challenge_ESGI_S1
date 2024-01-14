@@ -40,7 +40,7 @@
                     </div>
 
                     <div>
-                    {{ form_row(formCategorie.description,{
+                        {{ form_row(formCategorie.description,{
                             'label_attr':{'class' : 'text-base  ml-10'},
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
@@ -96,30 +96,47 @@
     
 
 
-   
 
+<div class="drop-shadow-lg mx-5 mt-6 bg-white p-10 ">
 
-<table id="myTable" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-        <th>id</th>
-            <th>nom</th>
-            <th>Column 2</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for category in categories %}
-        <tr>
-            <td>{{category.id}}</td>
-            <td>{{category.nom}}</td>
-            <td>{{category.description}}</td>
-            <td><span >update</span></td>
-            <td><span  onclick="deleteCat({{ category.id }})" data-id="{{ category.id }}">Delete</span></td>
-        </tr>
-    {% endfor %}
-    
-    </tbody>
-</table>
+        <div class="overflow-x-auto mt-3">
+            <table class="min-w-full table-auto bg-white border border-gray-200">
+                <thead>
+                <tr>
+                    <th class="px-4 py-2 border border-gray-200">Numéro</th>
+
+                    <th class="px-4 py-2 border border-gray-200">Catégorie</th>
+                    <th class="px-4 py-2 border border-gray-200">Description</th>
+                    <th class="px-4 py-2 border border-gray-200">Nombre des produits</th>
+                    <th class="px-4 py-2 border border-gray-200">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td class="px-4 py-2 border border-gray-200">{{ category[0].id }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ category[0].nom }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{category[0].description}}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{category.productCount}}</td>
+                        
+                        <td class="px-8 py-2  border border-gray-200 flex justify-center items-center">
+                            <span onclick="deleteCat({{ category[0].id }})" ><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
+                            <a href=""><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+</div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center items-center mt-4">
+            <nav class="block">
+                {# {{ knp_pagination_render(clients) }} #}
+            </nav>
+        </div>
+    </div>
 
 
 
@@ -204,7 +221,7 @@ function test() {
                 if (response.success) {
                     console.log(categoryId);
                     // Reload the page or update the category list
-                    //window.location.reload();
+                    window.location.reload();
                     console.log('success');
                 } else {
                     // Handle errors

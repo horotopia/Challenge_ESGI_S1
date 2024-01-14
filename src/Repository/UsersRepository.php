@@ -60,10 +60,12 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         $filteredUsers = array_filter($users, function ($user) {
             return !in_array('ROLE_ADMIN', $user['roles']);
+            
         });
 
-
+        
         return $this->paginator->paginate($filteredUsers, $page, 5);
+        
     }
 
 

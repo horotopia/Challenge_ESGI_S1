@@ -43,8 +43,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setRoles(["ROLE_ENTERPRISE"]);
-            $user->setCreatedAt(new \DateTime());
+            $user->setRoles(["ROLE_ENTREPRISE"]);
+            $user->setCreatedAt(new \DateTimeImmutable());
 
             $user->setTelephone( $form->get('telephone')->getData());
             $user->setTokenRegistration($tokenRegistration);
