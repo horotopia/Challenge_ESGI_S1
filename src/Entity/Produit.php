@@ -35,10 +35,10 @@ class Produit
     private ?int $quantite_disponible = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $create_at = null;
+    private ?\DateTime $create_at = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTime $update_at = null;
 
     #[ORM\Column(length: 255)]
     private ?string $user_create = null;
@@ -52,9 +52,8 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?Entreprise $id_entreprise = null;
 
-    #[ORM\ManyToMany(targetEntity: Devis::class, mappedBy: 'id_produit')]
-    private Collection $devis;
-
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: DevisProduit::class, cascade: ['persist', 'remove'])]
+    private Collection $devisProduits;
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -137,24 +136,24 @@ class Produit
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?\DateTime
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeImmutable $create_at): static
+    public function setCreateAt(\DateTime $create_at): static
     {
         $this->create_at = $create_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTime
     {
         return $this->update_at;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdateAt(\DateTime $update_at): static
     {
         $this->update_at = $update_at;
 
@@ -210,28 +209,26 @@ class Produit
     }
 
     /**
-     * @return Collection<int, Devis>
+     * @return Collection<int, DevisProduit>
      */
-    public function getDevis(): Collection
+    public function getDevisProduits(): Collection
     {
-        return $this->devis;
+        return $this->devisProduits;
     }
 
-    public function addDevi(Devis $devi): static
+    public function addDevisProduit(DevisProduit $devisProduit): static
     {
-        if (!$this->devis->contains($devi)) {
-            $this->devis->add($devi);
-            $devi->addIdProduit($this);
+        if (!$this->devisProduits->contains($devisProduit)) {
+            $this->devisProduits->add($devisProduit);
+            $devisProduit->setProduit($this);
         }
 
         return $this;
     }
 
-    public function removeDevi(Devis $devi): static
+    public function removeDevisProduit(DevisProduit $devisProduit): static
     {
-        if ($this->devis->removeElement($devi)) {
-            $devi->removeIdProduit($this);
-        }
+        $this->devisProduits->removeElement($devisProduit);
 
         return $this;
     }

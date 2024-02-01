@@ -1,0 +1,248 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Ajouter un devis{% endblock %}
+
+{% block body %}
+    {% for type, messagesOfType in app.flashes %}
+        {% for message in messagesOfType %}
+            {% set alertClass = (type == 'error') ? 'bg-red-200' : 'bg-green-200' %}
+            <div class="alert hidden w-50 {{ alertClass }} px-4 py-3 rounded absolute top-[7rem] left-[37rem]" role="alert">
+                <div class="flex flex-row items-center ">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="{{ (type == 'error') ? '#FF0000' : '#3EEF00' }}" aria-hidden="true" class="w-5 h-5">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="{{ (type == 'error') ? 'text-red-900' : 'text-green-900' }} text-xs ml-2">{{ message }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="mt-4 ml-5 mr-48">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="24" viewBox="0 0 14 24" fill="none">
+                <path d="M13.4125 10.5875C14.1938 11.3687 14.1938 12.6375 13.4125 13.4187L3.41255 23.4187C2.6313 24.2 1.36255 24.2 0.581299 23.4187C-0.199951 22.6375 -0.199951 21.3687 0.581299 20.5875L9.1688 12L0.587549 3.41249C-0.193701 2.63124 -0.193701 1.36249 0.587549 0.581238C1.3688 -0.200012 2.63755 -0.200012 3.4188 0.581238L13.4188 10.5812L13.4125 10.5875Z"
+                      fill="#D9DDDF"/>
+            </svg>
+            <h2 class="text-[#D9DDDF] text-3xl font-extrabold flex items-center">
+                {{ controller_name }}
+            </h2>
+            <a href="{{ path('app_back_devis') }}"> <img src="https://i.goopics.net/6k2k8k.png" alt="Icon back" class="w-6 cursor-pointer ml-5"></a>
+
+        </div>
+        {{ form_start(form) }}
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <h4 class="font-medium text-xl text-center text-blue-400">Nouveau devis</h4>
+            <hr class="my-2">
+            <div class=" flex flex-row justify-around ">
+
+                    <div class="flex flex-col ">
+                    {{ form_label(form.date_echeance,'Date échéance') }}
+                    {{ form_widget(form.date_echeance, {'attr': {
+                        'class': 'w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.date_echeance) }}
+                    {% if form.date_echeance.vars.errors|length > 0 %}
+                        {% for error in form.date_echeance.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="flex flex-col ">
+                    {{ form_label(form.id_client,'Client') }}
+                    {{ form_widget(form.id_client, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.id_client) }}
+                    {% if form.id_client.vars.errors|length > 0 %}
+                        {% for error in form.id_client.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="flex flex-col ">
+
+                    {{ form_label(form.statut,'Statuts') }}
+                    {{ form_widget(form.statut, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.statut) }}
+                    {% if form.statut.vars.errors|length > 0 %}
+                        {% for error in form.statut.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+
+
+
+
+        </div>
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <button type="submit" name="add_produit" class=" px-4 py-2 bg-blue-500  rounded-md">
+               <span class="flex flex-row items-center text-white"> <img src="https://i.goopics.net/togvom.png" alt="Icon Ajouter un utilisateur " class="w-5 mr-2"> Ajouter un produit</span>
+            </button>
+            <hr class="my-2">
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col">
+                    {{ form_label(form.id_produit,'Produit') }}
+                    {{ form_widget(form.id_produit, {'attr': {
+                        'class': 'w-[20rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                        }}) }}
+                        {{ form_help(form.id_produit) }}
+                    {% if form.id_produit.vars.errors|length > 0 %}
+                    {% for error in form.id_produit.vars.errors %}
+                    <span class="text-xs text-red-500">{{ error.message }}</span>
+                    {% endfor %}
+                    {% endif %}
+
+
+                    </div>
+                <div class="flex flex-col">
+                {{ form_label(form.prix_unitaire,'Prix') }}
+                {{ form_widget(form.prix_unitaire, {'attr': {
+                    'class': 'flex flex-col w-[10rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                }}) }}
+                {{ form_help(form.prix_unitaire) }}
+                {% if form.prix_unitaire.vars.errors|length > 0 %}
+                    {% for error in form.prix_unitaire.vars.errors %}
+                        <span class="text-xs text-red-500">{{ error.message }}</span>
+                    {% endfor %}
+                {% endif %}
+                </div>
+                <div class="flex flex-col">
+                {{ form_label(form.tva,'Tva') }}
+                {{ form_widget(form.tva, {'attr': {
+                    'class': 'flex flex-col w-[10rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                }}) }}
+                {{ form_help(form.tva) }}
+                {% if form.tva.vars.errors|length > 0 %}
+                    {% for error in form.tva.vars.errors %}
+                        <span class="text-xs text-red-500">{{ error.message }}</span>
+                    {% endfor %}
+                {% endif %}
+                </div>
+                <div class="flex flex-col">
+                    {{ form_label(form.quantite_disponible,'Qte') }}
+                    {{ form_widget(form.quantite_disponible, {'attr': {
+                        'class': 'flex flex-col w-[5rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.quantite_disponible) }}
+                    {% if form.quantite_disponible.vars.errors|length > 0 %}
+                        {% for error in form.quantite_disponible.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="flex flex-col">
+                    <table class="mt-3">
+                        <thead>
+                        <tr>
+                            <th class="px-2">Total HT</th>
+                            <th class="px-2">Total TTC</th>
+                        </tr>
+                        </thead>
+                        <tbody class="mt-5">
+                        <tr>
+                            <td id="totalHT" class="text-center">0</td>
+                            <td id="totalTTC" class="text-center">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                </div>
+
+                </div>
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <h4 class="font-medium text-xl text-start text-blue-400">Liste Produits</h4>
+            <hr class="my-2">
+            <table class="min-w-full table-auto bg-white border border-gray-200">
+                <thead>
+                <tr>
+                    <th class="px-4 py-2 border border-gray-200">Produit</th>
+                    <th class="px-4 py-2 border border-gray-200">Prix unitaire</th>
+                    <th class="px-4 py-2 border border-gray-200">Qte</th>
+                    <th class="px-4 py-2 border border-gray-200">Tva </th>
+                    <th class="px-4 py-2 border border-gray-200">Total HT </th>
+                    <th class="px-4 py-2 border border-gray-200">Total TTC</th>
+                    <th class="px-4 py-2 border border-gray-200">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for product in productList %}
+                    <tr>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.nom }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.prix_unitaire }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.quantite }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.TVA }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.THT }}</td>
+                        <td class="px-4 py-2 border border-gray-200">{{ product.TTC }}</td>
+                        <td class="px-4 py-2 border border-gray-200 flex justify-around items-center">
+                            <a href="{{ path('remove_product', {'type': 'add', 'numDevis':'' ,'id': product.id}) }}">
+                                <img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer">
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <div class="flex flex-col items-end my-5">
+                <div class="flex flex-row "> <div class=" w-32 py-2 px-5 bg-blue-400 text-white">Total HT</div><div class=" w-32 py-2 px-5 border-2 border-blue-400 ">{{ totalTHT }} €</div></div>
+                <div class="flex flex-row mt-2"><div class=" w-32 py-2 px-5 bg-blue-400 text-white">Total TTC</div><div class=" w-32 py-2 px-5 border-2 border-blue-400">{{ totalTTC }} €</div></div>
+            </div>
+            <div></div>
+            <button type="submit" name="create_devis" class=" px-4 py-2 bg-blue-500  rounded-md">
+
+                <span class="flex flex-row items-center text-white"><img src="https://i.goopics.net/kroi32.png" alt="Icon save " class="w-5 mr-2">Enregistrer</span>
+            </button>
+        </div>
+
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#{{ form.id_produit.vars.id }}').change(function() {
+                var productId = $(this).val();
+
+                $.ajax({
+                    url: '{{ path('get_product_info') }}',
+                    method: 'GET',
+                    data: { product_id: productId },
+                    success: function(data) {
+                        $('#{{ form.prix_unitaire.vars.id }}').val(data.prix_unitaire);
+                        $('#{{ form.tva.vars.id }}').val(data.tva);
+                    },
+                    error: function() {
+                        console.log('Erreur lors de la récupération des informations du produit.');
+                    }
+                });
+            });
+
+            $('#{{ form.quantite_disponible.vars.id }}').change(function() {
+                var quantite = parseInt($(this).val());
+                var prixUnitaire = parseFloat($('#{{ form.prix_unitaire.vars.id }}').val());
+                var tva = parseFloat($('#{{ form.tva.vars.id }}').val());
+
+                prixUnitaire = isNaN(prixUnitaire) ? 0 : prixUnitaire;
+                tva = isNaN(tva) ? 0 : tva;
+
+                var totalHT = quantite * prixUnitaire;
+                var totalTTC = totalHT * (1 + (tva / 100));
+
+                $('#totalHT').text(totalHT.toFixed(2) + ' €');
+                $('#totalTTC').text(totalTTC.toFixed(2) + ' €');
+            });
+
+            if ($('#{{ form.quantite_disponible.vars.id }}').val() !== '') {
+                $('#{{ form.quantite_disponible.vars.id }}').trigger('change');
+            }
+
+        });
+    </script>
+
+{% endblock %}
