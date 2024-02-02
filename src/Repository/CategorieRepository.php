@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
@@ -17,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategorieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry,private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Categorie::class);
     }
@@ -51,7 +53,12 @@ class CategorieRepository extends ServiceEntityRepository
 //         return $query->getResult();
 //     }
 
-public function getCategoriesWithProductCount()
+
+     /**
+     * @param int $page
+     * @return PaginationInterface
+     */
+public function getCategoriesWithProductCount(int $page): PaginationInterface
     {
         $cat= $this->createQueryBuilder('c')
             ->select('c', 'COUNT(p.id) as productCount')
@@ -60,7 +67,7 @@ public function getCategoriesWithProductCount()
             ->getQuery()
             ->getResult();
             
-            return $cat;
+            return $this->paginator->paginate($cat, $page, 8);
     }
 
 
@@ -74,4 +81,5 @@ public function getCategoriesWithProductCount()
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

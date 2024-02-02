@@ -37,10 +37,10 @@ class Client
     private ?string $telephone = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $create_at = null;
+    private ?\DateTime $create_at = null;
 
     #[ORM\Column(nullable:true)]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTime $update_at = null;
 
     #[ORM\Column(length: 255,nullable:true)]
     private ?string $user_create = null;
@@ -152,24 +152,24 @@ class Client
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?\DateTime
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeImmutable $create_at): static
+    public function setCreateAt(\DateTime $create_at): static
     {
         $this->create_at = $create_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTime
     {
         return $this->update_at;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdateAt(\DateTime $update_at): static
     {
         $this->update_at = $update_at;
 

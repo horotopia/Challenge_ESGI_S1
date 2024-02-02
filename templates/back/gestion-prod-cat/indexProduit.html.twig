@@ -11,8 +11,8 @@
 
 {% block body %}
 
- 
-  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
+{% if is_granted('ROLE_ADMIN') %}
+<section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
 
         <div id="newProduct" class="container relative z-10 flex flex-col items-center hidden">
@@ -28,12 +28,13 @@
                 {{ form_start(formProduit) }}
                 <div class="flex items-center">
                     <div>
-                        {{ form_row(formProduit.nom, {
+                        {{ form_widget(formProduit.nom, {
                             'label_attr':{'class' : 'text-base  ml-10'},
                             'attr': {
-
+                                
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Nom Du Produit'
+                                'placeholder': 'Nom Du Produit',
+                                'name' : 'addNomProduit',
                             }
                         }) }}
                     </div>
@@ -144,9 +145,143 @@
 
         </div>
 </section> 
+{% endif %}
+
+ <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
+            
+
+        <div id="editProduct" class="container relative z-10 flex flex-col items-center hidden">
 
 
+            <div class="w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
 
+                <div class="w-[42.5rem]   p-5 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
+                    <h4 class="mb-0 text-center font-medium text-2xl text-white">Modifier Produit</h4>
+                </div>
+
+
+                {{ form_start(formProduitUpdate) }}
+                <div class="flex items-center">
+                    <div>
+                        {{ form_row(formProduitUpdate.nom, {
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Nom Du Produit',
+                                'name' : 'addNomProduit',
+                            }
+                        }) }}
+                    </div>
+
+                    <div>
+                        {{ form_row(formProduitUpdate.marque, {
+                            'label_attr':{'class' : 'text-base e ml-10'},
+                            'attr': {
+
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2  rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Marque'
+                            }
+                        }) }}
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row  justify-around items-center">
+                    
+                    <div>
+                    {{ form_row(formProduitUpdate.prix_unitaire,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Le Prix'
+                            }
+                        }) }}
+                    </div>
+
+                     <div>
+                    {{ form_row(formProduitUpdate.tva,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'TVA'
+                            }
+                        }) }}
+                    </div>
+
+                    
+
+                </div>
+
+
+                <div class="flex flex-row  justify-around items-center">
+                    
+                     <div>
+                    {{ form_row(formProduitUpdate.quantite_disponible,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Quantité'
+                            }
+                        }) }}
+                    </div>
+
+                    <div>
+                    {{ form_row(formProduitUpdate.id_categorie,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Catégorie'
+                            }
+                        }) }}
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-row   items-center">
+                    
+                     
+                    {{ form_row(formProduitUpdate.description,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'mt-3 w-full mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Description'
+                            }
+                        }) }}
+                 
+
+                   
+
+                </div>
+
+
+                <div class="flex flex-row justify-center">
+                    {# <button type="submit" class="btn-primary">Enregistrer</button> #}
+                
+                    
+
+                        {{ form_row(formProduitUpdate.Enregistrer,{
+                            'attr': {
+                                'class': 'btn-primary mt-4 mb-8',
+                            }
+                               }) 
+                        }}
+                    
+
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('editProduct')">Annuler</span> 
+
+                   
+                </div>
+
+                {{ form_end(formProduitUpdate) }}
+
+            </div>
+
+        </div>
+</section>
+
+  
 <div class="flex mt-4 ml-4 justify-between ">
     <div class="flex justify-start sm:w-1/2 ">
         <svg class="mt-2" width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -155,25 +290,13 @@
 
         <h2 class="text-gray-300 ">Produits</h2>
     </div>
-
+    {% if is_granted('ROLE_ADMIN') %}
     <div class="flex justify-end sm:w-1/2 ">
-
         <button class="btn-primary " onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
-
     </div>
+    {% endif %}
 </div>
      
-
-
-   
-
-
-
-
-
-
- 
-
 
 
 
@@ -204,11 +327,9 @@
                         <td class="px-4 py-2 border border-gray-200">{{ produit.tva}}</td>
                         <td class="px-4 py-2 border border-gray-200">{{ produit.tva}}</td>
                         
-
-                        
                         <td class="px-8 py-2  border border-gray-200 flex justify-center items-center">
                             <span onclick="deleteProduit({{ produit.id }})" ><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
-                            <a href=""><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></a>
+                            <span onclick="updateProd({{ produit.id }})" ><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -274,14 +395,17 @@
     function cacherFormulaire(formulaireId) {
         var formulaire = document.getElementById(formulaireId);
         formulaire.classList.add('fadeOutUp');
-
+        
         setTimeout(function() {
             formulaire.classList.add('hidden');
             formulaire.classList.remove('fadeOutUp');
         }, 500);
+        
+        document.forms["produit"].reset(); ;
+        
     }
 
-    // AJAX for deleting a category
+    // AJAX for deleting a product
 
     function deleteProd(id) {
         var productId = $(this).data('id');
@@ -307,6 +431,67 @@
     };
     
 
+     // AJAX for update a product
+
+    function updateProd(id) {
+        var productId = $(this).data('id');
+        
+        console.log(id);
+        $.ajax({
+            type: 'DELETE',
+            url: 'produit/getProductInfo/'+id,
+            success: function (response) {
+            //window.location.reload();
+            //var data=json_decode(response); 
+            console.log('success');
+            console.log(response);
+            console.log('nom '+response.nom);
+            //var objetJson = JSON.parse(response); #}
+            console.log(response);
+
+            $("#edit_produit_nom").val(response.nom);
+            $("#edit_produit_marque").val(response.marque);
+            $("#edit_produit_tva").val(response.tva);
+            $("#edit_produit_quantite_disponible").val(response.quantite);
+            $("#edit_produit_description").val(response.description);
+            $("#edit_produit_prix_unitaire").val(response.prix);
+            
+
+            afficherFormulaire('editProduct');
+
+            },
+            error: function() {
+            console.log('error');
+            }
+        });
+    };
+    
+ $("#newProduct").submit(function(event) {
+        // Empêchez le formulaire de se soumettre normalement
+        event.preventDefault();
+
+        // Récupérez les données du formulaire
+        var formData = new FormData($(this)[0]);
+        var id=13;
+        // Effectuez la requête Ajax avec jQuery
+        $.ajax({
+            type: "POST",
+            url: 'produit'+id,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Traitez la réponse ici
+                console.log('sucess');
+
+                // Vous pouvez mettre à jour l'interface utilisateur ou effectuer d'autres actions en fonction de la réponse
+            },
+            error: function() {
+                // Gestion des erreurs
+                console.error('Erreur lors de la requête Ajax');
+            }
+        });
+    });
 
 </script>
 

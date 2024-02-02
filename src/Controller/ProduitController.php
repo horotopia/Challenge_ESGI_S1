@@ -4,6 +4,7 @@ namespace App\Controller;
 use DateTimeImmutable;
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use App\Form\EditProduitType;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,9 @@ class ProduitController extends AbstractController
         $userId = $user->getId();
         $produit = new Produit();
         $formProduit=$this->createForm(ProduitType::class,$produit);
+        $formProduitUpdate=$this->createForm(EditProduitType::class,$produit);
         $formProduit->handleRequest($request);
+        $formProduitUpdate->handleRequest($request);
 
         if($formProduit->isSubmitted() && $formProduit->isValid()){
         $currentDateTime = new DateTimeImmutable();
@@ -51,6 +54,7 @@ class ProduitController extends AbstractController
 
         return $this->render('back/gestion-prod-cat/indexProduit.html.twig', [
             'formProduit' => $formProduit->createView(),
+            'formProduitUpdate' => $formProduitUpdate->createView(),
              'produits' => $produits,
         ]);
     }
@@ -62,6 +66,26 @@ class ProduitController extends AbstractController
         $entityManager->flush();
     
         return new JsonResponse(['success' => true]);
+    }
+
+
+    #[Route('/admin/produit/getProductInfo/{id}', name: 'update_produit')]
+    public function getProductInfo(Request $request,EntityManagerInterface $entityManager,Produit $produit,$id)
+    {
+        $monProduit = $entityManager->getRepository(Produit::class)->find($id);
+        $data = [
+            'id' => $monProduit->getId(),
+            'nom' => $monProduit->getNom(),
+            'marque' => $monProduit->getMarque(),
+            'prix' => $monProduit->getPrixUnitaire(),
+            'tva' => $monProduit->getTva(),
+            'quantite' => $monProduit->getQuantiteDisponible(),
+            'categorie' => $monProduit->getIdCategorie(),
+            'description' => $monProduit->getDescription(),
+            
+        ];
+    
+        return new JsonResponse($data);
     }
 
 

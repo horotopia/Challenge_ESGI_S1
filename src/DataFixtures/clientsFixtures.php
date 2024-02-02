@@ -24,7 +24,7 @@ class clientsFixtures extends Fixture
             $client->setAdresse($faker->address);
             $client->setCodePostal('75000');
             $randomDate = $faker->dateTimeBetween('-50 years', 'now');
-            $client->setCreateAt(\DateTimeImmutable::createFromMutable($randomDate));
+            $client->setCreateAt(new \DateTime);
             $client->setUserCreate($faker->firstName);
             $manager->persist($client);
         }
