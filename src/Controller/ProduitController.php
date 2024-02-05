@@ -73,6 +73,7 @@ class ProduitController extends AbstractController
     public function getProductInfo(Request $request,EntityManagerInterface $entityManager,Produit $produit,$id)
     {
         $monProduit = $entityManager->getRepository(Produit::class)->find($id);
+        dd($monProduit->getIdCategorie());
         $data = [
             'id' => $monProduit->getId(),
             'nom' => $monProduit->getNom(),
