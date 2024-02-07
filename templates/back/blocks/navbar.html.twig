@@ -26,8 +26,8 @@
 
 						<a  id="dropdownButton" onclick="toggleDropdown()" class="bg-transparent border-0 border-gray-400 text-gray-800 font-semibold pb-2 rounded inline-flex items-center">
 							{% if app.user %}
-								{% if app.user.nom is not empty and app.user.prenom is not empty %}
-									{{ app.user.nom }} {{ app.user.prenom }}
+								{% if app.user.lastName is not empty and app.user.firstName is not empty %}
+									{{ app.user.lastName }} {{ app.user.firstName }}
 								{% else %}
 									Merci d'ajouter votre nom et prénom
 								{% endif %}

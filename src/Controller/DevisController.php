@@ -52,7 +52,6 @@ class DevisController extends AbstractController
     #[Route('/admin/devis/add', name: 'add_devis')]
     public function AddDevis(Request $request, ProduitRepository $produitRepository,ClientRepository $clientRepository,EntrepriseRepository $entrepriseRepository, SessionInterface $session,PDFService $PDFService,EntityManagerInterface $entityManager): Response
     {
-
         $form = $this->createForm(AddTypeForm::class);
         $productList = $session->get('productList', []);
 
@@ -71,7 +70,6 @@ class DevisController extends AbstractController
                     if ($quantity >= 1) {
                         if ($product) {
                             $productList = $session->get('productList', []);
-
                             $productExists = false;
                             foreach ($productList as &$item) {
                                 if ($item['id'] === $product->getId()) {
@@ -119,8 +117,6 @@ class DevisController extends AbstractController
                 $totalTHT += floatval(str_replace(',', '', $product['THT']));
                 $totalTTC += floatval(str_replace(',', '', $product['TTC']));
             }
-           //$totalTHT = number_format($totalTHT, 2);
-            //$totalTTC = number_format($totalTTC, 2);
             if ($request->request->has('create_devis')) {
 
                 $devis = new Devis();
@@ -263,7 +259,7 @@ class DevisController extends AbstractController
             $quantite = $product->getQuantite();
             $tva = $product->getProduit()->getTVA();
 
-            // Calculate THT
+
             $tht = str_replace(',', '',number_format($prixUnitaire * $quantite, 2));
 
             // Calculate TTC
@@ -300,7 +296,6 @@ class DevisController extends AbstractController
             throw $this->createNotFoundException('Devis non trouvé');
         }
 
-        // Supprimer le Devis
         $entityManager->remove($devis);
         $entityManager->flush();
 

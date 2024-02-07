@@ -1,0 +1,149 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Modifier l'entreprise{% endblock %}
+
+{% block body %}
+
+    <div class="mt-16 ml-5 mr-48">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="24" viewBox="0 0 14 24" fill="none">
+                <path d="M13.4125 10.5875C14.1938 11.3687 14.1938 12.6375 13.4125 13.4187L3.41255 23.4187C2.6313 24.2 1.36255 24.2 0.581299 23.4187C-0.199951 22.6375 -0.199951 21.3687 0.581299 20.5875L9.1688 12L0.587549 3.41249C-0.193701 2.63124 -0.193701 1.36249 0.587549 0.581238C1.3688 -0.200012 2.63755 -0.200012 3.4188 0.581238L13.4188 10.5812L13.4125 10.5875Z"
+                      fill="#D9DDDF"/>
+            </svg>
+            <h2 class="text-[#D9DDDF] text-3xl font-extrabold flex items-center">
+                {{ controller_name }}
+            </h2>
+            <a href="{{ path('app_back_users') }}"> <img src="https://i.goopics.net/6k2k8k.png" alt="Icon back" class="w-6 cursor-pointer ml-5"></a>
+
+        </div>
+        {{ form_start(form) }}
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <div class="flex flex-row justify-around items-center">
+                <div class=" flex flex-col justify-center">
+                    {{ form_label(form.name,'Nom') }}
+                    {{ form_widget(form.name, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.name) }}
+                    {% if form.name.vars.errors|length > 0 %}
+                        {% for error in form.name.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.email,'Email') }}
+                    {{ form_widget(form.email, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.email) }}
+                    {% if form.email.vars.errors|length > 0 %}
+                        {% for error in form.email.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.website,'Site internet') }}
+                    {{ form_widget(form.website, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.website) }}
+                    {% if form.website.vars.errors|length > 0 %}
+                        {% for error in form.website.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form_label(form.phone,'Telephone') }}
+                    {{ form_widget(form.phone, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.phone) }}
+                    {% if form.phone.vars.errors|length > 0 %}
+                        {% for error in form.phone.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.country,'Pays') }}
+                    {{ form_widget(form.country, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.country) }}
+                    {% if form.country.vars.errors|length > 0 %}
+                        {% for error in form.country.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    {{ form_label(form.address,'Adresse') }}
+                    {{ form_widget(form.address, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.address) }}
+                    {% if form.address.vars.errors|length > 0 %}
+                        {% for error in form.address.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.postalCode,'Code postal') }}
+                    {{ form_widget(form.postalCode, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.postalCode) }}
+                    {% if form.postalCode.vars.errors|length > 0 %}
+                        {% for error in form.postalCode.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.logo,'Logo') }}
+                    {{ form_widget(form.logo, {'attr': {
+                        'class': 'flex flex-col  bg-gray-50 w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.logo) }}
+                    {% if form.logo.vars.errors|length > 0 %}
+                        {% for error in form.logo.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+
+                    {{ form_label(form.bankAccount,'RIB') }}
+                    {{ form_widget(form.bankAccount, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.bankAccount) }}
+                    {% if form.bankAccount.vars.errors|length > 0 %}
+                        {% for error in form.bankAccount.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.siret,'Siret') }}
+                    {{ form_widget(form.siret, {'attr': {
+                        'class': 'flex flex-col w-[32rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.siret) }}
+                    {% if form.siret.vars.errors|length > 0 %}
+                        {% for error in form.siret.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+
+
+
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                    Modifier
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
