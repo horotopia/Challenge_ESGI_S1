@@ -15,46 +15,48 @@ class Devis
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    #[ORM\Column(length: 255)]
+    private ?string $num_devis = null;
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
     #[ORM\Column]
-    private ?bool $ht_ttc = null;
+    private ?float $totalHT = null;
+    #[ORM\Column]
+    private ?float $totalTTC = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
-    private ?string $total = null;
+
 
     #[ORM\Column]
     private ?int $tranches = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $create_at = null;
+    private ?\DateTime $create_at = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $update_at = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime$update_at = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_echeance = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $date_echeance = null;
 
     #[ORM\Column(length: 255)]
     private ?string $user_create = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: true)]
     private ?string $user_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
-    private ?client $id_client = null;
+    private ?Client $id_client = null;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'devis')]
-    private Collection $id_produit;
+    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: DevisProduit::class, cascade: ['persist', 'remove'])]
+    private Collection $devisProduits;
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Facture::class)]
     private Collection $factures;
 
     public function __construct()
     {
-        $this->id_produit = new ArrayCollection();
+        $this->devisProduits= new ArrayCollection();
         $this->factures = new ArrayCollection();
     }
 
@@ -75,29 +77,39 @@ class Devis
         return $this;
     }
 
-    public function isHtTtc(): ?bool
+    public function getTotalHT(): ?float
     {
-        return $this->ht_ttc;
+        return $this->totalHT;
     }
 
-    public function setHtTtc(bool $ht_ttc): static
+    public function getNumDevis(): ?string
     {
-        $this->ht_ttc = $ht_ttc;
-
-        return $this;
+        return $this->num_devis;
     }
 
-    public function getTotal(): ?string
+    public function setNumDevis(?string $num_devis): void
     {
-        return $this->total;
+        $this->num_devis = $num_devis;
     }
 
-    public function setTotal(string $total): static
+    public function setTotalHT(?float $totalHT): void
     {
-        $this->total = $total;
-
-        return $this;
+        $this->totalHT = $totalHT;
     }
+
+    public function getTotalTTC(): ?float
+    {
+        return $this->totalTTC;
+    }
+
+    public function setTotalTTC(?float $totalTTC): void
+    {
+        $this->totalTTC = $totalTTC;
+    }
+
+
+
+
 
     public function getTranches(): ?int
     {
@@ -111,36 +123,36 @@ class Devis
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?\DateTime
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeImmutable $create_at): static
+    public function setCreateAt(\DateTime $create_at): static
     {
         $this->create_at = $create_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTime
     {
         return $this->update_at;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdateAt(\DateTime $update_at): static
     {
         $this->update_at = $update_at;
 
         return $this;
     }
 
-    public function getDateEcheance(): ?\DateTimeInterface
+    public function getDateEcheance(): ?\DateTime
     {
         return $this->date_echeance;
     }
 
-    public function setDateEcheance(\DateTimeInterface $date_echeance): static
+    public function setDateEcheance(\DateTime $date_echeance): static
     {
         $this->date_echeance = $date_echeance;
 
@@ -171,38 +183,38 @@ class Devis
         return $this;
     }
 
-    public function getIdClient(): ?client
+    public function getIdClient(): ?Client
     {
         return $this->id_client;
     }
 
-    public function setIdClient(?client $id_client): static
+    public function setIdClient(?Client $id_client): static
     {
         $this->id_client = $id_client;
 
         return $this;
     }
-
     /**
-     * @return Collection<int, produit>
+     * @return Collection<int, DevisProduit>
      */
-    public function getIdProduit(): Collection
+    public function getDevisProduits(): Collection
     {
-        return $this->id_produit;
+        return $this->devisProduits;
     }
 
-    public function addIdProduit(Produit $idProduit): static
+    public function addDevisProduit(DevisProduit $devisProduit): static
     {
-        if (!$this->id_produit->contains($idProduit)) {
-            $this->id_produit->add($idProduit);
+        if (!$this->devisProduits->contains($devisProduit)) {
+            $this->devisProduits->add($devisProduit);
+            $devisProduit->setDevis($this);
         }
 
         return $this;
     }
 
-    public function removeIdProduit(produit $idProduit): static
+    public function removeDevisProduit(DevisProduit $devisProduit): static
     {
-        $this->id_produit->removeElement($idProduit);
+        $this->devisProduits->removeElement($devisProduit);
 
         return $this;
     }

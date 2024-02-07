@@ -1,0 +1,14 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Créer une nouvelle facture{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Créer une nouvelle facture à partir d'un devis</h1>
+    
+    {{ form_start(form) }}
+        {{ form_row(form.devis) }}
+        <button class="btn btn-primary">Créer la facture</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

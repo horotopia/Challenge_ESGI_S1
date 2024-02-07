@@ -42,7 +42,7 @@ class Facture
     private ?client $id_client = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    private ?devis $id_devis = null;
+    private ?Devis $id_devis = null;
 
     public function getId(): ?int
     {
@@ -157,12 +157,12 @@ class Facture
         return $this;
     }
 
-    public function getIdDevis(): ?devis
+    public function getIdDevis(): ?Devis
     {
         return $this->id_devis;
     }
 
-    public function setIdDevis(?devis $id_devis): static
+    public function setIdDevis(?Devis $id_devis): static
     {
         $this->id_devis = $id_devis;
 
