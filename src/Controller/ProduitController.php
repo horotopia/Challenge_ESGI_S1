@@ -1,21 +1,22 @@
 <?php
 
 namespace App\Controller;
+use DateTime;
 use DateTimeImmutable;
 use App\Entity\Produit;
 use App\Form\ProduitType;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/admin/produit', name: 'app_produit')]
+    #[Route('/admin/produit', name: 'app_back_produit')]
     public function addProduit(Request $request,EntityManagerInterface $entityManager,TokenGeneratorInterface $tokenGenerator,Security $security): Response
     {
         $user = $security->getUser();
@@ -25,7 +26,7 @@ class ProduitController extends AbstractController
         $formProduit->handleRequest($request);
 
         if($formProduit->isSubmitted() && $formProduit->isValid()){
-        $currentDateTime = new DateTimeImmutable();
+        $currentDateTime = new DateTime();
         $produit->setNom($formProduit->get('nom')->getData());
         $produit->setDescription($formProduit->get('description')->getData());
         $produit->setMarque($formProduit->get('marque')->getData());
@@ -43,7 +44,7 @@ class ProduitController extends AbstractController
         $entityManager->persist($produit);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_produit');
+        return $this->redirectToRoute('app_back_produit');
 
         }
         $produits= $entityManager->getRepository(Produit::class)->findAll();
