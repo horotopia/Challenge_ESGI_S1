@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\EntrepriseRepository;
+use App\Repository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,18 +10,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_back_index')]
-    public function index(EntrepriseRepository $repository): Response
+    public function index(CompanyRepository $repository): Response
     {
         $user = $this->getUser();
-        $entreprise = null;
+        $company = null;
 
         if ($user) {
-            $entreprise = $repository->findBy(['id' => $user->getIdEntreprise()]);
+            $company = $repository->findBy(['id' => $user->getCompanyId()]);
         }
 
-        return $this->render('back/index/index.html.twig', [
+        return $this->render('back/companies/dashboard.html.twig', [
             'controller_name' => 'AdminController',
-            'entreprises' => $entreprise,
+            'companies' => $company,
         ]);
     }
 }

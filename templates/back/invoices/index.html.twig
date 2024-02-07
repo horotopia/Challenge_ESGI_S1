@@ -1,0 +1,46 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center my-4"></h1>
+
+    <div class="mb-4 text-right">
+        <a href="{{ path('app_back_invoices_add') }}" class="btn btn-primary">
+            Créer une nouvelle facture
+        </a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numéro de Facture</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Montant Total</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {# {% for invoice in invoices %}
+                <tr>
+                    <td>{{ invoice.numFacture }}</td>
+                    <td>{{ invoice.date|date('Y-m-d') }}</td>
+                    <td>{{ invoice.client.nom }}</td>
+                    <td>{{ invoice.montantTotal }}</td>
+                    <td>{{ invoice.statut }}</td>
+                    <td>
+                        <a href="{{ path('facture_detail', {'id': invoice.id}) }}" class="btn btn-info btn-sm">Détails</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucune facture trouvée</td>
+                </tr>
+            {% endfor %} #}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

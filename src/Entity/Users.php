@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,7 +25,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column]
-    private ?string  $telephone=null ;
+    private ?string  $phone=null ;
     /**
      * @var string The hashed password
      */
@@ -37,7 +37,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Entreprise $id_entreprise = null;
+    private ?Company $companyId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenRegistration = null;
@@ -46,16 +46,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $tokenRegistrationLifeTime = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $prenom = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTime $created_at = null;
+    private ?\DateTime $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTime $updated_at = null;
+    private ?\DateTime $updatedAt = null;
      public function __construct()
      {
          $this->isVerified=false;
@@ -124,14 +124,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTelephone(): string
+    public function getPhone(): string
     {
-        return $this->telephone;
+        return $this->phone;
     }
 
-    public function setTelephone(string $telephone): void
+    public function setPhone(string $phone): void
     {
-        $this->telephone = $telephone;
+        $this->phone = $phone;
     }
 
     /**
@@ -155,14 +155,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdEntreprise(): ?Entreprise
+    public function getCompanyId(): ?Company
     {
-        return $this->id_entreprise;
+        return $this->companyId;
     }
 
-    public function setIdEntreprise(?Entreprise $id_entreprise): static
+    public function setCompanyId(?Company $companyId): static
     {
-        $this->id_entreprise = $id_entreprise;
+        $this->companyId = $companyId;
 
         return $this;
     }
@@ -191,50 +191,50 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastName;
     }
 
-    public function setNom(?string $nom): static
+    public function setLastName(?string $lastName): static
     {
-        $this->nom = $nom;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstName;
     }
 
-    public function setPrenom(?string $prenom): static
+    public function setFirstName(?string $firstName): static
     {
-        $this->prenom = $prenom;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTime
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTime $created_at): static
+    public function setCreatedAt(?\DateTime $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTime
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTime $updated_at): static
+    public function setUpdatedAt(?\DateTime $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

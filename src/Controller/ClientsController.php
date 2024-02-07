@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Form\clients\editTypeForm;
-use App\Form\clients\newTypeForm;
-use App\Form\utilisateurs\SearchTypeForm;
-use App\model\SearchData;
+use App\Form\Client\editType;
+use App\Form\Client\newType;
+use App\Form\User\SearchType;
+use App\Model\SearchData;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\This;
@@ -21,7 +21,7 @@ class ClientsController extends AbstractController
     #[Route('/admin/clients', name: 'app_back_clients')]
     public function index(ClientRepository $clientRepository,Request $request): Response
     {   $searchData = new SearchData();
-        $form = $this->createForm(SearchTypeForm::class, $searchData);
+        $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,16 +40,16 @@ class ClientsController extends AbstractController
 
     }
 
-    #[Route('/admin/client/add', name: 'add_client')]
+    #[Route('/admin/clients/add', name: 'app_back_clients_add')]
     public function addClient(Request $request,EntityManagerInterface $entityManager): Response
     {
         $client = new Client();
-        $form = $this->createForm(newTypeForm::class,$client);
+        $form = $this->createForm(newType::class,$client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $client->setUserCreate($this->getUser()->getId());
+            $client->setUserCreated($this->getUser()->getId());
 
             $entityManager->persist($client);
             $entityManager->flush();
@@ -59,37 +59,37 @@ class ClientsController extends AbstractController
             return $this->redirectToRoute('app_back_clients');
         }
 
-        return $this->render('back/clients/Add_clients.html.twig', [
+        return $this->render('back/clients/add.html.twig', [
             'client' => $client,
-            'controller_name' => 'Ajouter un client',
+            'controller_name' => 'addClient',
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/admin/client/edit/{id}', name: 'edit_client')]
+    #[Route('/admin/clients/edit/{id}', name: 'app_back_clients_edit')]
     public function editClient(Client $client, Request $request,EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(editTypeForm::class,$client );
+        $form = $this->createForm(editType::class,$client );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client->setUpdateAt(new \DateTime());
-            $client->setUserUpdate($this->getUser()->getId());
+            $client->setUpdatedAt(new \DateTime());
+            $client->setUserUpdated($this->getUser()->getId());
             $entityManager->persist($client);
             $entityManager->flush();
             $this->addFlash('success', 'Client modifié avec succès.');
             return $this->redirectToRoute('app_back_clients');
         }
-        return $this->render('back/clients/Edit_clients.html.twig', [
+        return $this->render('back/clients/edit.html.twig', [
             'clients' => $client,
-            'controller_name' => 'Modifier un client',
+            'controller_name' => 'editClient',
             'form' => $form->createView(),
         ]);
     }
 
 
 
-    #[Route('/admin/user/delete/{id}', name: 'delete_client')]
+    #[Route('/admin/clients/delete/{id}', name: 'app_back_clients_delete')]
     public function deleteClient(Client $client, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($client);

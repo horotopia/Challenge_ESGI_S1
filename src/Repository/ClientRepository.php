@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Client;
-use App\model\SearchData;
+use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -30,9 +30,9 @@ class ClientRepository extends ServiceEntityRepository
     public function findclientsWithEntrepriseDetails(int $page): PaginationInterface
     {
         $users = $this->createQueryBuilder('c')
-            ->select('c.id, c.nom, c.prenom, c.email, c.telephone, e.nom as entreprise_nom, c.create_at,c.adresse')
-            ->innerJoin('c.id_entreprise', 'e')
-            ->addOrderBy('c.create_at', 'DESC')
+            ->select('c.id, c.lastName, c.firstName, c.email, c.phone, e.name as companyName, c.createdAt,c.address')
+            ->innerJoin('c.companyId', 'e')
+            ->addOrderBy('c.createdAt', 'DESC')
 
             ->getQuery()
             ->getResult();
@@ -45,15 +45,15 @@ class ClientRepository extends ServiceEntityRepository
     public function findBySearchData(SearchData $searchData): PaginationInterface
     {
         $users = $this->createQueryBuilder('c')
-            ->select('c.id,c.nom, c.prenom, c.email, c.telephone, e.nom as entreprise_nom,c.create_at,c.adresse')
-            ->innerJoin('c.id_entreprise', 'e')
-            ->where('LOWER(c.nom) LIKE LOWER(:q)')
-            ->orWhere('LOWER(c.prenom) LIKE LOWER(:q)')
+            ->select('c.id,c.lastName, c.firstName, c.email, c.phone, e.name as companyName,c.createdAt,c.address')
+            ->innerJoin('c.companyId', 'e')
+            ->where('LOWER(c.lastName) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.firstName) LIKE LOWER(:q)')
             ->orWhere('LOWER(c.email) LIKE LOWER(:q)')
-            ->orWhere('LOWER(e.nom) LIKE LOWER(:q)')
-            ->orWhere('LOWER(c.adresse) LIKE LOWER(:q)')
+            ->orWhere('LOWER(e.name) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.address) LIKE LOWER(:q)')
             ->setParameter('q', '%' . $searchData->q . '%')
-            ->addOrderBy('c.create_at', 'DESC')
+            ->addOrderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
 
