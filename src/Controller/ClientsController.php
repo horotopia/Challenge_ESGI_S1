@@ -49,7 +49,7 @@ class ClientsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $client->setUserCreate($this->getUser()->getNom());
+            $client->setUserCreate($this->getUser()->getId());
 
             $entityManager->persist($client);
             $entityManager->flush();
@@ -74,7 +74,7 @@ class ClientsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $client->setUpdateAt(new \DateTime());
-            $client->setUserUpdate($this->getUser()->getNom());
+            $client->setUserUpdate($this->getUser()->getId());
             $entityManager->persist($client);
             $entityManager->flush();
             $this->addFlash('success', 'Client modifié avec succès.');

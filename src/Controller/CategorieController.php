@@ -43,7 +43,7 @@ class CategorieController extends AbstractController
 
         }
         // $categories = $entityManager->getRepository(Categorie::class)->findAll();
-        $categories = $entityManager->getRepository(Categorie::class)->getCategoriesWithProductCount();
+        $categories = $entityManager->getRepository(Categorie::class)->getCategoriesWithProductCount($request->query->getInt('page', 1));
             // $categories=$catRepo->getCategoriesWithProductCount();
  
         return $this->render('back/gestion-prod-cat/index.html.twig', [

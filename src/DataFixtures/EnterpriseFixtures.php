@@ -11,7 +11,7 @@ class EnterpriseFixtures extends Fixture
 {
    public function load(ObjectManager $manager): void
     {
-        /*  $faker = Factory::create();
+           $faker = Factory::create();
 
          for ($i = 0; $i < 5; $i++) {
              $entreprise = new Entreprise();
@@ -28,10 +28,10 @@ class EnterpriseFixtures extends Fixture
              $manager->persist($entreprise);
          }
 
-         $manager->flush();*/
+         $manager->flush();
      }
 
-    /* private function generateSiret($faker): string
+     private function generateSiret($faker): string
      {
          $siret = '';
 
@@ -40,5 +40,5 @@ class EnterpriseFixtures extends Fixture
          }
 
          return $siret;
-     }*/
+     }
 }
