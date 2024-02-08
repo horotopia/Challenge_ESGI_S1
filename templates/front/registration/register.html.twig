@@ -16,7 +16,7 @@
 
         <div class="container relative z-10 flex flex-col items-center">
 
-            <div class="h-[28.5rem] w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
+            <div class="w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
 
                 <div class="w-[42.5rem]   p-3 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
                     <h4 class="mb-0 text-center font-medium text-2xl text-white">Inscription</h4>
@@ -27,7 +27,23 @@
                 <div class="flex flex-row  justify-around items-center">
                     <div>
                         <div class="flex flex-col">
-                        {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                            {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'text-base ml-10 mb-0'}}) }}
+                            {% if registrationForm.firstName.vars.errors|length > 0 %}
+                                {% for error in registrationForm.firstName.vars.errors %}
+                                    <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.firstName, {
+                            'attr': {
+                                'class': 'w-[290px]  mb-[10px] mr-10 ml-8 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Jean'
+                            }
+                        }) }}
+                        {{ form_help(registrationForm.firstName) }}
+
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'text-base ml-10 mb-0'}}) }}
                         {% if registrationForm.email.vars.errors|length > 0 %}
                             {% for error in registrationForm.email.vars.errors %}
                                 <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
@@ -43,7 +59,7 @@
                         {{ form_help(registrationForm.email) }}
 
                         <div class="flex flex-col">
-                        {{ form_label(registrationForm.phone, 'Telephone', {'label_attr': {'class': 'text-base ml-10'}}) }}
+                        {{ form_label(registrationForm.phone, 'Telephone', {'label_attr': {'class': 'text-base ml-10 mb-0'}}) }}
                         {{ form_help(registrationForm.phone) }}
                         {% if registrationForm.phone.vars.errors|length > 0 %}
                             {% for error in registrationForm.phone.vars.errors %}
@@ -61,7 +77,23 @@
                     </div>
                     <div>
                         <div class="flex flex-col">
-                        {{ form_label(registrationForm.companyId.name, 'Nom companies', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                            {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'text-base ml-1 mb-0'}}) }}
+                            {% if registrationForm.lastName.vars.errors|length > 0 %}
+                                {% for error in registrationForm.lastName.vars.errors %}
+                                    <span class="ml-10 text-xs text-red-500">{{ error.message }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        {{ form_widget(registrationForm.lastName, {
+                            'attr': {
+                                'class': 'w-[290px]  mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Dupont'
+                            }
+                        }) }}
+                        {{ form_help(registrationForm.lastName) }}
+
+                        <div class="flex flex-col">
+                        {{ form_label(registrationForm.companyId.name, 'Nom companies', {'label_attr': {'class': 'text-base ml-1 mb-0'}}) }}
                         {{ form_help(registrationForm.companyId.name) }}
                         {% if registrationForm.companyId.name.vars.errors|length > 0 %}
                             {% for error in registrationForm.companyId.name.vars.errors %}
@@ -78,7 +110,7 @@
 
                         <div>
                             <div class="flex flex-col">
-                            {{ form_label(registrationForm.companyId.siret, 'Siret', {'label_attr': {'class': 'text-base ml-1'}}) }}
+                            {{ form_label(registrationForm.companyId.siret, 'Siret', {'label_attr': {'class': 'text-base ml-1 mb-0'}}) }}
                             {{ form_help(registrationForm.companyId.siret) }}
                             {% if registrationForm.companyId.siret.vars.errors|length > 0 %}
                                 {% for error in registrationForm.companyId.siret.vars.errors %}
@@ -121,7 +153,7 @@
 
                     <button type="submit" class="btn-primary">Essai de 14 jours</button>
                 </div>
-                <p class="text-center mt-3">Déjà inscrit ?<a href="{{ path('app_login') }}" class="text-[#007AC2]"> Connectez-vous<a/></p>
+                <p class="text-center mt-3 mb-6">Déjà inscrit ?<a href="{{ path('app_login') }}" class="text-[#007AC2]"> Connectez-vous<a/></p>
                 {{ form_end(registrationForm) }}
 
             </div>

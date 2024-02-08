@@ -91,7 +91,7 @@ class QuoteController extends AbstractController
             ->from('ali.khelifa@se.univ-bejaia.dz')
             ->to($clientInfo->getEmail())
             ->subject('Votre devis')
-            ->htmlTemplate('<p>Bonjour,</p><p>Veuillez trouver en pièce jointe votre devis.</p>');
+            ->html('<p>Bonjour,</p><p>Veuillez trouver en pièce jointe votre devis.</p>');
         $email->attach($pdfContent, $quotationNumber, 'application/pdf');
         $mailer->send($email);
         $quote->setStatus('Envoyé');
