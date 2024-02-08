@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Form\Client\editType;
-use App\Form\Client\newType;
+use App\Form\Client\EditType;
+use App\Form\Client\NewType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;

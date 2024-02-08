@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CategoryController extends AbstractController
 {
-    #[Route('/admin/product-category-management', name: 'app_categorie')]
+    #[Route('/admin/product-category-management', name: 'app_category')]
     public function addCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator , CategoryRepository $categoryRepository): Response
     {
         $category= new Category();
@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
         $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1));
             // $categories=$catRepo->getCategoriesWithProductCount();
  
-        return $this->render('back/product_category_management/companies.html.twig', [
+        return $this->render('back/product_category_management/index.html.twig', [
             'formCategory' => $form->createView(),
             'categories' => $categories,
         ]);

@@ -20,6 +20,12 @@ class Quote
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $acceptToken = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $refuseToken = null;
+
     #[ORM\Column]
     private ?float $totalHT = null;
     #[ORM\Column]
@@ -75,6 +81,38 @@ class Quote
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAcceptToken(): ?string
+    {
+        return $this->acceptToken;
+    }
+
+    /**
+     * @param string|null $acceptToken
+     */
+    public function setAcceptToken(?string $acceptToken): void
+    {
+        $this->acceptToken = $acceptToken;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRefuseToken(): ?string
+    {
+        return $this->refuseToken;
+    }
+
+    /**
+     * @param string|null $refuseToken
+     */
+    public function setRefuseToken(?string $refuseToken): void
+    {
+        $this->refuseToken = $refuseToken;
     }
 
     public function getTotalHT(): ?float

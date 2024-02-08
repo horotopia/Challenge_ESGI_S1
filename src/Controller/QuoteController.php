@@ -63,6 +63,12 @@ class QuoteController extends AbstractController
 
         $products = $quoteProductRepository->findBy(['quote' => $quote]);
 
+        $acceptToken = bin2hex(random_bytes(32));
+        $refuseToken = bin2hex(random_bytes(32));
+
+        $quote->setAcceptToken($acceptToken);
+        $quote->setRefuseToken($refuseToken);
+
         foreach ($products as $key => $product) {
             $unitPrice = $product->getProduct()->getUnitPrice();
             $quantity = $product->getQuantity();
@@ -91,7 +97,12 @@ class QuoteController extends AbstractController
             ->from('ali.khelifa@se.univ-bejaia.dz')
             ->to($clientInfo->getEmail())
             ->subject('Votre devis')
-            ->html('<p>Bonjour,</p><p>Veuillez trouver en pièce jointe votre devis.</p>');
+            ->htmlTemplate('back/quotes/send_quote_email.html.twig')
+            ->context([
+                'quotationNumber' => $quotationNumber,
+            'acceptToken' => $acceptToken,
+            'refuseToken' => $refuseToken
+            ]);
         $email->attach($pdfContent, $quotationNumber, 'application/pdf');
         $mailer->send($email);
         $quote->setStatus('Envoyé');
@@ -519,7 +530,61 @@ class QuoteController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/quotes/accept/{quotationNumber}/{token}', name: 'app_back_quotes_accept')]
+    public function acceptQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager): Response
+    {
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
 
+        if (!$quote) {
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
 
+        if ($quote->getAcceptToken() !== $token) {
+            $this->addFlash('error', 'Devis déjà traité.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if (!in_array($quote->getStatus(), ['Brouillon', 'Envoyé'])) {
+            $this->addFlash('error', 'Le devis ne peut pas être accepté dans son état actuel.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        $quote->setStatus('Accepté');
+        $quote->setAcceptToken(null);
+        $quote->setRefuseToken(null);
+        $entityManager->flush();
+        $this->addFlash('success', 'Le devis a été accepté.');
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
+
+    #[Route('/admin/quotes/refuse/{quotationNumber}/{token}', name: 'app_back_quotes_refuse')]
+    public function refuseQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager): Response
+    {
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
+
+        if (!$quote) {
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if ($quote->getRefuseToken() !== $token) {
+            $this->addFlash('error', 'Devis déjà traité.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if ($quote->getStatus() !== 'Envoyé') {
+            $this->addFlash('error', 'Le devis ne peut être refusé que s\'il est en statut "Envoyé".');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        $quote->setStatus('Refusé');
+        $quote->setAcceptToken(null);
+        $quote->setRefuseToken(null);
+        $entityManager->flush();
+        $this->addFlash('success', 'Le devis a été refusé.');
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
 }
-
