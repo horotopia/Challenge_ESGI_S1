@@ -16,12 +16,16 @@ use App\Repository\QuoteRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\ProductRepository;
 use App\Service\PDFService;
+use App\Service\SendEmail;
 use Doctrine\ORM\EntityManagerInterface;
+use MongoDB\Driver\Session;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -48,6 +52,58 @@ class QuoteController extends AbstractController
             'quoteList' => $quoteList,
         ]);
     }
+    #[Route('/admin/sendEmail/{quotationNumber}', name: 'app_back_sendEmail')]
+    public function sendEmail(string $quotationNumber, MailerInterface $mailer,ClientRepository $clientRepository,CompanyRepository $companyRepository,PDFService $PDFService, EntityManagerInterface $entityManager,SessionInterface $session,QuoteProductRepository $quoteProductRepository): Response
+    {
+
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
+        $clientInfo = $clientRepository->find($quote->getClientId());
+        $companyInfo = $companyRepository->find($this->getUser()->getCompanyId());
+        $productList = $session->get('productList', []);
+
+        $products = $quoteProductRepository->findBy(['quote' => $quote]);
+
+        foreach ($products as $key => $product) {
+            $unitPrice = $product->getProduct()->getUnitPrice();
+            $quantity = $product->getQuantity();
+            $VAT = $product->getProduct()->getVAT();
+            $tht = str_replace(',', '',number_format($unitPrice * $quantity, 2));
+            $ttc =str_replace(',', '', number_format(($tht + ($tht * $VAT / 100)), 2));
+
+            $products[$key]->THT = $tht;
+            $products[$key]->TTC = $ttc;
+            $products[$key]->unitPrice = $unitPrice;
+        }
+
+        $html = $this->render('back/quotes/detail.html.twig', [
+            'quotationNumber' => $quote->getQuotationNumber(),
+            'createdAt' => $quote->getCreatedAt()->format('Y-m-d'),
+            'totalTHT' => $quote->getTotalHT(),
+            'totalTTC' => $quote->getTotalTTC(),
+            'dueDate' => $quote->getDueDate()->format('Y-m-d'),
+            'client' => $clientInfo,
+            'productList' => $products,
+            'companyInfo' => $companyInfo
+        ]);
+
+        $pdfContent = $PDFService->generatePDF($html);
+        $email = (new TemplatedEmail())
+            ->from('ali.khelifa@se.univ-bejaia.dz')
+            ->to($clientInfo->getEmail())
+            ->subject('Votre devis')
+            ->htmlTemplate('<p>Bonjour,</p><p>Veuillez trouver en pièce jointe votre devis.</p>');
+        $email->attach($pdfContent, $quotationNumber, 'application/pdf');
+        $mailer->send($email);
+        $quote->setStatus('Envoyé');
+        $entityManager->persist($quote);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le devis a été envoyé par e-mail avec succès');
+
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
+
 
     #[Route('/admin/quotes/add', name: 'app_back_quotes_add')]
     public function addQuote(Request $request, ProductRepository $productRepository, ClientRepository $clientRepository, CompanyRepository $companyRepository, SessionInterface $session, PDFService $PDFService, EntityManagerInterface $entityManager): Response
