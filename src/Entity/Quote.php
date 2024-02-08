@@ -45,10 +45,10 @@ class Quote
     #[ORM\Column(length: 255,nullable: true)]
     private ?string $userUpdated = null;
 
-    #[ORM\ManyToOne(inversedBy: 'quotes')]
+    #[ORM\ManyToOne(inversedBy: 'quote')]
     private ?Client $clientId = null;
 
-    #[ORM\OneToMany(mappedBy: 'quotes', targetEntity: QuoteProduct::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteProduct::class, cascade: ['persist', 'remove'])]
     private Collection $quoteProducts;
 
     #[ORM\OneToMany(mappedBy: 'quoteId', targetEntity: Invoice::class)]

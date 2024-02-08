@@ -179,7 +179,7 @@
                         <td class="px-4 py-2 border border-gray-200">{{ product.THT }}</td>
                         <td class="px-4 py-2 border border-gray-200">{{ product.TTC }}</td>
                         <td class="px-4 py-2 border border-gray-200 flex justify-around items-center">
-                            <a href="{{ path('removeProduct', {'type': 'add', 'quotationNumber':'' ,'id': product.id}) }}">
+                            <a href="{{ path('app_back_quotes_remove_product', {'type': 'add', 'quotationNumber':'' ,'id': product.id}) }}">
                                 <img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer">
                             </a>
                         </td>

@@ -180,7 +180,7 @@
                         <td class="px-4 py-2 border border-gray-200">{{ product.THT }}</td>
                         <td class="px-4 py-2 border border-gray-200">{{ product.TTC }}</td>
                         <td class="px-4 py-2 border border-gray-200 flex justify-around items-center">
-                            <a href="{{ path('removeProduct', {'type': 'edit','quotationNumber':product.quotationNumber,'id': product.id}) }}">
+                            <a href="{{ path('app_back_quotes_remove_product', {'type': 'edit','quotationNumber':product.quotationNumber,'id': product.id}) }}">
                                 <img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer">
                             </a>
                         </td>
@@ -213,7 +213,7 @@
                 $.ajax({
                     url: '{{ path('app_back_quotes_product_info') }}',
                     method: 'GET',
-                    data: { product_id: productId },
+                    data: { productId: productId },
                     success: function(data) {
                         $('#{{ form.unitPrice.vars.id }}').val(data.unitPrice);
                         $('#{{ form.VAT.vars.id }}').val(data.VAT);

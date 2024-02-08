@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted('ROLE_ENTERPRISE')]
+#[IsGranted('ROLE_ENTREPRISE')]
 class InvoiceController extends AbstractController
 {
     #[Route('/admin/invoices', name: 'app_back_invoices')]

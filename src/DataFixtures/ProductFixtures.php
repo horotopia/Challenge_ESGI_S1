@@ -10,11 +10,11 @@ class ProductFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-       /* $faker = Factory::create();
+       $faker = Factory::create();
 
         for ($i = 0; $i < 10; $i++) {
-            $produit = new Product();
-            $produit
+            $product = new Product();
+            $product
                 ->setName($faker->words(3, true))
                 ->setDescription($faker->sentence)
                 ->setBrand($faker->company)
@@ -26,8 +26,8 @@ class ProductFixtures extends Fixture
                 ->setUserCreated($faker->userName)
                 ->setUserUpdated($faker->userName);
 
-            $manager->persist($produit);
+            $manager->persist($product);
         }
 
-        $manager->flush();*/}
+        $manager->flush();}
 }

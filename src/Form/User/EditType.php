@@ -36,8 +36,7 @@ class EditType extends AbstractType
                     'Enterprise' => 'ROLE_ENTERPRISE',
                 ],
                 'expanded' => false,
-                'multiple' => true,
-                'attr' => ['class' => 'select2']
+                'multiple' => true
                 ,
                 'constraints' => [
                     new Assert\NotBlank(),

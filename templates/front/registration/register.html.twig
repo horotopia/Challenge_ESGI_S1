@@ -18,7 +18,7 @@
 
             <div class="h-[28.5rem] w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
 
-                <div class="w-[42.5rem]   p-5 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
+                <div class="w-[42.5rem]   p-3 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
                     <h4 class="mb-0 text-center font-medium text-2xl text-white">Inscription</h4>
                 </div>
 
@@ -36,7 +36,7 @@
                         </div>
                         {{ form_widget(registrationForm.email, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 ml-8 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'class': 'w-[290px]  mb-[10px] mr-10 ml-8 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                                 'placeholder': 'exemple@gmail.com'
                             }
                         }) }}
@@ -53,7 +53,7 @@
                         </div>
                         {{ form_widget(registrationForm.phone, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 ml-8 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'class': 'w-[290px]  mb-[10px] mr-10 p-2 ml-8 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                                 'placeholder': '+33102030405'
                             }
                         }) }}
@@ -71,7 +71,7 @@
                         </div>
                         {{ form_widget(registrationForm.companyId.name, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'class': 'w-[290px] mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                                 'placeholder': 'Nom  de votre companies'
                             }
                         }) }}
@@ -88,7 +88,7 @@
                             </div>
                             {{ form_widget(registrationForm.companyId.siret, {
                                 'attr': {
-                                    'class': 'w-[290px] mt-3 mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                    'class': 'w-[290px]  mb-[10px] mr-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                                     'placeholder': 'Siret de votre companies'
                                 }
                             }) }}
@@ -105,7 +105,7 @@
                 {{ form_row(registrationForm.plainPassword,{
                     'label_attr':{'class' : 'text-base  ml-10'},
                     'attr': {
-                        'class' :'w-[590px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                        'class' :'w-[590px]  mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
                         'placeholder': 'Saisir votre mot de passe'
                     }
                 })}}

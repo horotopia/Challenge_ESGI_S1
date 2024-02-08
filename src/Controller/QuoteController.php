@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ENTERPRISE')]
+#[IsGranted('ROLE_ENTREPRISE')]
 class QuoteController extends AbstractController
 {
     #[Route('/admin/quotes', name: 'app_back_quotes')]
@@ -43,7 +43,7 @@ class QuoteController extends AbstractController
         }
 
         return $this->render('back/quotes/index.html.twig', [
-            'controller_name' => 'index',
+            'controller_name' => 'Devis',
             'form' => $form->createView(),
             'quoteList' => $quoteList,
         ]);
@@ -53,7 +53,7 @@ class QuoteController extends AbstractController
     public function addQuote(Request $request, ProductRepository $productRepository, ClientRepository $clientRepository, CompanyRepository $companyRepository, SessionInterface $session, PDFService $PDFService, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AddType::class);
-        $productList = $session->get('productList', []);
+        $productList = $session->get('productList',[]);
 
         $totalTHT = $request->query->get('totalTHT', 0);
         $totalTTC = $request->query->get('totalTTC', 0);
@@ -63,39 +63,40 @@ class QuoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($request->request->has('addProduct')) {
                 $productId = $form->get('productId')->getData();
-                $availableQuantity = $form->get('availableQuantity')->getData();
+                $quantity = $form->get('availableQuantity')->getData();
                 if ($productId) {
                     $product = $productRepository->find($productId);
 
-                    if ($availableQuantity >= 1) {
+                    if ($quantity >= 1) {
                         if ($product) {
                             $productList = $session->get('productList', []);
                             $productExists = false;
                             foreach ($productList as &$item) {
-                                if ($item['id'] === $product->getId()) {
-                                    $item['availableQuantity'] += $availableQuantity;
 
-                                    $tht = str_replace(',', '', $product->getUnitPrice() * $item['availableQuantity']);
-                                    $tcc = str_replace(',', '', $product->getUnitPrice() * $item['availableQuantity'] * (1 + $product->getVAT() / 100));
+                                if ($item['id'] === $product->getId()) {
+                                    $item['quantity'] += $quantity;
+                                    $tht = str_replace(',', '', $product->getUnitPrice() * $item['quantity']);
+                                    $tcc = str_replace(',', '', $product->getUnitPrice() * $item['quantity'] * (1 + $product->getVAT() / 100));
                                     $item['THT'] = number_format($tht, 2);
                                     $item['TTC'] = number_format($tcc, 2);
 
                                     $productExists = true;
                                     break;
                                 }
+
                             }
 
                             if (!$productExists) {
-                                $tht = str_replace(',', '', $product->getUnitPrice() * $availableQuantity);
-                                $tcc = str_replace(',', '', $product->getUnitPrice() * $availableQuantity * (1 + $product->getVAT() / 100));
+                                $tht = str_replace(',', '', $product->getUnitPrice() * $quantity);
+                                $tcc = str_replace(',', '', $product->getUnitPrice() * $quantity * (1 + $product->getVAT() / 100));
 
                                 $productList[] = [
                                     'id' => $product->getId(),
                                     'name' => $product->getName(),
                                     'unitPrice' => number_format($product->getUnitPrice(), 2),
-                                    'availableQuantity' => $availableQuantity,
+                                    'quantity' => $quantity,
                                     'THT' => number_format($tht, 2),
-                                    'TVA' => $product->getVAT(),
+                                    'VAT' => $product->getVAT(),
                                     'TTC' => number_format($tcc, 2)
                                 ];
                             }
@@ -117,7 +118,7 @@ class QuoteController extends AbstractController
                 $totalTHT += floatval(str_replace(',', '', $product['THT']));
                 $totalTTC += floatval(str_replace(',', '', $product['TTC']));
             }
-            if ($request->request->has('quote_create')) {
+            if ($request->request->has('createQuote')) {
 
                 $quote = new Quote();
                 $quotationNumber = 'DEV' . '-' . uniqid();
@@ -136,7 +137,7 @@ class QuoteController extends AbstractController
                     if ($product) {
                         $quoteProduct = new QuoteProduct();
                         $quoteProduct->setProduct($product);
-                        $quoteProduct->setQuantity($productData['availableQuantity']); // Ajout de la quantité à QuoteProduct
+                        $quoteProduct->setQuantity($productData['quantity']);
                         $quote->addQuoteProduct($quoteProduct);
 
                     }
@@ -152,25 +153,25 @@ class QuoteController extends AbstractController
 
         return $this->render('back/quotes/add.html.twig', [
             'form' => $form->createView(),
-            'controller_name' => 'addQuote',
+            'controller_name' => 'Ajouter un devis',
             'productList' => $productList,
             'totalTHT' => $totalTHT,
             'totalTTC' => $totalTTC
         ]);
     }
 
-    #[Route('/admin/quotes/product/delete/{type}/{id}/{quotationNumber?}', name: 'app_back_quotes_remove_product')]
+        #[Route('/admin/quotes/product/delete/{type}/{id}/{quotationNumber?}', name: 'app_back_quotes_remove_product')]
     public function removeProduct(Request $request, $id, string $type, ?string $quotationNumber, QuoteProductRepository $quoteProductRepository, QuoteRepository $quoteRepository, EntityManagerInterface $entityManager): Response
     {
         $session = $request->getSession();
         $productList = $session->get('productList', []);
-        $quoteProduct = $quoteProductRepository->findOneBy(['products' => $id]);
+        $quoteProduct = $quoteProductRepository->findOneBy(['product' => $id]);
 
         if ($type == "edit" && $quoteProduct != null) {
             $entityManager->remove($quoteProduct);
             $entityManager->flush();
             $quote = $quoteRepository->findOneBy(['quotationNumber' => $quoteProduct->getQuote()->getQuotationNumber()]);
-            $quoteProducts = $quoteProductRepository->findBy(['quotes' => $quote]);
+            $quoteProducts = $quoteProductRepository->findBy(['quote' => $quote]);
 
             $productList = [];
             foreach ($quoteProducts as $quoteProduct) {
@@ -229,6 +230,7 @@ class QuoteController extends AbstractController
     public function getProductInfo(Request $request, ProductRepository $repository): JsonResponse
     {
         $productId = $request->get('productId');
+
         $product = $repository->find($productId);
 
         $data = [];
@@ -252,7 +254,7 @@ class QuoteController extends AbstractController
         $companyInfo = $companyRepository->find($this->getUser()->getCompanyId());
         $productList = $session->get('productList', []);
 
-        $products = $quoteProductRepository->findBy(['quotes' => $quote]);
+        $products = $quoteProductRepository->findBy(['quote' => $quote]);
 
         foreach ($products as $key => $product) {
             $unitPrice = $product->getProduct()->getUnitPrice();
@@ -293,16 +295,18 @@ class QuoteController extends AbstractController
         $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
 
         if (!$quote) {
-            throw $this->createNotFoundException('Quote non trouvé');
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
         }
 
         $entityManager->remove($quote);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Quote supprimé avec succès');
+        $this->addFlash('success', 'Devis supprimé avec succès');
 
         return $this->redirectToRoute('app_back_quotes');
     }
+
 
 
     #[Route('/admin/quotes/edit/{quotationNumber}', name: 'app_back_quotes_edit')]
@@ -311,7 +315,7 @@ class QuoteController extends AbstractController
         $quote = $quoteRepository->findOneBy(['quotationNumber' => $quotationNumber]);
 
         if(empty($productList)){
-            $quoteProducts = $quoteProductRepository->findBy(['quotes' => $quote]);
+            $quoteProducts = $quoteProductRepository->findBy(['quote' => $quote]);
             foreach ($quoteProducts as $quoteProduct) {
                 $product = $quoteProduct->getProduct();
 
@@ -452,7 +456,7 @@ class QuoteController extends AbstractController
 
         return $this->render('back/quotes/edit.html.twig', [
             'form' => $form->createView(),
-            'controller_name' => 'editQuote',
+            'controller_name' => 'Modifier un devis',
             'productList' => $productList,
             'totalTHT' => $totalTHT,
             'totalTTC' => $totalTTC

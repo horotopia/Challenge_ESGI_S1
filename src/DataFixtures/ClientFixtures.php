@@ -11,7 +11,7 @@ class ClientFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        /**$faker = Factory::create();
+        $faker = Factory::create();
 
         for ($i = 0; $i < 15; $i++) {
             $client =new Client();
@@ -29,7 +29,7 @@ class ClientFixtures extends Fixture
             $manager->persist($client);
         }
 
-        $manager->flush(); */
+        $manager->flush();
     }
 
 }
