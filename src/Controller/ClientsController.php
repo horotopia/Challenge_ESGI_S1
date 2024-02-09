@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Form\Client\editType;
-use App\Form\Client\newType;
+use App\Form\Client\EditType;
+use App\Form\Client\NewType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-#[IsGranted('ROLE_ENTERPRISE')]
+#[IsGranted('ROLE_ENTREPRISE')]
 class ClientsController extends AbstractController
 {
     #[Route('/admin/clients', name: 'app_back_clients')]
@@ -61,7 +61,7 @@ class ClientsController extends AbstractController
 
         return $this->render('back/clients/add.html.twig', [
             'client' => $client,
-            'controller_name' => 'addClient',
+            'controller_name' => 'Ajouter un client',
             'form' => $form->createView(),
         ]);
     }
@@ -82,7 +82,7 @@ class ClientsController extends AbstractController
         }
         return $this->render('back/clients/edit.html.twig', [
             'clients' => $client,
-            'controller_name' => 'editClient',
+            'controller_name' => 'Modifier un client',
             'form' => $form->createView(),
         ]);
     }

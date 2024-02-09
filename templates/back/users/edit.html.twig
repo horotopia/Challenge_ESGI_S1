@@ -31,7 +31,13 @@
                             'class': ' flex flex-col w-[32rem] mt-3 mb-2.5 mr-2 p-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                         }
                     }) }}
-                    {{ form_row(form.roles) }}
+                    {{ form_row(form.roles, {
+                        'label_attr': {'class': 'text-base '},
+                        'attr': {
+                            'class': ' flex flex-col w-[32rem] mt-3 mb-2.5 mr-2 p-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                        }
+                    }) }}
+
                     {{ form_row(form.createdAt,{
                         'label_attr': {'class': 'text-base '},
                         'attr': {
@@ -55,15 +61,13 @@
                     }) }}
 
 
-
-
-
                     {{ form_row(form.companyId, {
-                        'label_attr': {'class': 'text-base  '},
+                        'label_attr': {'class': 'text-base '},
                         'attr': {
-                            'class': 'select2 felx felx-col'
+                            'class': 'flex flex-col w-[32rem] mt-3 mb-2.5 p-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                         }
                     }) }}
+
 
                 </div>
             </div>

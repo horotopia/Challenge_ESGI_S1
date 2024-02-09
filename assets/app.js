@@ -11,8 +11,5 @@ import './styles/js/navbar-admin.js';
 import './styles/js/dropdown.js';
 import './styles/js/navbar.js';
 
-import 'datatables.net-dt/css/jquery.dataTables.css';
-import 'datatables.net-dt/js/dataTables.dataTables';
-
 import './styles/js/tarifs'
 

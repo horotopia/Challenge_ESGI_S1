@@ -12,7 +12,7 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-          /*$faker = Factory::create();
+          $faker = Factory::create();
 
         for ($i = 0; $i < 5; $i++) {
 
@@ -25,10 +25,10 @@ class UserFixtures extends Fixture
             $randomDate = $faker->dateTimeBetween('-50 years', 'now');
             $user->setCreatedAt(new DateTime());
             $user->setIsVerified(true);
-            $user->setRoles(['ROLE_ENTREPRISE']);
+            $user->setRoles(['ROLE_COMPTABLE']);
             $manager->persist($user);
         }
 
-        $manager->flush(); */
+        $manager->flush();
     }
 }

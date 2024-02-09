@@ -61,5 +61,32 @@ class QuoteRepository extends ServiceEntityRepository
         return $this->paginator->paginate($quote, $searchData->page, 5);
     }
 
+    public function countPendingQuotesForCurrentMonth(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT COUNT(q.id) as quoteCount, SUM(q.totalTTC) as totalAmount
+            FROM App\Entity\Quote q
+            WHERE q.status = :status
+            AND q.createdAt >= :startOfMonth
+            AND q.createdAt <= :endOfMonth'
+        )->setParameter('status', 'Envoyé')
+            ->setParameter('startOfMonth', new \DateTime('first day of this month'))
+            ->setParameter('endOfMonth', new \DateTime('last day of this month'));
+
+        return $query->getResult();
+    }
+    public function countExpiredQuotesForCurrentMonth(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT COUNT(q.id) as quoteCount, SUM(q.totalTTC) as totalAmount
+        FROM App\Entity\Quote q
+        WHERE q.dueDate <= :currentDate'
+        )->setParameter('currentDate', new \DateTime());
+
+        return $query->getResult();
+    }
+
 
 }

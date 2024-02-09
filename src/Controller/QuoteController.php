@@ -16,16 +16,20 @@ use App\Repository\QuoteRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\ProductRepository;
 use App\Service\PDFService;
+use App\Service\SendEmail;
 use Doctrine\ORM\EntityManagerInterface;
+use MongoDB\Driver\Session;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ENTERPRISE')]
+#[IsGranted('ROLE_ENTREPRISE')]
 class QuoteController extends AbstractController
 {
     #[Route('/admin/quotes', name: 'app_back_quotes')]
@@ -43,17 +47,80 @@ class QuoteController extends AbstractController
         }
 
         return $this->render('back/quotes/index.html.twig', [
-            'controller_name' => 'index',
+            'controller_name' => 'Devis',
             'form' => $form->createView(),
             'quoteList' => $quoteList,
         ]);
     }
+    #[Route('/admin/sendEmail/{quotationNumber}', name: 'app_back_sendEmail')]
+    public function sendEmail(string $quotationNumber, MailerInterface $mailer,ClientRepository $clientRepository,CompanyRepository $companyRepository,PDFService $PDFService, EntityManagerInterface $entityManager,SessionInterface $session,QuoteProductRepository $quoteProductRepository): Response
+    {
+
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
+        $clientInfo = $clientRepository->find($quote->getClientId());
+        $companyInfo = $companyRepository->find($this->getUser()->getCompanyId());
+        $productList = $session->get('productList', []);
+
+        $products = $quoteProductRepository->findBy(['quote' => $quote]);
+
+        $acceptToken = bin2hex(random_bytes(32));
+        $refuseToken = bin2hex(random_bytes(32));
+
+        $quote->setAcceptToken($acceptToken);
+        $quote->setRefuseToken($refuseToken);
+
+        foreach ($products as $key => $product) {
+            $unitPrice = $product->getProduct()->getUnitPrice();
+            $quantity = $product->getQuantity();
+            $VAT = $product->getProduct()->getVAT();
+            $tht = str_replace(',', '',number_format($unitPrice * $quantity, 2));
+            $ttc =str_replace(',', '', number_format(($tht + ($tht * $VAT / 100)), 2));
+
+            $products[$key]->THT = $tht;
+            $products[$key]->TTC = $ttc;
+            $products[$key]->unitPrice = $unitPrice;
+        }
+
+        $html = $this->render('back/quotes/detail.html.twig', [
+            'quotationNumber' => $quote->getQuotationNumber(),
+            'createdAt' => $quote->getCreatedAt()->format('Y-m-d'),
+            'totalTHT' => $quote->getTotalHT(),
+            'totalTTC' => $quote->getTotalTTC(),
+            'dueDate' => $quote->getDueDate()->format('Y-m-d'),
+            'client' => $clientInfo,
+            'productList' => $products,
+            'companyInfo' => $companyInfo
+        ]);
+
+        $pdfContent = $PDFService->generatePDF($html);
+        $email = (new TemplatedEmail())
+            ->from('ali.khelifa@se.univ-bejaia.dz')
+            ->to($clientInfo->getEmail())
+            ->subject('Votre devis')
+            ->htmlTemplate('back/quotes/send_quote_email.html.twig')
+            ->context([
+                'quotationNumber' => $quotationNumber,
+            'acceptToken' => $acceptToken,
+            'refuseToken' => $refuseToken
+            ]);
+        $email->attach($pdfContent, $quotationNumber, 'application/pdf');
+        $mailer->send($email);
+        $quote->setStatus('Envoyé');
+        $entityManager->persist($quote);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le devis a été envoyé par e-mail avec succès');
+
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
+
 
     #[Route('/admin/quotes/add', name: 'app_back_quotes_add')]
     public function addQuote(Request $request, ProductRepository $productRepository, ClientRepository $clientRepository, CompanyRepository $companyRepository, SessionInterface $session, PDFService $PDFService, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AddType::class);
-        $productList = $session->get('productList', []);
+        $productList = $session->get('productList',[]);
 
         $totalTHT = $request->query->get('totalTHT', 0);
         $totalTTC = $request->query->get('totalTTC', 0);
@@ -63,39 +130,40 @@ class QuoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($request->request->has('addProduct')) {
                 $productId = $form->get('productId')->getData();
-                $availableQuantity = $form->get('availableQuantity')->getData();
+                $quantity = $form->get('availableQuantity')->getData();
                 if ($productId) {
                     $product = $productRepository->find($productId);
 
-                    if ($availableQuantity >= 1) {
+                    if ($quantity >= 1) {
                         if ($product) {
                             $productList = $session->get('productList', []);
                             $productExists = false;
                             foreach ($productList as &$item) {
-                                if ($item['id'] === $product->getId()) {
-                                    $item['availableQuantity'] += $availableQuantity;
 
-                                    $tht = str_replace(',', '', $product->getUnitPrice() * $item['availableQuantity']);
-                                    $tcc = str_replace(',', '', $product->getUnitPrice() * $item['availableQuantity'] * (1 + $product->getVAT() / 100));
+                                if ($item['id'] === $product->getId()) {
+                                    $item['quantity'] += $quantity;
+                                    $tht = str_replace(',', '', $product->getUnitPrice() * $item['quantity']);
+                                    $tcc = str_replace(',', '', $product->getUnitPrice() * $item['quantity'] * (1 + $product->getVAT() / 100));
                                     $item['THT'] = number_format($tht, 2);
                                     $item['TTC'] = number_format($tcc, 2);
 
                                     $productExists = true;
                                     break;
                                 }
+
                             }
 
                             if (!$productExists) {
-                                $tht = str_replace(',', '', $product->getUnitPrice() * $availableQuantity);
-                                $tcc = str_replace(',', '', $product->getUnitPrice() * $availableQuantity * (1 + $product->getVAT() / 100));
+                                $tht = str_replace(',', '', $product->getUnitPrice() * $quantity);
+                                $tcc = str_replace(',', '', $product->getUnitPrice() * $quantity * (1 + $product->getVAT() / 100));
 
                                 $productList[] = [
                                     'id' => $product->getId(),
                                     'name' => $product->getName(),
                                     'unitPrice' => number_format($product->getUnitPrice(), 2),
-                                    'availableQuantity' => $availableQuantity,
+                                    'quantity' => $quantity,
                                     'THT' => number_format($tht, 2),
-                                    'TVA' => $product->getVAT(),
+                                    'VAT' => $product->getVAT(),
                                     'TTC' => number_format($tcc, 2)
                                 ];
                             }
@@ -117,7 +185,7 @@ class QuoteController extends AbstractController
                 $totalTHT += floatval(str_replace(',', '', $product['THT']));
                 $totalTTC += floatval(str_replace(',', '', $product['TTC']));
             }
-            if ($request->request->has('quote_create')) {
+            if ($request->request->has('createQuote')) {
 
                 $quote = new Quote();
                 $quotationNumber = 'DEV' . '-' . uniqid();
@@ -136,7 +204,7 @@ class QuoteController extends AbstractController
                     if ($product) {
                         $quoteProduct = new QuoteProduct();
                         $quoteProduct->setProduct($product);
-                        $quoteProduct->setQuantity($productData['availableQuantity']); // Ajout de la quantité à QuoteProduct
+                        $quoteProduct->setQuantity($productData['quantity']);
                         $quote->addQuoteProduct($quoteProduct);
 
                     }
@@ -152,25 +220,25 @@ class QuoteController extends AbstractController
 
         return $this->render('back/quotes/add.html.twig', [
             'form' => $form->createView(),
-            'controller_name' => 'addQuote',
+            'controller_name' => 'Ajouter un devis',
             'productList' => $productList,
             'totalTHT' => $totalTHT,
             'totalTTC' => $totalTTC
         ]);
     }
 
-    #[Route('/admin/quotes/product/delete/{type}/{id}/{quotationNumber?}', name: 'app_back_quotes_remove_product')]
+        #[Route('/admin/quotes/product/delete/{type}/{id}/{quotationNumber?}', name: 'app_back_quotes_remove_product')]
     public function removeProduct(Request $request, $id, string $type, ?string $quotationNumber, QuoteProductRepository $quoteProductRepository, QuoteRepository $quoteRepository, EntityManagerInterface $entityManager): Response
     {
         $session = $request->getSession();
         $productList = $session->get('productList', []);
-        $quoteProduct = $quoteProductRepository->findOneBy(['products' => $id]);
+        $quoteProduct = $quoteProductRepository->findOneBy(['product' => $id]);
 
         if ($type == "edit" && $quoteProduct != null) {
             $entityManager->remove($quoteProduct);
             $entityManager->flush();
             $quote = $quoteRepository->findOneBy(['quotationNumber' => $quoteProduct->getQuote()->getQuotationNumber()]);
-            $quoteProducts = $quoteProductRepository->findBy(['quotes' => $quote]);
+            $quoteProducts = $quoteProductRepository->findBy(['quote' => $quote]);
 
             $productList = [];
             foreach ($quoteProducts as $quoteProduct) {
@@ -229,6 +297,7 @@ class QuoteController extends AbstractController
     public function getProductInfo(Request $request, ProductRepository $repository): JsonResponse
     {
         $productId = $request->get('productId');
+
         $product = $repository->find($productId);
 
         $data = [];
@@ -252,7 +321,7 @@ class QuoteController extends AbstractController
         $companyInfo = $companyRepository->find($this->getUser()->getCompanyId());
         $productList = $session->get('productList', []);
 
-        $products = $quoteProductRepository->findBy(['quotes' => $quote]);
+        $products = $quoteProductRepository->findBy(['quote' => $quote]);
 
         foreach ($products as $key => $product) {
             $unitPrice = $product->getProduct()->getUnitPrice();
@@ -293,16 +362,18 @@ class QuoteController extends AbstractController
         $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
 
         if (!$quote) {
-            throw $this->createNotFoundException('Quote non trouvé');
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
         }
 
         $entityManager->remove($quote);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Quote supprimé avec succès');
+        $this->addFlash('success', 'Devis supprimé avec succès');
 
         return $this->redirectToRoute('app_back_quotes');
     }
+
 
 
     #[Route('/admin/quotes/edit/{quotationNumber}', name: 'app_back_quotes_edit')]
@@ -311,7 +382,7 @@ class QuoteController extends AbstractController
         $quote = $quoteRepository->findOneBy(['quotationNumber' => $quotationNumber]);
 
         if(empty($productList)){
-            $quoteProducts = $quoteProductRepository->findBy(['quotes' => $quote]);
+            $quoteProducts = $quoteProductRepository->findBy(['quote' => $quote]);
             foreach ($quoteProducts as $quoteProduct) {
                 $product = $quoteProduct->getProduct();
 
@@ -452,14 +523,68 @@ class QuoteController extends AbstractController
 
         return $this->render('back/quotes/edit.html.twig', [
             'form' => $form->createView(),
-            'controller_name' => 'editQuote',
+            'controller_name' => 'Modifier un devis',
             'productList' => $productList,
             'totalTHT' => $totalTHT,
             'totalTTC' => $totalTTC
         ]);
     }
 
+    #[Route('/admin/quotes/accept/{quotationNumber}/{token}', name: 'app_back_quotes_accept')]
+    public function acceptQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager): Response
+    {
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
 
+        if (!$quote) {
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
 
+        if ($quote->getAcceptToken() !== $token) {
+            $this->addFlash('error', 'Devis déjà traité.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if (!in_array($quote->getStatus(), ['Brouillon', 'Envoyé'])) {
+            $this->addFlash('error', 'Le devis ne peut pas être accepté dans son état actuel.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        $quote->setStatus('Accepté');
+        $quote->setAcceptToken(null);
+        $quote->setRefuseToken(null);
+        $entityManager->flush();
+        $this->addFlash('success', 'Le devis a été accepté.');
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
+
+    #[Route('/admin/quotes/refuse/{quotationNumber}/{token}', name: 'app_back_quotes_refuse')]
+    public function refuseQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager): Response
+    {
+        $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
+
+        if (!$quote) {
+            $this->addFlash('error', 'Devis non trouvé.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if ($quote->getRefuseToken() !== $token) {
+            $this->addFlash('error', 'Devis déjà traité.');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        if ($quote->getStatus() !== 'Envoyé') {
+            $this->addFlash('error', 'Le devis ne peut être refusé que s\'il est en statut "Envoyé".');
+            return $this->redirectToRoute('app_back_quotes');
+        }
+
+        $quote->setStatus('Refusé');
+        $quote->setAcceptToken(null);
+        $quote->setRefuseToken(null);
+        $entityManager->flush();
+        $this->addFlash('success', 'Le devis a été refusé.');
+
+        return $this->redirectToRoute('app_back_quotes');
+    }
 }
-

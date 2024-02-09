@@ -37,7 +37,7 @@ class EditType extends AbstractType
                     'class' => 'products-select',
                 ],
             ])
-            ->add('availableDate', IntegerType::class, [
+            ->add('availableQuantity', IntegerType::class, [
                 'required' => false,
                 'data' => 0,
             ])

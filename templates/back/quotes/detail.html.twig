@@ -127,9 +127,9 @@
 
     <div class="info">
         <div class="company">
-            <p><strong>Nom Entreprise:</strong> {{ company.name }}</p>
-            <p><strong>Adresse:</strong> {{ company.address }}</p>
-            <p><strong>Téléphone:</strong> {{ company.phone }}</p>
+            <p><strong>Nom Entreprise:</strong> {{ companyInfo.name }}</p>
+            <p><strong>Adresse:</strong> {{ companyInfo.address }}</p>
+            <p><strong>Téléphone:</strong> {{ companyInfo.phone }}</p>
         </div>
     </div>
 
@@ -147,16 +147,17 @@
         </thead>
         <tbody>
         <!-- Ajoutez les lignes pour chaque products ici -->
-        {% for products in productList %}
+        {% for product in productList %}
             <tr>
-                <td>{{ products.product.name }}</td>
-                <td>{{ products.quantity }}</td>
-                <td>{{ products.unitPrice }}</td>
-                <td>{{ products.product.TVA }}</td>
-                <td>{{ products.THT }}</td>
-                <td>{{ products.TTC }}</td>
+                <td>{{ product.product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.unitPrice }}</td>
+                <td>{{ product.product.VAT }}</td>
+                <td>{{ product.THT }}</td>
+                <td>{{ product.TTC }}</td>
             </tr>
         {% endfor %}
+
         <!-- Ajoutez d'autres lignes de produits ici -->
         <tr>
             <td colspan="5" style="text-align: right;  color:#949292"><strong>Total HT:</strong></td>
@@ -190,7 +191,7 @@
     <div class="footer">
         <hr>
         <p>Conditions générales de vente | Politique de confidentialité</p>
-        <p>&copy; 2024 {{ company.name }}. Tous droits réservés.</p>
+        <p>&copy; 2024 {{ companyInfo.name }}. Tous droits réservés.</p>
     </div>
 </div>
 </body>

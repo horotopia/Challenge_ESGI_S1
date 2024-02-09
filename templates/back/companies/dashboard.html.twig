@@ -133,7 +133,36 @@
                 </div>
                 <div class="accordion-content h-[12.5rem]">
                     <div class="mx-2">
-                        <p>Contenu de l'accordéon</p>
+                      <div class="bg-[#ECF7EB] p-1 m-2 rounded">
+                      <p>En attente de facturation</p>
+                          <div class="flex flex-row gap-4 ml-4">
+                              <div class=" flex flex-col ">
+                                  <p class="text-center">{{  quotePendingData[0]['quoteCount'] }}</p>
+                                  <span class="text-[#8C909C] font-medium text-xs">Devis</span>
+                              </div>
+                              <div class=" flex flex-col">
+                                  <p class="text-center">{{  quotePendingData[0]['totalAmount']}} €</p>
+                                  <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
+                              </div>
+                          </div>
+                      </div>
+                        <hr class="m-2">
+                        <div class="bg-[#ECF7EB] p-1 m-2 rounded">
+                            <p>Devis  Expiré</p>
+                            <div class="flex flex-row gap-4 ml-4">
+                                <div class=" flex flex-col ">
+                                    <p class="text-center">{{ quoteExpiredData[0]['quoteCount']}}</p>
+                                    <span class="text-[#8C909C] font-medium text-xs">Devis</span>
+                                </div>
+                                <div class=" flex flex-col">
+                                    <p class="text-center">{{ quoteExpiredData[0]['totalAmount'] }}  €</p>
+                                    <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-end">
+                            <p class=" text-[#8C909C] text-xs mr-2">Depuis le {{ 'now'|date('Y-m-01')|date('d/m/Y') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

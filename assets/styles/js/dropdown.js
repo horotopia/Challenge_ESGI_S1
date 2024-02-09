@@ -1,3 +1,4 @@
+var activeNavItems = document.querySelectorAll('.nav-link');
 function handleClick() {
     activeNavItems.forEach(function (item) {
         item.classList.remove('active');

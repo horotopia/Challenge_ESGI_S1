@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Form\Company\EditType;
+use App\Repository\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -17,13 +18,14 @@ class CompanyController extends AbstractController
     #[Route('/our-company', name: 'app_company')]
     public function index(): Response
     {
+
         return $this->render('front/companies/index.html.twig', [
             'controller_name' => 'CompanyController',
         ]);
     }
 
 
-    #[IsGranted('ROLE_ENTERPRISE')]
+    #[IsGranted('ROLE_ENTREPRISE')]
     #[Route('admin/companies/edit/{id}', name: 'app_back_companies_edit')]
     public function editCompany(Company $company, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')] string $photoDir): Response
     {$form = $this->createForm(EditType ::class, $company);
@@ -43,7 +45,7 @@ class CompanyController extends AbstractController
 
         return $this->render('back/companies/edit.html.twig', [
             'companies' => $company,
-            'controller_name' => "editCompany",
+            'controller_name' => "Modifications d'une entreprise",
             'form' => $form->createView()]);
     }
 }

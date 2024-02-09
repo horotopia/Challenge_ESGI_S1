@@ -34,7 +34,7 @@ class UsersController extends AbstractController
         }
 
         return $this->render('back/users/index.html.twig', [
-            'controller_name' => 'index',
+            'controller_name' => 'Utilisateurs',
             'form' => $form->createView(),
             'users' => $users,
         ]);
@@ -62,7 +62,7 @@ class UsersController extends AbstractController
 
         return $this->render('back/users/add.html.twig', [
             'user' => $user,
-            'controller_name' => 'addUser',
+            'controller_name' => 'Ajouter un utilisateur',
             'form' => $form->createView(),
         ]);
     }
@@ -84,7 +84,7 @@ class UsersController extends AbstractController
         }
         return $this->render('back/users/edit.html.twig', [
             'user' => $user,
-            'controller_name' => 'editUser',
+            'controller_name' => 'Modifier un utilisateur',
 
             'form' => $form->createView(),
         ]);
