@@ -3,6 +3,7 @@
 namespace App\Form\Client;
 
 use App\Entity\Company;
+use App\Repository\CompanyRepository;
 use Faker\Core\DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -11,12 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class NewType extends AbstractType
 {
 public function buildForm(FormBuilderInterface $builder, array $options)
-{
+{ $companyId = $options['companyId'];
     $builder
         ->add('email', EmailType::class, [
             'constraints' => [
@@ -83,6 +85,17 @@ public function buildForm(FormBuilderInterface $builder, array $options)
             'class' => Company::class,
             'choice_label' => 'name',
             'label' => 'Nom companies',
-
+            'query_builder' => function (CompanyRepository $repository) use ($companyId) {
+                return $repository->createQueryBuilder('c')
+                    ->andWhere('c.id = :companyId')
+                    ->setParameter('companyId', $companyId);
+            },
         ]);}
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'companyId' => null,]);
+
+    }
 }

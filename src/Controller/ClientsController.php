@@ -23,13 +23,16 @@ class ClientsController extends AbstractController
     {   $searchData = new SearchData();
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
+          $companyId=$this->getUser()->getCompanyId()->getId();
+
+          $userRole=$this->getUser()->getRoles();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData = $form->getData();
-            $clients = $clientRepository->findBySearchData($searchData);
+            $clients = $clientRepository->findBySearchData($searchData,$companyId,$userRole);
         } else {
 
-            $clients = $clientRepository->findclientsWithEntrepriseDetails($request->query->getInt('page', 1));
+            $clients = $clientRepository->findclientsWithEntrepriseDetails($request->query->getInt('page', 1),$companyId,$userRole);
         }
 
         return $this->render('back/clients/index.html.twig', [
@@ -44,7 +47,10 @@ class ClientsController extends AbstractController
     public function addClient(Request $request,EntityManagerInterface $entityManager): Response
     {
         $client = new Client();
-        $form = $this->createForm(newType::class,$client);
+        $companyId = $this->getUser()->getCompanyId()->getId();
+
+
+        $form = $this->createForm(newType::class,$client, ['companyId' => $companyId]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,7 +75,9 @@ class ClientsController extends AbstractController
     #[Route('/admin/clients/edit/{id}', name: 'app_back_clients_edit')]
     public function editClient(Client $client, Request $request,EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(editType::class,$client );
+        $companyId = $this->getUser()->getCompanyId()->getId();
+
+        $form = $this->createForm(editType::class,$client ,['companyId' => $companyId]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -19,7 +19,8 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <h3 class="mt-3 ml-16 text-start font-medium text-xl "><span class="text-[#017AC2]">Bonjour {% if app.user %}
+    <h3 class="my-8 ml-16 text-start font-medium text-xl ">
+    <span class="text-[#017AC2]">Bonjour {% if app.user %}
     {% if app.user.lastName is not empty and app.user.firstName is not empty %}
         {{ app.user.lastName }} {{ app.user.firstName }}
     {% else %}
@@ -137,11 +138,11 @@
                       <p>En attente de facturation</p>
                           <div class="flex flex-row gap-4 ml-4">
                               <div class=" flex flex-col ">
-                                  <p class="text-center">{{  quotePendingData[0]['quoteCount'] }}</p>
+                                  <p class="text-center">{{  quotePendingData[0]['quoteCount']|number_format(2) }}</p>
                                   <span class="text-[#8C909C] font-medium text-xs">Devis</span>
                               </div>
                               <div class=" flex flex-col">
-                                  <p class="text-center">{{  quotePendingData[0]['totalAmount']}} €</p>
+                                  <p class="text-center">{{  quotePendingData[0]['totalAmount']|number_format(2)}} €</p>
                                   <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
                               </div>
                           </div>
@@ -151,11 +152,11 @@
                             <p>Devis  Expiré</p>
                             <div class="flex flex-row gap-4 ml-4">
                                 <div class=" flex flex-col ">
-                                    <p class="text-center">{{ quoteExpiredData[0]['quoteCount']}}</p>
+                                    <p class="text-center">{{ quoteExpiredData[0]['quoteCount']|number_format(2)}}</p>
                                     <span class="text-[#8C909C] font-medium text-xs">Devis</span>
                                 </div>
                                 <div class=" flex flex-col">
-                                    <p class="text-center">{{ quoteExpiredData[0]['totalAmount'] }}  €</p>
+                                    <p class="text-center">{{ quoteExpiredData[0]['totalAmount']|number_format(2) }}  €</p>
                                     <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
                                 </div>
                             </div>

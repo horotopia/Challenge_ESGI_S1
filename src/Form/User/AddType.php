@@ -41,8 +41,7 @@ class AddType extends AbstractType
                     'Comptable' => 'ROLE_COMPTABLE',
                 ],
                 'expanded' => false,
-                'multiple' => true,
-                'attr' => ['class' => 'select2']
+                'multiple' => true
     ,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -73,7 +72,7 @@ class AddType extends AbstractType
             ->add('companyId', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => 'name',
-                'label' => 'Nom companies',
+                'label' => 'Nom enterprise',
 
             ]);
     }

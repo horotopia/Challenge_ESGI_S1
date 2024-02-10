@@ -36,14 +36,16 @@ class QuoteController extends AbstractController
     public function index(QuoteRepository $quoteRepository, Request $request): Response
     {
         $searchData = new SearchData();
+        $companyId= $this->getUser()->getCompanyId()->getId();
+        $userRole=$this->getUser()->getRoles();
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData = $form->getData();
-            $quoteList = $quoteRepository->findBySearchData($searchData);
+            $quoteList = $quoteRepository->findBySearchData($searchData,$companyId,$userRole);
         } else {
 
-            $quoteList = $quoteRepository->findQuoteDetails($request->query->getInt('page', 1));
+            $quoteList = $quoteRepository->findQuoteDetails($request->query->getInt('page', 1),$companyId,$userRole);
         }
 
         return $this->render('back/quotes/index.html.twig', [
@@ -119,7 +121,10 @@ class QuoteController extends AbstractController
     #[Route('/admin/quotes/add', name: 'app_back_quotes_add')]
     public function addQuote(Request $request, ProductRepository $productRepository, ClientRepository $clientRepository, CompanyRepository $companyRepository, SessionInterface $session, PDFService $PDFService, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(AddType::class);
+
+        $companyId = $this->getUser()->getCompanyId()->getId();
+
+        $form = $this->createForm(AddType::class, null,['companyId' => $companyId]);
         $productList = $session->get('productList',[]);
 
         $totalTHT = $request->query->get('totalTHT', 0);
@@ -402,7 +407,9 @@ class QuoteController extends AbstractController
             }
             $session->set('productList', $productList);
         }
-        $form = $this->createForm(EditType::class);
+        $companyId = $this->getUser()->getCompanyId()->getId();
+
+        $form = $this->createForm(EditType::class,null, ['companyId' => $companyId]);
         $form->handleRequest($request);
 
         $totalTHT = 0;

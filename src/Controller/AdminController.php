@@ -15,8 +15,10 @@ class AdminController extends AbstractController
     {
         $user = $this->getUser();
         $company = null;
-        $pendingQuotes=$quoteRepository->countPendingQuotesForCurrentMonth();
-        $expiredQuotes=$quoteRepository->countExpiredQuotesForCurrentMonth();
+        $companyId=$this->getUser()->getCompanyId();
+        $userRole=$this->getUser()->getRoles();
+        $pendingQuotes=$quoteRepository->countPendingQuotesForCurrentMonth($companyId,$userRole);
+        $expiredQuotes=$quoteRepository->countExpiredQuotesForCurrentMonth($companyId,$userRole);
 
         if ($user) {
             $company = $repository->findBy(['id' => $user->getCompanyId()]);
