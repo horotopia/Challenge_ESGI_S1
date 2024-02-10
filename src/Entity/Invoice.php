@@ -15,10 +15,13 @@ class Invoice
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $invoiceNumber = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
-    private ?string $amount = null;
+    #[ORM\Column(type: "float")]
+    private ?float $amount = null;
 
     #[ORM\Column(length: 255)]
     private ?string $paymentMethod = null;
@@ -26,27 +29,43 @@ class Invoice
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dueDate = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $paymentDate = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $userValidate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
-    private ?client $clientId = null;
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'invoices')]
+    private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
-    private ?Quote $quoteId = null;
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'invoices')]
+    private ?Quote $quote = null;
+
+    public function __construct() {
+        $this->paymentMethod = "Non défini";
+    }
+
+    // Getters and Setters
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->invoiceNumber;
+    }
+
+    public function setInvoiceNumber(?string $invoiceNumber): void
+    {
+        $this->invoiceNumber = $invoiceNumber;
     }
 
     public function getStatus(): ?string
@@ -54,23 +73,19 @@ class Invoice
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(?string $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
 
-    public function getAmount(): ?string
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(string $amount): static
+    public function setAmount(?float $amount): void
     {
         $this->amount = $amount;
-
-        return $this;
     }
 
     public function getPaymentMethod(): ?string
@@ -78,11 +93,9 @@ class Invoice
         return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $paymentMethod): static
+    public function setPaymentMethod(?string $paymentMethod): void
     {
         $this->paymentMethod = $paymentMethod;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -90,11 +103,9 @@ class Invoice
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
@@ -102,11 +113,9 @@ class Invoice
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function getDueDate(): ?\DateTimeInterface
@@ -114,11 +123,9 @@ class Invoice
         return $this->dueDate;
     }
 
-    public function setDueDate(\DateTimeInterface $dueDate): static
+    public function setDueDate(?\DateTimeInterface $dueDate): void
     {
         $this->dueDate = $dueDate;
-
-        return $this;
     }
 
     public function getPaymentDate(): ?\DateTimeInterface
@@ -126,11 +133,9 @@ class Invoice
         return $this->paymentDate;
     }
 
-    public function setPaymentDate(\DateTimeInterface $paymentDate): static
+    public function setPaymentDate(?\DateTimeInterface $paymentDate): void
     {
         $this->paymentDate = $paymentDate;
-
-        return $this;
     }
 
     public function getUserValidate(): ?string
@@ -138,34 +143,28 @@ class Invoice
         return $this->userValidate;
     }
 
-    public function setUserValidate(string $userValidate): static
+    public function setUserValidate(?string $userValidate): void
     {
         $this->userValidate = $userValidate;
-
-        return $this;
     }
 
-    public function getClientId(): ?client
+    public function getClient(): ?Client
     {
-        return $this->clientId;
+        return $this->client;
     }
 
-    public function setClientId(?client $clientId): static
+    public function setClient(?Client $client): void
     {
-        $this->clientId = $clientId;
-
-        return $this;
+        $this->client = $client;
     }
 
-    public function getQuoteId(): ?Quote
+    public function getQuote(): ?Quote
     {
-        return $this->quoteId;
+        return $this->quote;
     }
 
-    public function setQuoteId(?Quote $quoteId): static
+    public function setQuote(?Quote $quote): void
     {
-        $this->quoteId = $quoteId;
-
-        return $this;
+        $this->quote = $quote;
     }
 }
