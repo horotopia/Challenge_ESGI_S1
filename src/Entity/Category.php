@@ -29,6 +29,11 @@ class Category
         $this->products = new ArrayCollection();
     }
 
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use DateTime;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\CategoryRepository;
 use App\Form\CategoryType;
+use App\Form\EditCategoryType;
 use App\Form\ProductType;
 use DataTables\DataTablesFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +23,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-#[IsGranted('ROLE_ENTERPRISE')]
+
 
 class CategoryController extends AbstractController
 {
@@ -29,14 +31,21 @@ class CategoryController extends AbstractController
     public function addCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator , CategoryRepository $categoryRepository): Response
     {
         $category= new Category();
-        $form=$this->createForm(CategoryType::class,$category);
-
+        $errorsFormAdd=null;
+        $errorsFormUpdate=null;
         $searchData = new SearchData();
+
+        $form=$this->createForm(CategoryType::class,$category);
+        $formCategoryUpdate=$this->createForm(EditCategoryType::class,$category);
         $formSearchCategory = $this->createForm(SearchType::class, $searchData);
 
         $formSearchCategory->handleRequest($request);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formCategoryUpdate->handleRequest($request);
+
+        if($form->isSubmitted() && !$form->isValid()) {
+            $errorsFormAdd = $form->getErrors(true, false);
+        }elseif($form->isSubmitted() && $form->isValid()) {
             //generate token
             $tokenRegistration= $tokenGenerator->generateToken();
             $category->setName($form->get('name')->getData());
@@ -45,6 +54,23 @@ class CategoryController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('product_category_management');
         }
+
+        if($formCategoryUpdate->isSubmitted() && !$formCategoryUpdate->isValid()) {
+            $errorsFormUpdate = $form->getErrors(true, false);
+        }elseif($formCategoryUpdate->isSubmitted() && $formCategoryUpdate->isValid()) {
+            $currentDateTime = new DateTime();
+            $id=$formCategoryUpdate->get('id')->getData();
+            $category = $entityManager->getRepository(Category::class)->find($id);
+
+            $category->setName($formCategoryUpdate->get('name')->getData());
+            $category->setDescription($formCategoryUpdate->get('description')->getData());
+            $entityManager->persist($category);
+            $entityManager->flush();
+            return $this->redirectToRoute('product_category_management');
+        }
+
+
+
         // $categories = $entityManager->getRepository(Category::class)->findAll();
         $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1));
             // $categories=$catRepo->getCategoriesWithProductCount();
@@ -53,6 +79,9 @@ class CategoryController extends AbstractController
             'formCategory' => $form->createView(),
             'categories' => $categories,
             'formSearchCategory' => $formSearchCategory,
+            'formCategoryUpdate' => $formCategoryUpdate,
+            'errorsFormAdd' => $errorsFormAdd,
+            'errorsFormUpdate' => $errorsFormUpdate,
         ]);
     }
 
