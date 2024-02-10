@@ -56,9 +56,11 @@
                             </a>
                             <a href="{{ path('app_back_quotes_delete',{'quotationNumber':quote.quotationNumber}) }}"><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></a>
 
-                            <a href="{{ path('app_back_quotes_edit',{'quotationNumber':quote.quotationNumber}) }}">
+                            {% if quote.status == 'Brouillon' %}
+                                <a href="{{ path('app_back_quotes_edit',{'quotationNumber':quote.quotationNumber}) }}">
                                 <img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer">
-                            </a>
+                                </a>
+                            {% endif %}
                             {% if quote.status == 'Brouillon' or quote.status == 'Envoyé' %}
                                 <a href="{{ path('app_back_sendEmail',{'quotationNumber':quote.quotationNumber}) }}">
                                     <img src="https://i.goopics.net/l75uty.png" alt="Icon envoyer" class="w-6 ml-2 cursor-pointer">

@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Invoice;
+use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * @extends ServiceEntityRepository<Invoice>
@@ -16,33 +19,42 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class InvoiceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Invoice::class);
     }
 
-//    /**
-//     * @return Invoice[] Returns an array of Invoice objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retrieves detailed information about invoices and paginates the results.
+     *
+     * @param int $page The current page number.
+     * @return PaginationInterface The paginated list of invoices.
+     */
+    public function findInvoiceDetails(int $page): PaginationInterface
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('i.id, i.invoiceNumber, i.createdAt, i.status, i.amount, c.lastName, c.firstName')
+            ->leftJoin('i.client', 'c')
+            ->orderBy('i.createdAt', 'DESC')
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Invoice
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->paginator->paginate($query, $page, 5);
+    }
+
+    public function findBySearchData(SearchData $searchData): PaginationInterface
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('i.invoiceNumber, i.createdAt, i.status, i.amount, c.lastName, c.firstName')
+            ->leftJoin('i.client', 'c')
+            ->leftJoin('i.quote', 'q')
+            ->where('LOWER(i.invoiceNumber) LIKE LOWER(:q)')
+            ->orWhere('LOWER(i.status) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.lastName) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.firstName) LIKE LOWER(:q)')
+            ->setParameter('q', '%' . $searchData->q . '%')
+            ->orderBy('i.createdAt', 'DESC')
+            ->getQuery();
+
+        return $this->paginator->paginate($query, $searchData->page, 5);
+    }
 }
