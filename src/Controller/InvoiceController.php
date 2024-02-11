@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Invoice;
 use App\Form\Invoice\InvoiceType;
+use App\Form\User\SearchType;
+use App\Model\SearchData;
 use App\Repository\QuoteRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +19,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class InvoiceController extends AbstractController
 {
     #[Route('/admin/invoices', name: 'app_back_invoices')]
-    public function index(InvoiceRepository $invoiceRepository): Response
+    public function index(InvoiceRepository $invoiceRepository, Request $request): Response
     {
-        $invoices = $invoiceRepository->findAll();
+        $searchData = new SearchData();
+        $form = $this->createForm(SearchType::class, $searchData);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchData = $form->getData();
+            $invoiceList = $invoiceRepository->findBySearchData($searchData);
+        } else {
+
+            $invoiceList = $invoiceRepository->findInvoiceDetails($request->query->getInt('page', 1));
+        }
 
         return $this->render('back/invoices/index.html.twig', [
-            'invoices' => $invoices,
+            'controller_name' => 'Invoices',
+            'form' => $form->createView(),
+            'invoiceList' => $invoiceList,
         ]);
     }
 

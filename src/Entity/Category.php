@@ -29,6 +29,11 @@ class Category
         $this->products = new ArrayCollection();
     }
 
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +96,6 @@ class Category
 
     public function __toString() : string
     {
-        return $this->name;
+        return $this->getName();
     }
 }
