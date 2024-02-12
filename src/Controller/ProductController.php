@@ -25,13 +25,15 @@ class ProductController extends AbstractController
     {
         $user = $security->getUser();
         $userId = $user->getId();
-        $companyId = $user->getCompanyId();
+        $companyId = $user->getCompanyId()->getId();
+
+        $userRoles = $user->getRoles();
         $product = new Product();
         $errorsFormAdd=null;
         $errorsFormUpdate=null;
         //create 3 forms Add,update,search in one dynamic page
-        $formProduct=$this->createForm(ProductType::class,$product);
-        $formProductUpdate=$this->createForm(EditProductType::class,$product);
+        $formProduct=$this->createForm(ProductType::class,$product,['company_id' => $companyId]);
+        $formProductUpdate=$this->createForm(EditProductType::class);
         $searchData = new SearchData();
         $formSearchProduct = $this->createForm(SearchType::class, $searchData);
 
@@ -92,7 +94,8 @@ class ProductController extends AbstractController
             $products = $entityManager->getRepository(Product::class)->findByProductNameOrCategoryName($searchData,$request->query->getInt('page', 1));
         }else{
             //here if get all products
-        $products= $entityManager->getRepository(Product::class)->getAllProducts($request->query->getInt('page', 1));
+       // $products= $entityManager->getRepository(Product::class)->getAllProducts($request->query->getInt('page', 1));
+            $products= $entityManager->getRepository(Product::class)->getProducts($request->query->getInt('page', 1),$companyId,$userRoles);
         }
 
         return $this->render('back/product_category_management/product_index.html.twig', [

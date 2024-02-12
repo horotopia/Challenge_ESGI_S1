@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -17,6 +18,7 @@ class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $companyId = $options['company_id'];
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
@@ -76,6 +78,11 @@ class ProductType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'label' => 'Nom categorie',
+                'query_builder' => function (CategoryRepository $repository) use ($companyId) {
+                    return $repository->createQueryBuilder('c')
+                        ->andWhere('c.company_id = :companyId')
+                        ->setParameter('companyId', $companyId);
+                },
             ])
             ->add('Enregistrer',SubmitType::class)
             
@@ -85,7 +92,8 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+
+            'company_id' => null,
         ]);
     }
 }

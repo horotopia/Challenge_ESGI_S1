@@ -28,17 +28,18 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Product[] Returns an array of Product objects
      */
-    public function getProducts(int $page):PaginationInterface
+    public function getProducts(int $page,$companyId,$userRole): PaginationInterface
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createNativeQuery(
-            'SELECT * FROM product p INNER JOIN category c ON p.category_id_id = c.id',
-            new \Doctrine\ORM\Query\ResultSetMapping()
-        );
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.brand, p.unitPrice, p.VAT, p.availableQuantity, p.createdAt, c.name as categoryName, c.id as categoryId')
+            ->innerJoin('p.categoryId', 'c');
+           if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->where('p.companyId = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
 
-        $results = $query->getResult();
-        return $this->paginator->paginate($results, $page, 2);
-
+        $results = $queryBuilder->getQuery()->getResult();
+        return $this->paginator->paginate($results, $page, 5);
     }
 
     public function getAllProducts(int $page):PaginationInterface
