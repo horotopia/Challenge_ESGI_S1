@@ -30,7 +30,8 @@ class AddType extends AbstractType
         $companyId = $options['companyId'];
 
         $builder
-            ->add('dueDate', DateType::class, ['data' => new \DateTime()])
+            ->add('dueDate', DateType::class, ['data' => new \DateTime(),'widget' => 'single_text']
+            )
             ->add('productId', EntityType::class, [
                 'class' => Product::class,
                 'choice_label' => 'name',

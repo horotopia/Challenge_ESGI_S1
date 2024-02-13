@@ -65,6 +65,7 @@ public function buildForm(FormBuilderInterface $builder, array $options)
             ],
         ])
         ->add('createdAt', DateTimeType::class, [
+            'widget' => 'single_text',
             'constraints' => [
                 new Assert\NotBlank([
                     'message' => 'Ce champ ne doit pas être vide.',

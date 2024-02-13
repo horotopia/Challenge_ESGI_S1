@@ -30,31 +30,44 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param int $page The current page number.
      * @return PaginationInterface The paginated list of invoices.
      */
-    public function findInvoiceDetails(int $page): PaginationInterface
+    public function findInvoiceDetails(int $page, $userRole,$companyId): PaginationInterface
     {
-        $query = $this->createQueryBuilder('i')
-            ->select('i.id, i.invoiceNumber, i.createdAt, i.status, i.amount, c.lastName, c.firstName')
+        $queryBuilder = $this->createQueryBuilder('i')
+            ->select('i.id, i.invoiceNumber, i.createdAt, i.status, i.totalTTC,i.totalHT, c.lastName, c.firstName')
             ->leftJoin('i.client', 'c')
-            ->orderBy('i.createdAt', 'DESC')
-            ->getQuery();
+            ->orderBy('i.createdAt', 'DESC');
+
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->where('c.companyId = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
+
+        $query = $queryBuilder->getQuery();
 
         return $this->paginator->paginate($query, $page, 5);
     }
 
-    public function findBySearchData(SearchData $searchData): PaginationInterface
+    public function findBySearchData(SearchData $searchData,  $userRole,$companyId): PaginationInterface
     {
-        $query = $this->createQueryBuilder('i')
-            ->select('i.invoiceNumber, i.createdAt, i.status, i.amount, c.lastName, c.firstName')
+        $queryBuilder = $this->createQueryBuilder('i')
+            ->select('i.invoiceNumber, i.createdAt, i.status, i.totalTTC,i.totalHT, c.lastName, c.firstName')
             ->leftJoin('i.client', 'c')
             ->leftJoin('i.quote', 'q')
             ->where('LOWER(i.invoiceNumber) LIKE LOWER(:q)')
             ->orWhere('LOWER(i.status) LIKE LOWER(:q)')
             ->orWhere('LOWER(c.lastName) LIKE LOWER(:q)')
-            ->orWhere('LOWER(c.firstName) LIKE LOWER(:q)')
-            ->setParameter('q', '%' . $searchData->q . '%')
+            ->orWhere('LOWER(c.firstName) LIKE LOWER(:q)');
+
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->andWhere('c.companyId = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
+
+        $query = $queryBuilder->setParameter('q', '%' . $searchData->q . '%')
             ->orderBy('i.createdAt', 'DESC')
             ->getQuery();
 
         return $this->paginator->paginate($query, $searchData->page, 5);
     }
+
 }

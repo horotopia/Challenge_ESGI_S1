@@ -121,7 +121,7 @@
                                      class="w-6 ml-2 cursor-pointer">
                             </a>
                             {% if quote.status == 'Brouillon' or quote.status == 'Envoyé' %}
-                                <a href="{{ path('app_back_sendEmail',{'quotationNumber':quote.quotationNumber}) }}">
+                                <a href="{{ path('app_back_sendEmail_quote',{'quotationNumber':quote.quotationNumber}) }}">
                                     <img src="https://i.goopics.net/4h9wpm.png" alt="Icon envoyer"
                                          class="w-6 ml-2 cursor-pointer">
                                 </a>

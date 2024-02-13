@@ -21,12 +21,13 @@ class Invoice
     private ?string $status = null;
 
     #[ORM\Column(type: "float")]
-    private ?float $amount = null;
-
+    private ?float $totalHT = null;
+    #[ORM\Column(type: "float")]
+    private ?float $totalTTC = null;
     #[ORM\Column(length: 255)]
     private ?string $paymentMethod = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -78,15 +79,27 @@ class Invoice
         $this->status = $status;
     }
 
-    public function getAmount(): ?float
+    public function getTotalHT(): ?float
     {
-        return $this->amount;
+        return $this->totalHT;
     }
 
-    public function setAmount(?float $amount): void
+    public function setTotalHT(?float $totalHT): void
     {
-        $this->amount = $amount;
+        $this->totalHT = $totalHT;
     }
+
+    public function getTotalTTC(): ?float
+    {
+        return $this->totalTTC;
+    }
+
+    public function setTotalTTC(?float $totalTTC): void
+    {
+        $this->totalTTC = $totalTTC;
+    }
+
+
 
     public function getPaymentMethod(): ?string
     {

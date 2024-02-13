@@ -55,7 +55,7 @@ class QuoteController extends AbstractController
             'quoteList' => $quoteList,
         ]);
     }
-    #[Route('/admin/sendEmail/{quotationNumber}', name: 'app_back_sendEmail')]
+    #[Route('/admin/sendEmailQuote/{quotationNumber}', name: 'app_back_sendEmail_quote')]
     public function sendEmail(string $quotationNumber, MailerInterface $mailer,ClientRepository $clientRepository,CompanyRepository $companyRepository,PDFService $PDFService, EntityManagerInterface $entityManager,SessionInterface $session,QuoteProductRepository $quoteProductRepository): Response
     {
 
@@ -546,17 +546,17 @@ class QuoteController extends AbstractController
 
         if (!$quote) {
             $this->addFlash('error', 'Devis non trouvé.');
-            return $this->redirectToRoute('app_back_quotes');
+            return $this->redirectToRoute('app_accept_quote');
         }
 
         if ($quote->getAcceptToken() !== $token) {
             $this->addFlash('error', 'Devis déjà traité.');
-            return $this->redirectToRoute('app_back_quotes');
+            return $this->redirectToRoute('app_accept_quote');
         }
 
         if (!in_array($quote->getStatus(), ['Brouillon', 'Envoyé'])) {
             $this->addFlash('error', 'Le devis ne peut pas être accepté dans son état actuel.');
-            return $this->redirectToRoute('app_back_quotes');
+            return $this->redirectToRoute('app_accept_quote');
         }
 
         // Accepter le devis
@@ -564,33 +564,9 @@ class QuoteController extends AbstractController
         $quote->setAcceptToken(null);
         $quote->setRefuseToken(null);
         $entityManager->flush();
+        return $this->redirectToRoute('app_accept_quote');
 
-        // Créer une nouvelle facture
-        $invoice = new Invoice();
-        $invoice->setAmount($quote->getTotalTTC());
-        // Générer un numéro de facture unique
-        $invoiceNumber = 'INV' . '-' . uniqid();
-        $invoice->setInvoiceNumber($invoiceNumber);
-        $invoice->setStatus('En attente de paiement');
-        $invoice->setCreatedAt(new \DateTimeImmutable());
-        $invoice->setDueDate(new \DateTime('+30 days'));
-        $invoice->setClientId($quote->getClientId());
-        $invoice->setQuoteId($quote);
 
-        $entityManager->persist($invoice);
-        $entityManager->flush();
-
-        $html = $this->renderView('back/invoices/invoice_template.html.twig', [
-            'invoice' => $invoice,
-            'quote' => $quote,
-        ]);
-
-        $pdfContent = $pdfService->generatePDF($html);
-
-        return new Response($pdfContent, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $invoiceNumber . '.pdf"',
-        ]);
     }
 
     #[Route('/admin/quotes/refuse/{quotationNumber}/{token}', name: 'app_back_quotes_refuse')]
@@ -605,12 +581,12 @@ class QuoteController extends AbstractController
 
         if ($quote->getRefuseToken() !== $token) {
             $this->addFlash('error', 'Devis déjà traité.');
-            return $this->redirectToRoute('app_back_quotes');
+            return $this->redirectToRoute('app_refuse_quote');
         }
 
         if ($quote->getStatus() !== 'Envoyé') {
             $this->addFlash('error', 'Le devis ne peut être refusé que s\'il est en statut "Envoyé".');
-            return $this->redirectToRoute('app_back_quotes');
+            return $this->redirectToRoute('app_refuse_quote');
         }
 
         $quote->setStatus('Refusé');
@@ -619,97 +595,9 @@ class QuoteController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Le devis a été refusé.');
 
-        return $this->redirectToRoute('app_back_quotes');
+        return $this->redirectToRoute('app_refuse_quote');
     }
 
-    #[Route('/invoice/download/{id}', name: 'invoice_download')]
-    public function downloadInvoice(int $id, EntityManagerInterface $entityManager, CompanyRepository $companyRepository, PDFService $pdfService): Response
-    {
-        $companyInfo = $companyRepository->find($this->getUser()->getCompanyId());
-        $invoice = $entityManager->getRepository(Invoice::class)->find($id);
-        if (!$invoice) {
-            throw $this->createNotFoundException('La facture demandée n\'existe pas.');
-        }
 
-        $quote = $invoice->getQuoteId();
-        $products = $quote->getQuoteProducts();
 
-        $productList = [];
-        $totalTHT = 0;
-        $totalTTC = 0;
-        foreach ($products as $product) {
-            $productDetail = [
-                'product' => $product->getProduct()->getName(),
-                'quantity' => $product->getQuantity(),
-                'unitPrice' => $product->getProduct()->getUnitPrice(),
-                'VAT' => $product->getProduct()->getVAT(),
-//                'THT' => $product->getTHT(),
-//                'TTC' => $product->getTTC(),
-            ];
-            $productList[] = $productDetail;
-
-//            $totalTHT += $product->getTHT();
-//            $totalTTC += $product->getTTC();
-        }
-
-        $html = $this->renderView('back/invoices/invoice_template.html.twig', [
-            'invoice' => $invoice,
-            'productList' => $productList,
-            'totalTHT' => $totalTHT,
-            'totalTTC' => $totalTTC,
-            'companyInfo' => $companyInfo
-        ]);
-
-        $pdfContent = $pdfService->generatePDF($html);
-
-        return new Response($pdfContent, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="invoice_' . $invoice->getId() . '.pdf"',
-        ]);
-    }
-
-    #[Route('/payment/full/{id}', name: 'payment_full')]
-    public function payFull(int $id, EntityManagerInterface $entityManager) {
-        $invoice = $entityManager->getRepository(Invoice::class)->find($id);
-        if (!$invoice) {
-            throw $this->createNotFoundException('La facture demandée n\'existe pas.');
-        }
-
-        // Logique de paiement intégral à mettre en place
-        // Rediriger vers une passerelle de paiement avec le montant total
-
-        return $this->render('back/payments/full_payment.html.twig', [
-            'invoice' => $invoice
-        ]);
-    }
-
-    #[Route('/payment/installments/{id}', name: 'payment_installments')]
-    public function payInInstallments(int $id, EntityManagerInterface $entityManager) {
-        $invoice = $entityManager->getRepository(Invoice::class)->find($id);
-        if (!$invoice) {
-            throw $this->createNotFoundException('La facture demandée n\'existe pas.');
-        }
-
-        // Logique pour le paiement en plusieurs fois à mettre en place
-        // Créer un plan de paiement et de rediriger l'utilisateur vers une interface pour choisir le plan
-
-        return $this->render('back/payments/installments_payment.html.twig', [
-            'invoice' => $invoice
-        ]);
-    }
-
-    #[Route('/payment/deposit/{id}', name: 'payment_deposit')]
-    public function payDeposit(int $id, EntityManagerInterface $entityManager) {
-        $invoice = $entityManager->getRepository(Invoice::class)->find($id);
-        if (!$invoice) {
-            throw $this->createNotFoundException('La facture demandée n\'existe pas.');
-        }
-
-        // Logique pour le paiement d'un acompte à mettre en place
-        // Définir un montant fixe ou un pourcentage de l'acompte et de rediriger l'utilisateur vers une passerelle de paiement
-
-        return $this->render('back/payments/deposit_payment.html.twig', [
-            'invoice' => $invoice
-        ]);
-    }
 }
