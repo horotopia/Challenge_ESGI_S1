@@ -77,7 +77,7 @@ class ProductType extends AbstractType
             ->add('categoryId', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
-                'label' => 'Nom categorie',
+                'label' => 'Nom category',
                 'query_builder' => function (CategoryRepository $repository) use ($companyId) {
                     return $repository->createQueryBuilder('c')
                         ->andWhere('c.company_id = :companyId')

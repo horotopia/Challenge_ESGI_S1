@@ -370,7 +370,7 @@
                     <th class="px-4 py-2 border border-gray-200">prix</th>
                     <th class="px-4 py-2 border border-gray-200">tva</th>
                     <th class="px-4 py-2 border border-gray-200">Quantité</th>
-                    <th class="px-4 py-2 border border-gray-200">Catégorie/th>
+                    <th class="px-4 py-2 border border-gray-200">Catégorie</th>
                     <th class="px-4 py-2 border border-gray-200">Date création</th>
                     <th class="px-4 py-2 border border-gray-200">Action</th>
                 </tr>
@@ -388,7 +388,7 @@
                         <td class="px-4 py-2 border border-gray-200">{{ product.createdAt|date('Y-m-d H:i:s')}}</td>
                         <td class="px-8 py-2  border border-gray-200 flex justify-center items-center">
                             <span onclick="deleteProd({{ product.id }})" ><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
-                            <span onclick="updateProd({{ product.id }})" ><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></span>
+                            <span onclick="updateProd('editProduct','{{ product.id }}','{{ product.name}}','{{ product.brand}}','{{ product.unitPrice}}','{{ product.VAT}}','{{ product.availableQuantity}}','{{ product.description}}','{{ product.categoryId}}')" ><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -496,37 +496,18 @@
     };
 
      // AJAX for update a product
-    function updateProd(id) {
-        var productId = $(this).data('id');
-        console.log(id);
-        $.ajax({
-            url: '/admin/getProductInfo/'+id,
-            success: function (response) {
-            //window.location.reload();
-            //var data=json_decode(response); 
-            console.log('success');
-            console.log(response);
-            console.log('nom '+response.nom);
-            //var objetJson = JSON.parse(response); #}
-            console.log(response);
-            $("#edit_product_name").val(response.name);
-            $("#edit_product_brand").val(response.brand);
-            $("#edit_product_VAT").val(response.vat);
-            $("#edit_product_availableQuantity").val(response.quantity);
-            $("#edit_product_description").val(response.description);
-            $("#edit_product_unitPrice").val(response.price);
-            $("#edit_product_Id").val(response.id);
-            afficherFormulaire('editProduct');
-            },
-            error: function() {
-            console.log('error');
-            }
-        });
+    function updateProd(form,id,name,brand,price,vat,quantity,description,idCategory) {
+        console.log(idCategory);
+        $("#edit_product_name").val(name);
+        $("#edit_product_brand").val(brand);
+        $("#edit_product_VAT").val(vat);
+        $("#edit_product_availableQuantity").val(quantity);
+        $("#edit_product_description").val(description);
+        $("#edit_product_unitPrice").val(price);
+        $("#edit_product_categoryId").val(idCategory);
+        $("#edit_product_Id").val(id);
+        afficherFormulaire(form);
     };
-
-
-
-
 
 //disable popup to confirm sending form again
     if (window.history.replaceState) {

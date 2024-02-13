@@ -277,11 +277,11 @@
 
     // AJAX for deleting a category
     function updateCat(formId,id,name,desc) {
-        afficherFormulaire(formId);
+
         $("#edit_category_name").val(name);
         $("#edit_category_description").val(desc);
         $("#edit_category_id").val(id);
-
+        afficherFormulaire(formId);
     }
 
     function deleteCat(id) {

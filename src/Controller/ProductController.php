@@ -33,7 +33,7 @@ class ProductController extends AbstractController
         $errorsFormUpdate=null;
         //create 3 forms Add,update,search in one dynamic page
         $formProduct=$this->createForm(ProductType::class,$product,['company_id' => $companyId]);
-        $formProductUpdate=$this->createForm(EditProductType::class);
+        $formProductUpdate=$this->createForm(EditProductType::class,$product,['company_id' => $companyId]);
         $searchData = new SearchData();
         $formSearchProduct = $this->createForm(SearchType::class, $searchData);
 

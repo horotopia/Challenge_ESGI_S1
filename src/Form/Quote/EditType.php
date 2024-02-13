@@ -32,7 +32,7 @@ class EditType extends AbstractType
             ->add('productId', EntityType::class, [
                 'class' => Product::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Sélectionnez un produit',
+                'placeholder' => 'Sélectionnez un product',
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
