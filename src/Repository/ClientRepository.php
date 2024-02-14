@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Client;
-use App\model\SearchData;
+use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -27,38 +27,50 @@ class ClientRepository extends ServiceEntityRepository
      * @param int $page
      * @return PaginationInterface
      */
-    public function findclientsWithEntrepriseDetails(int $page): PaginationInterface
+    public function findclientsWithEntrepriseDetails(int $page, $companyId, $userRole): PaginationInterface
     {
-        $users = $this->createQueryBuilder('c')
-            ->select('c.id, c.nom, c.prenom, c.email, c.telephone, e.nom as entreprise_nom, c.create_at,c.adresse')
-            ->innerJoin('c.id_entreprise', 'e')
-            ->addOrderBy('c.create_at', 'DESC')
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c.id, c.lastName, c.firstName, c.email, c.phone, e.name as companyName, c.createdAt,c.address')
+            ->innerJoin('c.companyId', 'e');
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->where('e.id = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
 
-            ->getQuery()
-            ->getResult();
 
+        $queryBuilder->addOrderBy('c.createdAt', 'DESC');
 
+        $clients = $queryBuilder->getQuery()->getResult();
 
-        return $this->paginator->paginate($users, $page, 5);
+        return $this->paginator->paginate($clients, $page, 5);
     }
 
-    public function findBySearchData(SearchData $searchData): PaginationInterface
+    public function findBySearchData(SearchData $searchData, $companyId, $userRole): PaginationInterface
     {
-        $users = $this->createQueryBuilder('c')
-            ->select('c.id,c.nom, c.prenom, c.email, c.telephone, e.nom as entreprise_nom,c.create_at,c.adresse')
-            ->innerJoin('c.id_entreprise', 'e')
-            ->where('LOWER(c.nom) LIKE LOWER(:q)')
-            ->orWhere('LOWER(c.prenom) LIKE LOWER(:q)')
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c.id, c.lastName, c.firstName, c.email, c.phone, e.name as companyName, c.createdAt, c.address')
+            ->innerJoin('c.companyId', 'e')
+            ->where('LOWER(c.lastName) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.firstName) LIKE LOWER(:q)')
             ->orWhere('LOWER(c.email) LIKE LOWER(:q)')
-            ->orWhere('LOWER(e.nom) LIKE LOWER(:q)')
-            ->orWhere('LOWER(c.adresse) LIKE LOWER(:q)')
-            ->setParameter('q', '%' . $searchData->q . '%')
-            ->addOrderBy('c.create_at', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orWhere('LOWER(e.name) LIKE LOWER(:q)')
+            ->orWhere('LOWER(c.address) LIKE LOWER(:q)');
+
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->where('e.id = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
+
+
+        $queryBuilder->setParameter('q', '%' . $searchData->q . '%')
+            ->addOrderBy('c.createdAt', 'DESC');
+
+        $users = $queryBuilder->getQuery()->getResult();
 
         return $this->paginator->paginate($users, $searchData->page, 5);
     }
+
+
 
 //    public function findOneBySomeField($value): ?Client
 //    {

@@ -62,4 +62,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-var activeNavItems = document.querySelectorAll('.nav-link');
+

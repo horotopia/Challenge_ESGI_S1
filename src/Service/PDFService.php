@@ -36,6 +36,7 @@ class PDFService
     {
         $this->domPDF->loadHtml($html);
         $this->domPDF->render();
-        $this->domPDF->output();
+        return $this->domPDF->output();
+
     }
 }
