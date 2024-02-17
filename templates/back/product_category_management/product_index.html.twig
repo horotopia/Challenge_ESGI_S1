@@ -346,65 +346,79 @@
 
         <h2 class="text-gray-300 ">Produits</h2>
     </div>
-    {% if is_granted('ROLE_ADMIN') %}
-    <div class="flex justify-end sm:w-1/2 ">
-        <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
-    </div>
-    {% endif %}
+    
 </div>
+
+
+    
+
+
 
 
 
 
 <div class="drop-shadow-lg mx-5 mt-6 bg-white p-10 ">
-    {% include"back/blocks/search_data.html.twig" with{
-        form:formSearchProducts
-    } %}
-        <div class="overflow-x-auto mt-3">
-            <table class="min-w-full table-auto bg-white border border-gray-200">
-                <thead>
-                <tr>
-                    <th class="px-4 py-2 border border-gray-200">Produit</th>
-                    <th class="px-4 py-2 border border-gray-200">Marque</th>
-                    <th class="px-4 py-2 border border-gray-200">Description</th>
-                    <th class="px-4 py-2 border border-gray-200">prix</th>
-                    <th class="px-4 py-2 border border-gray-200">tva</th>
-                    <th class="px-4 py-2 border border-gray-200">Quantité</th>
-                    <th class="px-4 py-2 border border-gray-200">Catégorie</th>
-                    <th class="px-4 py-2 border border-gray-200">Date création</th>
-                    <th class="px-4 py-2 border border-gray-200">Action</th>
-                </tr>
-                </thead>
-                <tbody>
+   <div class=" flex flex-row justify-between items-center">
+        {% include"back/blocks/search_data.html.twig" with{
+            form:formSearchProducts
+        } %}
+         {% if is_granted('ROLE_ADMIN') %}
+        <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
+         {% endif %}
+   </div>
+        <div class="overflow-x-auto mt-8">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-center">Produit</th>
+                            <th scope="col" class="px-6 py-3 text-center">Marque</th>
+                            <th scope="col" class="px-6 py-3 text-center">Description</th>
+                            <th scope="col" class="px-6 py-3 text-center">Prix</th>
+                            <th scope="col" class="px-6 py-3 text-center">Tva</th>
+                            <th scope="col" class="px-6 py-3 text-center">Quantité</th>
+                            <th scope="col" class="px-6 py-3 text-center">Catégorie</th>
+                            <th scope="col" class="px-6 py-3 text-center">Date création</th>
+                            <th scope="col" class="px-6 py-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for product in products %}
-                    <tr>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.name}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.brand}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.description}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.unitPrice}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.VAT}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.availableQuantity}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.categoryName}} {{ product.categoryId}}</td>
-                        <td class="px-4 py-2 border border-gray-200">{{ product.createdAt|date('Y-m-d H:i:s')}}</td>
-                        <td class="px-8 py-2  border border-gray-200 flex justify-center items-center">
-                            <span onclick="deleteProd({{ product.id }})" ><img src="https://i.goopics.net/szydej.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
-                            <span onclick="updateProd('editProduct','{{ product.id }}','{{ product.name}}','{{ product.brand}}','{{ product.unitPrice}}','{{ product.VAT}}','{{ product.availableQuantity}}','{{ product.description}}','{{ product.categoryId}}')" ><img src="https://i.goopics.net/662e41.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></span>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
 
-                </tbody>
-            </table>
+                            <td class="px-6 py-4 text-center">{{ product.name }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.brand }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.description }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.unitPrice }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.VAT }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.availableQuantity }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.categoryName }}</td>
+                            <td class="px-6 py-4 text-center">{{ product.createdAt|date('Y-m-d H:i:s') }}</td>
+                            <td class="px-6 py-4 flex justify-around items-center">
+
+                             <span onclick="deleteProd({{ product.id }})" ><img src="https://i.goopics.net/08xic0.png" alt="Icon Supprimer" class="w-6 cursor-pointer"></span>
+                             <span onclick="updateProd('editProduct','{{ product.id }}','{{ product.name}}','{{ product.brand}}','{{ product.unitPrice}}','{{ product.VAT}}','{{ product.availableQuantity}}','{{ product.description}}','{{ product.categoryId}}')" ><img src="https://i.goopics.net/s6fgvf.png" alt="Icon Modifier" class="w-6 ml-2 cursor-pointer"></span>
+                               
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-    <!-- Pagination -->
-    <div class="flex justify-center items-center mt-4">
-        <nav class="block">
-            {{ knp_pagination_render(products) }}
-        </nav>
-    </div>
-
+        <!-- Pagination -->
+        <div class="flex justify-center items-center mt-4">
+            <nav class="block">
+                {{ knp_pagination_render(products) }}
+            </nav>
+        </div>
 </div>
+
+
+
+
+
 
 
 
