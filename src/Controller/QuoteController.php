@@ -558,7 +558,7 @@ class QuoteController extends AbstractController
             $this->addFlash('error', 'Le devis ne peut pas être accepté dans son état actuel.');
             return $this->redirectToRoute('app_accept_quote');
         }
-
+       
         // Accepter le devis
         $quote->setStatus('Accepté');
         $quote->setAcceptToken(null);
