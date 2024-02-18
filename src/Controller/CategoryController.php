@@ -11,6 +11,7 @@ use App\Repository\CategoryRepository;
 use App\Form\CategoryType;
 use App\Form\EditCategoryType;
 use App\Form\ProductType;
+use Symfony\Component\Security\Core\Security;
 use DataTables\DataTablesFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,8 +29,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CategoryController extends AbstractController
 {
     #[Route('/admin/product-category-management', name: 'product_category_management')]
-    public function addCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator , CategoryRepository $categoryRepository): Response
+    public function addCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator , CategoryRepository $categoryRepository, Security $security): Response
     {
+        $user = $security->getUser();
+        $userId = $user->getId();
+        $companyId = $user->getCompanyId();
+        $userRoles = $user->getRoles();
+
         $category= new Category();
         $errorsFormAdd=null;
         $errorsFormUpdate=null;
@@ -47,9 +53,15 @@ class CategoryController extends AbstractController
             $errorsFormAdd = $form->getErrors(true, false);
         }elseif($form->isSubmitted() && $form->isValid()) {
             //generate token
+            $currentDateTime = new DateTime();
             $tokenRegistration= $tokenGenerator->generateToken();
             $category->setName($form->get('name')->getData());
             $category->setDescription($form->get('description')->getData());
+            $category->setCreatedAt($currentDateTime);
+            $category->setUpdatedAt($currentDateTime);
+            $category->setCompanyId($companyId);
+            $category->setUserCreated($user);
+            $category->setUserUpdated($user);
             $entityManager->persist($category);
             $entityManager->flush();
             return $this->redirectToRoute('product_category_management');
@@ -61,9 +73,10 @@ class CategoryController extends AbstractController
             $currentDateTime = new DateTime();
             $id=$formCategoryUpdate->get('id')->getData();
             $category = $entityManager->getRepository(Category::class)->find($id);
-
             $category->setName($formCategoryUpdate->get('name')->getData());
             $category->setDescription($formCategoryUpdate->get('description')->getData());
+            $category->setUpdatedAt($currentDateTime);
+            $category->setUserUpdated($user);
             $entityManager->persist($category);
             $entityManager->flush();
             return $this->redirectToRoute('product_category_management');
@@ -72,9 +85,9 @@ class CategoryController extends AbstractController
 
 
         // $categories = $entityManager->getRepository(Category::class)->findAll();
-        $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1));
+        $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1),$companyId,$userRoles);
             // $categories=$catRepo->getCategoriesWithProductCount();
- 
+
         return $this->render('back/product_category_management/index.html.twig', [
             'formCategory' => $form->createView(),
             'categories' => $categories,

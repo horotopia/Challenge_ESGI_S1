@@ -25,7 +25,7 @@ class ProductController extends AbstractController
     {
         $user = $security->getUser();
         $userId = $user->getId();
-        $companyId = $user->getCompanyId()->getId();
+        $companyId = $user->getCompanyId();
 
         $userRoles = $user->getRoles();
         $product = new Product();
@@ -91,7 +91,7 @@ class ProductController extends AbstractController
         //here if search by data case
         if($formSearchProduct->isSubmitted() && $formSearchProduct->isValid()){
             $searchData = $formSearchProduct->getData();
-            $products = $entityManager->getRepository(Product::class)->findByProductNameOrCategoryName($searchData,$request->query->getInt('page', 1));
+            $products = $entityManager->getRepository(Product::class)->findByProductNameOrCategoryName($searchData,$request->query->getInt('page', 1),$companyId,$userRoles);
         }else{
             //here if get all products
        // $products= $entityManager->getRepository(Product::class)->getAllProducts($request->query->getInt('page', 1));
