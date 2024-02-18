@@ -70,4 +70,57 @@ class InvoiceRepository extends ServiceEntityRepository
         return $this->paginator->paginate($query, $searchData->page, 5);
     }
 
+
+
+    public function getPaidInvoicesSummary($companyId): array
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('COUNT(i.id) AS count, SUM(i.totalTTC) AS total')
+            ->from('App\Entity\Invoice', 'i')
+            ->leftJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere('i.status = :status')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('status', 'Reglée')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+
+    public function getUnpaidInvoicesSummary($companyId): array
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('COUNT(i.id) AS count, SUM(i.totalTTC) AS total')
+            ->from('App\Entity\Invoice', 'i')
+            ->leftJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere('i.status = :status')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('status', 'En attente')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+
+    public function getOverdueInvoicesSummary($companyId): array
+    {
+        $currentDate = new \DateTime();
+        $currentDate->setTime(0, 0, 0);
+
+        $query = $this->_em->createQueryBuilder()
+            ->select('COUNT(i.id) AS count, SUM(i.totalTTC) AS total')
+            ->from('App\Entity\Invoice', 'i')
+            ->innerJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere('i.dueDate <=:currentDate')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('currentDate', $currentDate)
+            ->getQuery();
+
+        return $query->getResult();
+
+}
+
 }

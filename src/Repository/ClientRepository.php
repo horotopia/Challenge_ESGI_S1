@@ -47,6 +47,8 @@ class ClientRepository extends ServiceEntityRepository
 
     public function findBySearchData(SearchData $searchData, $companyId, $userRole): PaginationInterface
     {
+
+
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c.id, c.lastName, c.firstName, c.email, c.phone, e.name as companyName, c.createdAt, c.address')
             ->innerJoin('c.companyId', 'e')
@@ -57,8 +59,8 @@ class ClientRepository extends ServiceEntityRepository
             ->orWhere('LOWER(c.address) LIKE LOWER(:q)');
 
         if (!in_array('ROLE_ADMIN', $userRole)) {
-            $queryBuilder->where('e.id = :companyId')
-                ->setParameter('companyId', $companyId);
+            $queryBuilder->andWhere('e.id = :companyId')
+                    ->setParameter('companyId', $companyId);
         }
 
 
