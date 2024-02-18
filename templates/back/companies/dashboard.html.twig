@@ -87,7 +87,7 @@
     </div>
     </div>
     <div class="sm:flex flex-col justify-around items-center mt-5 2xl:flex-row 2xl:items-center">
-        <div class="w-[37rem] h-[16rem] bg-white shadow-lg rounded-lg flex-shrink-0">
+        <div class="w-[37rem] h-[20rem] bg-white shadow-lg rounded-lg flex-shrink-0">
             <div class="rounded-t-lg h-14 bg-[#017AC2]">
                 <div class="flex flex-row justify-between items-center pt-2 mx-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -106,6 +106,58 @@
                         <path d="M16 22.5C15.0717 22.5 14.1815 22.8687 13.5251 23.5251C12.8687 24.1815 12.5 25.0717 12.5 26C12.5 26.9283 12.8687 27.8185 13.5251 28.4749C14.1815 29.1313 15.0717 29.5 16 29.5C16.9283 29.5 17.8185 29.1313 18.4749 28.4749C19.1313 27.8185 19.5 26.9283 19.5 26C19.5 25.0717 19.1313 24.1815 18.4749 23.5251C17.8185 22.8687 16.9283 22.5 16 22.5ZM16 12.5C15.0717 12.5 14.1815 12.8687 13.5251 13.5251C12.8687 14.1815 12.5 15.0717 12.5 16C12.5 16.9283 12.8687 17.8185 13.5251 18.4749C14.1815 19.1313 15.0717 19.5 16 19.5C16.9283 19.5 17.8185 19.1313 18.4749 18.4749C19.1313 17.8185 19.5 16.9283 19.5 16C19.5 15.0717 19.1313 14.1815 18.4749 13.5251C17.8185 12.8687 16.9283 12.5 16 12.5ZM19.5 6C19.5 5.07174 19.1313 4.1815 18.4749 3.52513C17.8185 2.86875 16.9283 2.5 16 2.5C15.0717 2.5 14.1815 2.86875 13.5251 3.52513C12.8687 4.1815 12.5 5.07174 12.5 6C12.5 6.92826 12.8687 7.8185 13.5251 8.47487C14.1815 9.13125 15.0717 9.5 16 9.5C16.9283 9.5 17.8185 9.13125 18.4749 8.47487C19.1313 7.8185 19.5 6.92826 19.5 6Z"
                               fill="white"/>
                     </svg>
+                </div>
+
+            </div>
+            <div class="mx-2">
+                <div class="flex flex-row justify-between">
+                    <div>
+                <div class="bg-[#FFA800] p-1 m-2 rounded w-[17rem]">
+                    <p>À régler</p>
+
+                    <div class="flex flex-row gap-4 ml-4">
+                        <div class=" flex flex-col ">
+                            <p class="text-center">{{  unpaidInvoices[0]['count']|number_format(2) }}</p>
+                            <span class="text-white font-medium text-xs">Factures</span>
+                        </div>
+                        <div class=" flex flex-col">
+                            <p class="text-center">{{  unpaidInvoices[0]['total']|number_format(2)}} €</p>
+                            <span class="text-white font-medium text-xs text-center">Montant</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="m-2 w-[17rem]">
+                <div class="bg-[#F41717] p-1 m-2 rounded w-[17rem]">
+                    <p>En retard</p>
+                    <div class="flex flex-row gap-4 ml-4">
+                        <div class=" flex flex-col ">
+                            <p class="text-center">{{ overdueInvoices[0]['count']|number_format(2)}}</p>
+                            <span class="text-white font-medium text-xs">Factures</span>
+                        </div>
+                        <div class=" flex flex-col">
+                            <p class="text-center">{{ overdueInvoices[0]['total']|number_format(2) }}  €</p>
+                            <span class="text-white font-medium text-xs text-center">Montant</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="m-2 w-[17rem]">
+                <div class="bg-[#0DE609] p-1 m-2 rounded w-[17rem]">
+                    <p>Régler</p>
+                    <div class="flex flex-row gap-4 ml-4">
+                        <div class=" flex flex-col  ">
+                            <p class="text-center">{{ paidInvoices[0]['count']|number_format(2)}}</p>
+                            <span class="text-white font-medium text-xs">Factures</span>
+                        </div>
+                        <div class=" flex flex-col">
+                            <p class="text-center">{{ paidInvoices[0]['total']|number_format(2) }}  €</p>
+                            <span class="text-white font-medium text-xs text-center">Montant</span>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                    <div class="w-30">
+                        <canvas id="myChart" width="260" height="260"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,7 +184,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="accordion-content h-[12.5rem]">
+                <div class="accordion-content h-[16rem]">
                     <div class="mx-2">
                       <div class="bg-[#ECF7EB] p-1 m-2 rounded">
                       <p>En attente de facturation</p>
@@ -147,7 +199,7 @@
                               </div>
                           </div>
                       </div>
-                        <hr class="m-2">
+                        <hr class="mx-2 my-8">
                         <div class="bg-[#ECF7EB] p-1 m-2 rounded">
                             <p>Devis  Expiré</p>
                             <div class="flex flex-row gap-4 ml-4">
@@ -162,7 +214,7 @@
                             </div>
                         </div>
                         <div class="flex flex-row justify-end">
-                            <p class=" text-[#8C909C] text-xs mr-2">Depuis le {{ 'now'|date('Y-m-01')|date('d/m/Y') }}</p>
+                            <p class=" text-[#8C909C] text-xs mr-2 mt-5">Depuis le {{ 'now'|date('Y-m-01')|date('d/m/Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -180,6 +232,51 @@
                 content.classList.toggle('hidden');
             });
         });
+
+
+        const overdueInvoicesCount = {{ overdueInvoices[0]['count'] }};
+        const unpaidInvoicesCount = {{ unpaidInvoices[0]['count'] }};
+        const paidInvoicesCount = {{ paidInvoices[0]['count'] }};
+        const totalInvoicesCount = overdueInvoicesCount + unpaidInvoicesCount + paidInvoicesCount;
+        const overduePercentage = (overdueInvoicesCount / totalInvoicesCount) * 100;
+        const unpaidPercentage = (unpaidInvoicesCount / totalInvoicesCount) * 100;
+        const paidPercentage = (paidInvoicesCount / totalInvoicesCount) * 100;
+        const data = {
+            labels: ['À régler', 'En retard', 'Réglé'],
+            datasets: [{
+                label: 'Pourcentage',
+                data: [ unpaidPercentage,overduePercentage, paidPercentage],
+                backgroundColor: ['#FFA800', '#F41717', '#0DE609']
+            }]
+        };
+        const config = {
+            type: 'doughnut',
+            data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Répartition des nombres de factures par état de facturation'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+
+
+
     </script>
     </div>
 

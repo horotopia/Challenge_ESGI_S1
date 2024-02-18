@@ -93,16 +93,16 @@ class QuoteRepository extends ServiceEntityRepository
     }
 
     public function countExpiredQuotesForCurrentMonth($companyId): array
-    {
+    {    $currentDate=new \DateTime();
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'SELECT COUNT(q.id) as quoteCount, SUM(q.totalTTC) as totalAmount
         FROM App\Entity\Quote q
-        WHERE q.dueDate <= :currentDate
+        WHERE q.dueDate <:currentDate
         AND q.clientId IN (
             SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId
         )'
-        )->setParameter('currentDate', new \DateTime())
+        )->setParameter('currentDate', $currentDate)
             ->setParameter('companyId', $companyId);
 
         return $query->getResult();
