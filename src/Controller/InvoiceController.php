@@ -193,7 +193,7 @@ class InvoiceController extends AbstractController
         $email = (new TemplatedEmail())
             ->from('ali.khelifa@se.univ-bejaia.dz')
             ->to($clientInfo->getEmail())
-            ->subject('Votre devis')
+            ->subject('Votre facture vous attend - Fast Invoice')
             ->htmlTemplate('back/invoices/send_invoice_email.html.twig')
             ->context([
                 'quotationNumber' => $invoiceNumber,

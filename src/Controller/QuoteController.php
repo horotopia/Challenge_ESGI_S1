@@ -99,7 +99,7 @@ class QuoteController extends AbstractController
         $email = (new TemplatedEmail())
             ->from('ali.khelifa@se.univ-bejaia.dz')
             ->to($clientInfo->getEmail())
-            ->subject('Votre devis')
+            ->subject('Votre devis vous attend - Fast Invoice')
             ->htmlTemplate('back/quotes/send_quote_email.html.twig')
             ->context([
                 'quotationNumber' => $quotationNumber,

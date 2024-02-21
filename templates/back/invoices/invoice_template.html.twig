@@ -1,139 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Facture</title>
+    <title>Facture</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            position: relative;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 10px;
+            margin: 20px;
+            color: #333;
         }
-        @page { margin: 10px; }
-
-
-        .header img {
-            float: right;
-            width: 150px;
-            height: 110px;
-        }
-
-        .header .devis-section {
-            float: left;
-
-        }
-
-        .header .client {
-            float: right;
-        }
-
-        .header h1{
+        .header, .info, .footer {
             text-align: center;
-            background-color: #3498db;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 18px;
             color: #fff;
-        }
-
-        .header .devis-section p {
-            margin: 1px;
-        }
-
-        .header .client p {
-            margin: 1px;
-        }
-
-        hr {
-            width: 100%;
-            height: 2px;
             background-color: #3498db;
-            margin: 0px;
-            position: absolute;
-            left: 0;
-            bottom: 10px;
+            margin: 0;
+            padding: 10px;
         }
-
-
-        .info .company p {
-            margin: 5px;
+        .header-section {
+            display: inline-block;
+            vertical-align: top;
+            width: 49%;
         }
-
+        .header-section p {
+            margin: 2px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+            margin-top: 5px;
+        }
         th {
             background-color: #3498db;
             color: #fff;
+            padding: 5px;
         }
-
-        table {
-            margin-top: 70px;
-            width: 100%;
-        }
-
-        table,
-        th,
         td {
-            border: 1px solid rgb(230, 228, 228);
-            border-collapse: collapse;
-            padding: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            text-align: right;
         }
-
-        .signateur_client {
-            float: right;
-            margin: 20px;
+        td:first-child {
+            text-align: left;
         }
-
-        .payment-info {
-            margin: 20px;
+        .totals td {
+            font-weight: bold;
+            border: none;
+            background-color: #f9f9f9;
         }
-
-        .footer {
-            width: 100%;
-            position: absolute;
-            left: 150px;
-            bottom: 0;
-        }
-
         .footer p {
-            text-align: center;
-            margin: 1px;
-            color: #cecece;
-            font-size: 12px;
+            font-size: 8px;
+            color: #999;
         }
-
-        .signateur{
-            border:2px solid #c2bfbf;
-            height: 100px;
-            width: 200px;}
+        .payment-info, .signateur_client {
+            font-size: 9px;
+            margin-top: 10px;
+        }
+        .payment-info a, .payment-info p {
+            margin: 3px 0;
+        }
+        .signateur {
+            border: 1px solid #ccc;
+            height: 50px;
+            width: 200px;
+            margin-top: 5px;
+        }
     </style>
 </head>
-
 <body>
 <div class="container">
     <div class="header">
         <h1>Facture</h1>
-        <div class="devis-section">
+        <div class="header-section">
             <p><strong>N°:</strong> {{invoiceInfo.invoiceNumber}}</p>
             <p><strong>Date de création:</strong> {{ invoiceInfo.createdAt|date('d/m/Y') }}</p>
             <p><strong>Échéance au:</strong> {{ invoiceInfo.dueDate|date('d/m/Y') }}</p>
         </div>
-        <div class="client">
+        <div class="header-section">
             <p><strong>Nom:</strong> {{ client.lastName }}</p>
             <p><strong>Adresse:</strong> {{ client.address }}</p>
             <p><strong>Email:</strong> {{ client.email }}</p>
         </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
 
     <div class="info">
-        <div class="company">
-            <p><strong>Nom Entreprise:</strong> {{ companyInfo.name }}</p>
-            <p><strong>Adresse:</strong> {{ companyInfo.address }}</p>
-            <p><strong>Téléphone:</strong> {{ companyInfo.phone }}</p>
-        </div>
+        <p><strong>Nom Entreprise:</strong> {{ companyInfo.name }}</p>
+        <p><strong>Adresse:</strong> {{ companyInfo.address }}</p>
+        <p><strong>Téléphone:</strong> {{ companyInfo.phone }}</p>
     </div>
-    <<!-- Tableau des produits -->
-    <<!-- Tableau des produits -->
+
     <table>
         <thead>
         <tr>
@@ -146,7 +107,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Ajoutez les lignes pour chaque products ici -->
         {% for product in productList %}
             <tr>
                 <td>{{ product.product.name }}</td>
@@ -157,45 +117,36 @@
                 <td>{{ product.TTC }}</td>
             </tr>
         {% endfor %}
-
-        <!-- Ajoutez d'autres lignes de produits ici -->
-        <tr>
-            <td colspan="5" style="text-align: right;  color:#949292"><strong>Total HT:</strong></td>
-            <td style="text-align: right;">{{ invoiceInfo.totalHT }} €</td>
+        <tr class="totals">
+            <td colspan="5" style="text-align: right;"><strong>Total HT:</strong></td>
+            <td>{{ invoiceInfo.totalHT }} €</td>
         </tr>
-        <tr>
-            <td colspan="5" style="text-align: right;  color:#949292"> <strong>Total TTC:</strong></td>
-            <td style="text-align: right;">{{ invoiceInfo.totalTTC }} €</td>
+        <tr class="totals">
+            <td colspan="5" style="text-align: right;"><strong>Total TTC:</strong></td>
+            <td>{{ invoiceInfo.totalTTC }} €</td>
         </tr>
         </tbody>
     </table>
 
+    <div class="payment-info">
+        <p><strong>Informations de paiement:</strong></p>
+        <p>Nous acceptons les paiements par virement bancaire. Veuillez choisir votre méthode de paiement :</p>
+        <p><strong>Payer en ligne</strong></p>
+        <p><a href="{{ url('payment_full', {'id': invoiceInfo.id}) }}">Payer la totalité</a> | <a href="{{ url('payment_installments', {'id': invoiceInfo.id}) }}">Payer en plusieurs fois</a> | <a href="{{ url('payment_deposit', {'id': invoiceInfo.id}) }}">Payer un acompte</a></p>
+        <p><strong>Payer en chèque :</strong></p>
+        <p>Libellez votre chèque à l'ordre de Fast Invoice et envoyez-le à l'adresse suivante :</p>
+        <p>Fast Invoice<br>242 Rue du Faubourg Saint-Antoine, Paris (75012)</p>
+    </div>
 
     <div class="signateur_client">
-        <p> <strong>Signateur client:</strong></p>
-        <div class="signateur">
-            <p style="text-align: center; color: #cecece; margin-top:40px">FAST Invoices</p>
-        </div>
+        <p><strong>Signature client:</strong></p>
+        <div class="signateur"></div>
     </div>
-
-     <div class="payment-info">
-        <p><strong>Informations de paiement:</strong></p>
-        <p>Nous acceptons les paiements par virement bancaire.</p>
-        <p>Veuillez choisir votre méthode de paiement :</p>
-        <a href="{{ path('payment_full', {'id': invoiceInfo.id}) }}">Payer la totalité</a>
-        <br>
-        <a href="{{ path('payment_installments', {'id': invoiceInfo.id}) }}">Payer en plusieurs fois</a>
-         <br>
-         <a href="{{ path('payment_deposit', {'id': invoiceInfo.id}) }}">Payer un acompte</a>
-    </div>
-
 
     <div class="footer">
-        <hr>
         <p>Conditions générales de vente | Politique de confidentialité</p>
         <p>&copy; 2024 {{ companyInfo.name }}. Tous droits réservés.</p>
     </div>
 </div>
 </body>
-
 </html>
