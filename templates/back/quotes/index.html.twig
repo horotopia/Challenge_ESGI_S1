@@ -1,8 +1,125 @@
 {% extends 'back/base.html.twig' %}
-
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+{% endblock %}
 {% block title %}{{ controller_name }}{% endblock %}
 
 {% block body %}
+
+ 
+
+<section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
+            
+
+        <div id="addPayment" class="container relative z-10 flex flex-col items-center hidden ">
+
+
+            <div class="w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
+
+                <div class="w-[42.5rem]   p-5 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
+                    <h4 class="mb-0 text-center font-medium text-2xl text-white">Enregistrer paiement</h4>
+                </div>
+                
+                <div class="flex justify-center mb-8" id="textQuoteForm"> fg </div>
+
+                {{ form_start(formInvoice) }}
+
+                <div class="flex items-center">
+                    <div>
+                        {{ form_widget(formInvoice.quote, {
+                            'label_attr':{'class' : 'text-base  ml-10 hidden'},
+                            'attr': {
+                                'class': 'w-[290px] hidden mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Devis',
+                            }
+                        }) }}
+
+                        {{ form_help(formInvoice.quote) }}
+                        
+                    </div>
+
+                    <div>
+                        {{ form_row(formInvoice.client, {
+                            'label_attr':{'class' : 'text-base  ml-10 hidden'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 hidden  rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Le Client'
+                            }
+                        }) }}
+                        {{ form_help(formInvoice.client) }}
+                        
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row  justify-around items-center">
+                    
+                    <div>
+                    {{ form_row(formInvoice.totalTTC,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Le Montant'
+                            }
+                        }) }}
+                        {{ form_help(formInvoice.totalTTC) }}
+                        
+                    </div>
+
+                     <div>
+                    {{ form_row(formInvoice.dueDate,{
+                            'label_attr':{'class' : 'text-base  ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'TVA'
+                            }
+                        }) }}
+                         {{ form_help(formInvoice.dueDate) }}
+                         
+                    </div>
+
+                     
+
+                </div>
+
+
+                <div class="flex flex-col justify-center ">
+                    <div>
+                        {{ form_row(formInvoice.paymentMethod,{
+                            'label_attr':{'class' : 'text-base flex ml-10'},
+                            'attr': {
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Catégorie'
+                            }
+                        }) }}
+                        {{ form_help(formInvoice.paymentMethod) }}
+                        
+                    </div>
+                   
+
+                </div>
+<hr class="mt-8 mb-4">
+                <div class="flex flex-row justify-center">
+                        {{ form_row(formInvoice.Enregistrer,{
+                            'attr': {
+                                'class': 'btn-primary mt-4 mb-8',
+                            }
+                               }) 
+                        }}
+                        <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('addPayment')">Annuler</span>
+                </div>
+                
+
+                
+                {{ form_end(formInvoice) }}
+
+            </div>
+
+        </div>
+</section>
+
+
+
     {% for type, messagesOfType in app.flashes %}
         {% for message in messagesOfType %}
             {% set alertClass = (type == 'error') ? 'bg-red-200' : 'bg-green-200' %}
@@ -39,6 +156,12 @@
         </nav>
 
     </div>
+
+   
+
+    
+
+
     <div class="drop-shadow-lg mx-5 mt-6 bg-white p-10 ">
         <div class="flex flex-row justify-between items-center">
         {% include"back/blocks/search_data.html.twig" with{
@@ -126,6 +249,10 @@
                                          class="w-6 ml-2 cursor-pointer">
                                 </a>
                             {% endif %}
+                             <span onclick="showFormPayment('addPayment','{{ quote.quotationNumber }}','{{ quote.lastName }} {{ quote.firstName }}','{{ quote.totalTTC }}','{{ quote.clientId }}','{{ quote.id }}')" aria-label="4.0 stars out of 5, 123 ratings">
+                                    <img src="https://i.goopics.net/hp725t.png" alt="Icon envoyer"
+                                         class="w-6 ml-2 cursor-pointer">
+                                </span>
                         </td>
 
                     </tr>
@@ -146,5 +273,91 @@
 
     </div>
 
+
+
+
+<style>
+    /* style for forms animation */
+    @keyframes fadeInDown {
+        from {
+            
+            opacity: 0;
+            -webkit-transform: translatey(-100px);
+            -moz-transform: translatey(-100px);
+            -o-transform: translatey(-100px);
+            transform: translatey(-100px);
+        }
+        to {
+            
+            opacity: 1;
+            -webkit-transform: translatey(0px);
+            -moz-transform: translatey(0px);
+            -o-transform: translatey(0px);
+            transform: translatey(0px);
+        }
+    }
+
+    @keyframes fadeOutUp {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+    }
+
+    .fadeOutUp {
+        animation: fadeOutUp 1s;
+    }
+    
+</style>
+
+<script>
+    // Fonction pour afficher le formulaire avec une animation de haut en bas
+    function afficherFormulaire(formulaireId) {
+        var formulaire = document.getElementById(formulaireId);
+        formulaire.classList.remove('hidden');
+        formulaire.style.animation = 'fadeInDown 0.5s';
+
+        // Ajoutez une classe d'animation pour faire descendre le formulaire
+        formulaire.classList.add('fadeInDown');
+
+        // Supprimez la classe d'animation après l'achèvement pour la prochaine utilisation
+        setTimeout(function() {
+            formulaire.classList.remove('fadeInDown');
+        }, 500);
+    }
+
+    function cacherFormulaire(formulaireId) {
+        var formulaire = document.getElementById(formulaireId);
+        formulaire.classList.add('fadeOutUp');
+        setTimeout(function() {
+            formulaire.classList.add('hidden');
+            formulaire.classList.remove('fadeOutUp');
+        }, 500);
+        $('.error').empty();
+        $('form[name="product"] :input').val('');
+    }
+
+        // AJAX for update a product
+    function showFormPayment(form,quote,client,price,idClient,idDevis) {
+        console.log(quote);
+        $("#textQuoteForm").text('Paiement pour le client '+client);
+        $("#invoice_payment_quote").val(quote);
+        $("#invoice_payment_totalTTC").val(price);
+        $("#invoice_payment_client").val(client);
+        $("#invoice_payment_IdClient").val(idClient);
+         $("#invoice_payment_IdDevis").val(idDevis);
+        afficherFormulaire(form);
+    };
+
+        //disable popup to confirm sending form again
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+
+</script>
 
 {% endblock %}

@@ -9,6 +9,8 @@ use App\Entity\QuoteProduct;
 use App\Entity\Product;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
+use App\Form\Invoice\InvoiceType;
+use App\Form\Invoice\InvoicePaymentType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
@@ -34,13 +36,51 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class QuoteController extends AbstractController
 {
     #[Route('/admin/quotes', name: 'app_back_quotes')]
-    public function index(QuoteRepository $quoteRepository, Request $request): Response
+    public function index(QuoteRepository $quoteRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $searchData = new SearchData();
+        $invoice=new Invoice();
         $companyId= $this->getUser()->getCompanyId()->getId();
         $userRole=$this->getUser()->getRoles();
         $form = $this->createForm(SearchType::class, $searchData);
+
+        $formInvoice = $this->createForm(InvoicePaymentType::class, null, ["companyId" => $companyId]);
+
+        $formInvoice->handleRequest($request);
         $form->handleRequest($request);
+        
+        if ($formInvoice->isSubmitted() && $formInvoice->isValid()) {
+            // $currentDateTime = new DateTimeImmutable();
+            $formData = $formInvoice->getData();
+            $curretDate = new \DateTime();
+           
+            $invoiceNumber= "FAC". '-' . uniqid();
+            $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $formData['quote']]);
+            $invoice->setQuote($quote);
+            $invoice->setDueDate($formData['dueDate']);
+            $invoice->setStatus('paye');
+            $invoice->setInvoiceNumber($invoiceNumber);
+            $invoice->setPaymentMethod($formData['paymentMethod']);
+            
+            $totalHT=$quote->gettotalHT();
+            $totalTTC=$quote->gettotalTTC();
+            $client=  $quote->getClientId();
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+            $invoice->setClient($client);
+           
+            
+
+
+
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La facture a été créée avec succès.');
+
+            return $this->redirectToRoute('app_back_invoices');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData = $form->getData();
             $quoteList = $quoteRepository->findBySearchData($searchData,$companyId,$userRole);
@@ -48,11 +88,12 @@ class QuoteController extends AbstractController
 
             $quoteList = $quoteRepository->findQuoteDetails($request->query->getInt('page', 1),$companyId,$userRole);
         }
-
+        
         return $this->render('back/quotes/index.html.twig', [
             'controller_name' => 'Devis',
             'form' => $form->createView(),
             'quoteList' => $quoteList,
+            'formInvoice' => $formInvoice->createView(),
         ]);
     }
     #[Route('/admin/sendEmailQuote/{quotationNumber}', name: 'app_back_sendEmail_quote')]

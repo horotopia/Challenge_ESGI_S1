@@ -28,10 +28,10 @@ class Invoice
     private ?string $paymentMethod = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTime $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?\DateTime $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dueDate = null;
@@ -111,22 +111,22 @@ class Invoice
         $this->paymentMethod = $paymentMethod;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): void
+    public function setCreatedAt(?\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
