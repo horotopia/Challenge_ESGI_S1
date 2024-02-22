@@ -42,7 +42,7 @@
                         <div class="text-xs text-red-500 ml-20">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
                     <div class=" mt-6 flex flex-row justify-around items-center">
-                    <a href="" class="text-[#007AC2] text-base">Mot de passe oublié</a>
+                    <a href="{{ path('app_forgot_password_request') }}" class="text-[#007AC2] text-base">Mot de passe oublié</a>
                     <button class="btn-primary hover:bg-blue-500" type="submit">
                         se connecter
                     </button>
