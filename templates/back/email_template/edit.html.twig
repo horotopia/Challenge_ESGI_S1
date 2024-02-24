@@ -1,0 +1,14 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Modifier le modèle d'email{% endblock %}
+
+{% block body %}
+    <h1>Modifier le modèle d'email</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Sauvegarder les changements</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_back_email_template') }}">Retour à la liste</a>
+{% endblock %}
