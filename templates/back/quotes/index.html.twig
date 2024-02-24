@@ -343,11 +343,11 @@
     function showFormPayment(form,quote,client,price,idClient,idDevis) {
         console.log(quote);
         $("#textQuoteForm").text('Paiement pour le client '+client);
-        $("#invoice_payment_quote").val(quote);
-        $("#invoice_payment_totalTTC").val(price);
-        $("#invoice_payment_client").val(client);
-        $("#invoice_payment_IdClient").val(idClient);
-         $("#invoice_payment_IdDevis").val(idDevis);
+        $("#payment_quote").val(quote);
+        $("#payment_totalTTC").val(price);
+        $("#payment_client").val(client);
+        $("#payment_IdClient").val(idClient);
+         $("#payment_IdDevis").val(idDevis);
         afficherFormulaire(form);
     };
 
