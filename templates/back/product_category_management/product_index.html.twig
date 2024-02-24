@@ -44,7 +44,7 @@
         {% endfor %}
     {% endfor %}
 
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_ENTREPRISE') %}
 <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
 
@@ -208,7 +208,7 @@
 
         </div>
 </section> 
-{% endif %}
+
 
  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
@@ -337,7 +337,7 @@
         </div>
 </section>
 
-  
+{% endif %}
 <div class="flex mt-4 ml-4 justify-between ">
     <div class="flex justify-start sm:w-1/2 ">
         <svg class="mt-2" width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -482,7 +482,7 @@
             formulaire.classList.add('hidden');
             formulaire.classList.remove('fadeOutUp');
         }, 500);
-        $('.error').empty();
+        $('.error').text('');
         $('form[name="product"] :input').val('');
     }
 
