@@ -4,10 +4,12 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
-use App\Form\Invoice\InvoiceType;
+
+
 use App\Entity\Quote;
 use App\Entity\QuoteProduct;
 use App\Entity\Product;
+use App\Form\PaymentType\PaymentType;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
 use App\Form\User\SearchType;
@@ -43,7 +45,7 @@ class QuoteController extends AbstractController
         $userRole=$this->getUser()->getRoles();
         $form = $this->createForm(SearchType::class, $searchData);
 
-        $formInvoice = $this->createForm(InvoicePaymentType::class, null, ["companyId" => $companyId]);
+        $formInvoice = $this->createForm(PaymentType::class, null, ["companyId" => $companyId]);
 
         $formInvoice->handleRequest($request);
         $form->handleRequest($request);
@@ -75,7 +77,7 @@ class QuoteController extends AbstractController
             $entityManager->persist($invoice);
             $entityManager->flush();
 
-            $this->addFlash('success', 'La facture a été créée avec succès.');
+            $this->addFlash('success', 'La facture a été payé avec succès.');
 
             return $this->redirectToRoute('app_back_invoices');
         }
