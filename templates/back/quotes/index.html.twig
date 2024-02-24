@@ -233,25 +233,24 @@
 
                             <a href="{{ path('app_back_quotes_generate_pdf',{'quotationNumber':quote.quotationNumber}) }}">
                                 <img src="https://i.goopics.net/3mbxm6.png" alt="Icon  télécharger"
-                                     class="w-6 cursor-pointer">
+                                     class="w-6 cursor-pointer" title="Télécharger">
                             </a>
                             <a href="{{ path('app_back_quotes_delete',{'quotationNumber':quote.quotationNumber}) }}"><img
                                         src="https://i.goopics.net/08xic0.png" alt="Icon Supprimer"
-                                        class="w-6 cursor-pointer"></a>
+                                        class="w-6 cursor-pointer" title="Supprimer"></a>
 
                             <a href="{{ path('app_back_quotes_edit',{'quotationNumber':quote.quotationNumber}) }}">
                                 <img src="https://i.goopics.net/s6fgvf.png" alt="Icon Modifier"
-                                     class="w-6 ml-2 cursor-pointer">
+                                     class="w-6 ml-2 cursor-pointer" title="Modifier">
                             </a>
                             {% if quote.status == 'Brouillon' or quote.status == 'Envoyé' %}
                                 <a href="{{ path('app_back_sendEmail_quote',{'quotationNumber':quote.quotationNumber}) }}">
                                     <img src="https://i.goopics.net/4h9wpm.png" alt="Icon envoyer"
-                                         class="w-6 ml-2 cursor-pointer">
+                                         class="w-6 ml-2 cursor-pointer" title="Envoyer par Email">
                                 </a>
                             {% endif %}
                              <span onclick="showFormPayment('addPayment','{{ quote.quotationNumber }}','{{ quote.lastName }} {{ quote.firstName }}','{{ quote.totalTTC }}','{{ quote.clientId }}','{{ quote.id }}')" aria-label="4.0 stars out of 5, 123 ratings">
-                                    <img src="https://i.goopics.net/hp725t.png" alt="Icon envoyer"
-                                         class="w-6 ml-2 cursor-pointer">
+                                    <i class="fa-solid fa-file-invoice-dollar" style="font-size: 22px; color: #0182d4;cursor: pointer" title="Paiement"></i>
                                 </span>
                         </td>
 

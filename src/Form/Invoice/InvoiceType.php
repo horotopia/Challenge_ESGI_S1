@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Invoice;
+namespace App\Form\InvoiceType;
 use App\Entity\Quote;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;

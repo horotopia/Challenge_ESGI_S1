@@ -3,19 +3,35 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
+use App\Form\User\SearchType;
+use App\Model\SearchData;
+use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_COMPTABLE')]
 class PaymentsController extends AbstractController
 {
     #[Route('/admin/payments', name: 'app_back_payments')]
-    public function index(): Response
+    public function getAllPayments(InvoiceRepository $invoiceRepository, Request $request, Security $security): Response
     {
+        $user = $security->getUser();
+        $userId = $user->getId();
+        $companyId = $user->getCompanyId();
+
+        $searchData = new SearchData();
+        $formSearch = $this->createForm(SearchType::class, $searchData);
+        $formSearch->handleRequest($request);
+        $paymentsList = $invoiceRepository->getAllPayments($request->query->getInt('page', 1),$companyId);
+
         return $this->render('back/payments/index.html.twig', [
             'controller_name' => 'PaymentsController',
+            'paymentsList' => $paymentsList,
+            'formSearch' => $formSearch,
         ]);
     }
     #[Route('/payment/full/{id}', name: 'payment_full')]

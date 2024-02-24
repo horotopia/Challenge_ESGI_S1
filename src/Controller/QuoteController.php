@@ -4,13 +4,12 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
+use App\Form\Invoice\InvoiceType;
 use App\Entity\Quote;
 use App\Entity\QuoteProduct;
 use App\Entity\Product;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
-use App\Form\Invoice\InvoiceType;
-use App\Form\Invoice\InvoicePaymentType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
