@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Form\Invoice\InvoiceType;
+use App\Form\PaymentType\PaymentType;
+use App\Form\PaymentType\UpdatePaymentType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
@@ -29,13 +31,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class InvoiceController extends AbstractController
 {
     #[Route('/admin/invoices', name: 'app_back_invoices')]
-    public function index(InvoiceRepository $invoiceRepository, Request $request): Response
+    public function index(InvoiceRepository $invoiceRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $searchData = new SearchData();
         $companyId= $this->getUser()->getCompanyId()->getId();
         $userRole=$this->getUser()->getRoles();
+        $formInvoice = $this->createForm(UpdatePaymentType::class ,null, ["companyId" => $companyId]);
         $form = $this->createForm(SearchType::class, $searchData);
+
         $form->handleRequest($request);
+        $formInvoice->handleRequest($request);
+
+        if ($formInvoice->isSubmitted() && $formInvoice->isValid()) {
+            // $currentDateTime = new DateTimeImmutable();
+            $formData = $formInvoice->getData();
+            $curretDate = new \DateTime();
+            $invoice = $entityManager->getRepository(Invoice::class)->find($formData['IdFacture']);
+            $invoice->setPaymentDate($formData['dueDate']);
+            $invoice->setStatus('Payé');
+            $invoice->setPaymentMethod($formData['paymentMethod']);
+            $invoice->setUpdatedAt($formData['dueDate']);
+            $invoice->setTotalTTC($formData['totalTTC']);
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+            $this->addFlash('success', 'La facture a été payé avec succès.');
+            return $this->redirectToRoute('app_back_invoices');
+        }
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData = $form->getData();
             $invoiceList = $invoiceRepository->findBySearchData($searchData,$userRole,$companyId);
@@ -47,7 +70,9 @@ class InvoiceController extends AbstractController
         return $this->render('back/invoices/index.html.twig', [
             'controller_name' => 'Invoices',
             'form' => $form->createView(),
+            'formInvoice' => $formInvoice->createView(),
             'invoiceList' => $invoiceList,
+
         ]);
     }
     #[Route('/admin/invoices/add', name: 'app_back_invoices_add')]
@@ -67,7 +92,7 @@ class InvoiceController extends AbstractController
 
             $invoice->setQuote($formData['quotes']);
             $invoice->setDueDate($formData['dueDate']);
-            $invoice->setStatus('Payé');
+            $invoice->setStatus($formData['statut']);
             $invoice->setInvoiceNumber($invoiceNumber);
             $invoice->setPaymentMethod($formData['paymentMethod']);
             $invoice->setTotalHT($totalHT);
