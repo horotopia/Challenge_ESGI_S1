@@ -631,6 +631,7 @@ class QuoteController extends AbstractController
         $entityManager->persist($invoice);
         $entityManager->flush();
 
+        
         return $this->redirectToRoute('app_accept_quote');
 
 
