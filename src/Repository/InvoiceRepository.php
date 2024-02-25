@@ -311,4 +311,25 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
 
+    public function getAllPayments($companyId): array
+    {
+        $currentDate = new \DateTime();
+
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT i, c
+        FROM App\Entity\Invoice i
+        JOIN i.client c
+        WHERE i.status = :status and c.companyId= :company'
+        )->setParameter('status', 'Payé')
+            ->setParameter('company', $companyId);
+
+
+
+        return $query->getResult();
+
+
+    }
+
+
 }

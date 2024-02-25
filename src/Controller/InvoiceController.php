@@ -67,7 +67,7 @@ class InvoiceController extends AbstractController
 
             $invoice->setQuote($formData['quotes']);
             $invoice->setDueDate($formData['dueDate']);
-            $invoice->setStatus($formData['statut']);
+            $invoice->setStatus('Payé');
             $invoice->setInvoiceNumber($invoiceNumber);
             $invoice->setPaymentMethod($formData['paymentMethod']);
             $invoice->setTotalHT($totalHT);

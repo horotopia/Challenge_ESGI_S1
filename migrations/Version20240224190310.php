@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240220120939 extends AbstractMigration
+final class Version20240224190310 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,6 +26,10 @@ final class Version20240220120939 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN reset_password_request.requested_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN reset_password_request.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE invoice ALTER created_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('ALTER TABLE invoice ALTER updated_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('COMMENT ON COLUMN invoice.created_at IS NULL');
+        $this->addSql('COMMENT ON COLUMN invoice.updated_at IS NULL');
     }
 
     public function down(Schema $schema): void
@@ -35,5 +39,9 @@ final class Version20240220120939 extends AbstractMigration
         $this->addSql('DROP SEQUENCE reset_password_request_id_seq CASCADE');
         $this->addSql('ALTER TABLE reset_password_request DROP CONSTRAINT FK_7CE748AA76ED395');
         $this->addSql('DROP TABLE reset_password_request');
+        $this->addSql('ALTER TABLE invoice ALTER created_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('ALTER TABLE invoice ALTER updated_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('COMMENT ON COLUMN invoice.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN invoice.updated_at IS \'(DC2Type:datetime_immutable)\'');
     }
 }
