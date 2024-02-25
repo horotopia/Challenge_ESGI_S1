@@ -33,7 +33,7 @@ class InvoiceRepository extends ServiceEntityRepository
     public function findInvoiceDetails(int $page, $userRole,$companyId): PaginationInterface
     {
         $queryBuilder = $this->createQueryBuilder('i')
-            ->select('i.id, i.invoiceNumber, i.createdAt, i.status, i.totalTTC,i.totalHT, c.lastName, c.firstName')
+            ->select('i,c')
             ->leftJoin('i.client', 'c')
             ->orderBy('i.createdAt', 'DESC');
 

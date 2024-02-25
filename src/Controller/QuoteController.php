@@ -23,6 +23,7 @@ use App\Service\PDFService;
 use App\Service\SendEmail;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Session;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,7 +60,7 @@ class QuoteController extends AbstractController
             $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $formData['quote']]);
             $invoice->setQuote($quote);
             $invoice->setDueDate($formData['dueDate']);
-            $invoice->setStatus('paye');
+            $invoice->setStatus('Payé');
             $invoice->setInvoiceNumber($invoiceNumber);
             $invoice->setPaymentMethod($formData['paymentMethod']);
             
@@ -585,7 +586,7 @@ class QuoteController extends AbstractController
     public function acceptQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager, PDFService $pdfService): Response
     {
         $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
-
+        $AutoInvoice=new Invoice();
         if (!$quote) {
             $this->addFlash('error', 'Devis non trouvé.');
             return $this->redirectToRoute('app_accept_quote');
@@ -606,6 +607,31 @@ class QuoteController extends AbstractController
         $quote->setAcceptToken(null);
         $quote->setRefuseToken(null);
         $entityManager->flush();
+
+        // Auto Generate Invoice From Accepted Quote
+        $curretDate = new \DateTime();
+        $invoice=new Invoice();
+        $invoiceNumber= "FAC". '-' . uniqid();
+        $invoice->setQuote($quote);
+        $invoice->setStatus('En attente');
+        $invoice->setInvoiceNumber($invoiceNumber);
+        $invoice->setCreatedAt($curretDate);
+        $invoice->setUpdatedAt($curretDate);
+        $invoice->setDueDate($curretDate);
+        $invoice->setPaymentDate($curretDate);
+        $invoice->setPaymentMethod('not defined');
+        $invoice->setUpdatedAt($curretDate);
+        $invoice->setUserValidate(0);
+        $totalHT=$quote->gettotalHT();
+        $totalTTC=$quote->gettotalTTC();
+        $client=  $quote->getClientId();
+        $invoice->setTotalHT($totalHT);
+        $invoice->setTotalTTC($totalTTC);
+        $invoice->setClient($client);
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        
         return $this->redirectToRoute('app_accept_quote');
 
 
@@ -639,6 +665,8 @@ class QuoteController extends AbstractController
 
         return $this->redirectToRoute('app_refuse_quote');
     }
+
+
 
 
 
