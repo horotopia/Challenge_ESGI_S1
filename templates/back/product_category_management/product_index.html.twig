@@ -44,7 +44,6 @@
         {% endfor %}
     {% endfor %}
 
-{% if is_granted('ROLE_ENTREPRISE') %}
 <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
 
@@ -336,8 +335,6 @@
 
         </div>
 </section>
-
-{% endif %}
 <div class="flex mt-4 ml-4 justify-between ">
     <div class="flex justify-start sm:w-1/2 ">
         <svg class="mt-2" width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -362,9 +359,9 @@
         {% include"back/blocks/search_data.html.twig" with{
             form:formSearchProducts
         } %}
-         {% if is_granted('ROLE_ADMIN') %}
+
         <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
-         {% endif %}
+
    </div>
         <div class="overflow-x-auto mt-8">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

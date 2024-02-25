@@ -72,6 +72,29 @@ class ClientRepository extends ServiceEntityRepository
         return $this->paginator->paginate($users, $searchData->page, 5);
     }
 
+    public function countClientsAddedToday($companyId): int
+    {
+        $currentDate = new \DateTime();
+
+        $startDate = new \DateTime($currentDate->format('Y-m-d'));
+
+        $endDate = new \DateTime($currentDate->format('Y-m-d 23:59:59'));
+
+        // Ajouter une seconde à la date de fin de journée pour inclure toute la journée
+        $endDate->modify('+1 second');
+
+        $qb = $this->createQueryBuilder('c');
+        $qb->select($qb->expr()->count('c.id'));
+        $qb->where('c.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('c.companyId = :companyId');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
+
+
 
 
 //    public function findOneBySomeField($value): ?Client

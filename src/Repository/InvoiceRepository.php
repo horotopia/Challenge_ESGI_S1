@@ -81,7 +81,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->where('c.companyId = :companyId')
             ->andWhere('i.status = :status')
             ->setParameter('companyId', $companyId)
-            ->setParameter('status', 'Reglée')
+            ->setParameter('status', 'Payé')
             ->getQuery();
 
         return $query->getResult();
@@ -122,6 +122,194 @@ class InvoiceRepository extends ServiceEntityRepository
         return $query->getResult();
 
 }
+    public function countSalesAddedToday($companyId, $status): int
+    {
+        $currentDate = new \DateTime();
+
+        $startDate = new \DateTime($currentDate->format('Y-m-d'));
+
+        $endDate = new \DateTime($currentDate->format('Y-m-d 23:59:59'));
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->select($qb->expr()->count('i.id'));
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status = :status');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+        $qb->setParameter('status', $status);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+    public function countTotalSales($companyId, $status): int
+    {
+       $qb = $this->createQueryBuilder('i');
+        $qb->select($qb->expr()->count('i.id'));
+        $qb->Where('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status = :status');
+        $qb->setParameter('companyId', $companyId);
+        $qb->setParameter('status', $status);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+    public function getInvoiceTypesByMonth($companyId): array
+    {
+        $currentDate = new \DateTimeImmutable();
+
+        $query = $this->_em->createQueryBuilder()
+            ->select('i.createdAt AS createdAt, i.status AS status, i.dueDate AS dueDate')
+            ->from('App\Entity\Invoice', 'i')
+            ->leftJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->setParameter('companyId', $companyId)
+            ->getQuery();
+
+        $invoices = $query->getResult();
+
+        $invoiceTypesByMonth = [];
+
+        foreach ($invoices as $invoice) {
+            $createdAt = $invoice['createdAt'];
+            $dueDate = $invoice['dueDate'];
+
+            if ($createdAt instanceof \DateTimeImmutable && $dueDate instanceof \DateTimeInterface) {
+                $month = $createdAt->format('n');
+                $status = $invoice['status'];
+
+                if ($currentDate > $dueDate && $status === 'En attente') {
+                    $status = 'En retard';
+                }
+
+                if (!isset($invoiceTypesByMonth[$month][$status])) {
+                    $invoiceTypesByMonth[$month][$status] = 0;
+                }
+
+                $invoiceTypesByMonth[$month][$status]++;
+            }
+        }
+
+        return $invoiceTypesByMonth;
+    }
+    public function getRevenueByMonth($companyId): array
+    {
+        $invoices = $this->createQueryBuilder('i')
+            ->select('i.totalTTC, i.createdAt')
+            ->leftJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere("i.status = :status")
+            ->setParameter('companyId', $companyId)
+            ->setParameter("status", "Payé")
+            ->getQuery()
+            ->getResult();
+
+        $revenueByMonth = [];
+
+        foreach ($invoices as $invoice) {
+            $createdAt = $invoice['createdAt'];
+            $totalTTC = $invoice['totalTTC'];
+            $month = $createdAt->format('n');
+
+            if (!isset($revenueByMonth[$month])) {
+                $revenueByMonth[$month] = 0;
+            }
+
+            $revenueByMonth[$month] += $totalTTC;
+        }
+        return $revenueByMonth;
+    }
+
+
+    public function calculateRevenueOnFiscalYear($companyId): float
+    {
+        $startDate = new \DateTimeImmutable('first day of January this year');
+        $endDate = new \DateTimeImmutable('last day of December this year');
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('SUM(i.totalTTC)');
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status=:status');
+        $qb->setParameter('status', 'Payé');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (float) $qb->getQuery()->getSingleScalarResult();
+    }
+    public function calculateRevenueOfPreviousFiscalYear($companyId): float
+    {
+
+        $startDate = new \DateTimeImmutable('first day of January last year');
+        $endDate = new \DateTimeImmutable('last day of December last year');
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('SUM(i.totalTTC)');
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status=:status');
+        $qb->setParameter('status', 'Payé');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (float) $qb->getQuery()->getSingleScalarResult();
+    }
+
+
+    public function calculateRevenueByMonth($companyId): float
+    {
+        $startDate = new \DateTime( 'first day of this month');
+        $endDate = (clone $startDate)->modify('last day of this month');
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('SUM(i.totalTTC)');
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status=:status');
+        $qb->setParameter('status', 'Payé');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (float) $qb->getQuery()->getSingleScalarResult();
+    }
+    public function calculateRevenuePreviousMonth($companyId): float
+    {
+        $startDate = new \DateTime('first day of last month');
+        $endDate = (clone $startDate)->modify('last day of this month');
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('SUM(i.totalTTC)');
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status=:status');
+        $qb->setParameter('status', 'Payé');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        $revenuePreviousMonth = (float) $qb->getQuery()->getSingleScalarResult();
+        return $revenuePreviousMonth;
+    }
+
+
+    public function calculateRevenueByDay($companyId): float
+    {
+        $startDate = new \DateTime();
+        $endDate = (clone $startDate)->modify('+1 day');
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('SUM(i.totalTTC)');
+        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
+        $qb->andWhere('i.status=:status');
+        $qb->setParameter('status', 'Payé');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (float) $qb->getQuery()->getSingleScalarResult();
+    }
+
 
     public function getAllPayments($companyId): array
     {

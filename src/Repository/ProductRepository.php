@@ -69,6 +69,26 @@ class ProductRepository extends ServiceEntityRepository
 
         return $this->paginator->paginate($products, $page, 5);
     }
+    public function countProductsAddedToday($companyId): int
+    {
+        $currentDate = new \DateTime();
+
+        $startDate = new \DateTime($currentDate->format('Y-m-d'));
+
+        $endDate = new \DateTime($currentDate->format('Y-m-d 23:59:59'));
+        $endDate->modify('+1 second');
+
+        $qb = $this->createQueryBuilder('p');
+        $qb->select($qb->expr()->count('p.id'));
+        $qb->where('p.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('p.companyId = :companyId');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+
+}
 
 //    public function findOneBySomeField($value): ?Product
 //    {

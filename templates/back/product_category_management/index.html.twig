@@ -12,7 +12,7 @@
 
 {% block body %}
 
-{% if is_granted('ROLE_ADMIN') %}
+
  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
         <div id="newCategory" class="container relative z-10 flex flex-col items-center hidden">
@@ -143,7 +143,7 @@
 
         </div>
     </section>
-{% endif %}
+
 
 
 
@@ -164,9 +164,9 @@
         {% include"back/blocks/search_data.html.twig" with{
             form:formSearchCategory
         } %}
-         {% if is_granted('ROLE_ADMIN') %}
+
         <button class="btn-primary " onclick="afficherFormulaire('newCategory')"> Nouvelle Catégorie </button>
-         {% endif %}
+
    </div>
         <div class="overflow-x-auto mt-8">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
