@@ -44,7 +44,7 @@
         {% endfor %}
     {% endfor %}
 
-{% if is_granted('ROLE_ADMIN') %}
+
 <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
 
@@ -208,7 +208,7 @@
 
         </div>
 </section> 
-{% endif %}
+
 
  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
@@ -362,9 +362,9 @@
         {% include"back/blocks/search_data.html.twig" with{
             form:formSearchProducts
         } %}
-         {% if is_granted('ROLE_ADMIN') %}
+
         <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
-         {% endif %}
+
    </div>
         <div class="overflow-x-auto mt-8">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

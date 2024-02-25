@@ -25,7 +25,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
+#[IsGranted('ROLE_ENTREPRISE')]
 class CategoryController extends AbstractController
 {
     #[Route('/admin/product-category-management', name: 'product_category_management')]

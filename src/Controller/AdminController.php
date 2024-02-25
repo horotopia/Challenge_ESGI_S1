@@ -24,10 +24,31 @@ class AdminController extends AbstractController
         $PaidInvoices=$invoiceRepository->getPaidInvoicesSummary($companyId);
         $UnpaidInvoices=$invoiceRepository->getUnpaidInvoicesSummary($companyId);
 
+        $revenueOnFiscalYear = $invoiceRepository->calculateRevenueOnFiscalYear($companyId);
+        $revenueOfPreviousFiscalYear=$invoiceRepository->calculateRevenueOfPreviousFiscalYear($companyId);
+        $revenueByMonth = $invoiceRepository->calculateRevenueByMonth($companyId);
+        $revenuePreviousMonth=$invoiceRepository->calculateRevenuePreviousMonth($companyId);
+        $revenueByDay = $invoiceRepository->calculateRevenueByDay($companyId);
+
+        if ($revenueOfPreviousFiscalYear != 0) {
+            $variationPercentageYear = number_format((($revenueOnFiscalYear - $revenueOfPreviousFiscalYear) / $revenueOfPreviousFiscalYear) * 100, 2);
+        } else {
+            $variationPercentageYear = "N/A";
+        }
+
+        if ($revenuePreviousMonth != 0) {
+            $variationPercentageMonth = number_format((($revenueByMonth - $revenuePreviousMonth) / $revenuePreviousMonth) * 100, 2);
+        } else {
+            $variationPercentageMonth = "N/A";
+        }
+
+        $variationYear = number_format($revenueOnFiscalYear - $revenueOfPreviousFiscalYear, 2);
+
+        $variationMonth = number_format($revenueByMonth - $revenuePreviousMonth, 2);
+
         if ($user) {
             $company = $repository->findBy(['id' => $user->getCompanyId()]);
         }
-
         return $this->render('back/companies/dashboard.html.twig', [
             'controller_name' => 'AdminController',
             'companies' => $company,
@@ -35,7 +56,14 @@ class AdminController extends AbstractController
             'quoteExpiredData'=>$expiredQuotes,
             'overdueInvoices'=>$OverdueInvoices,
             'paidInvoices'=>$PaidInvoices,
-            'unpaidInvoices'=>$UnpaidInvoices
+            'unpaidInvoices'=>$UnpaidInvoices,
+            'revenueOnFiscalYear'=>$revenueOnFiscalYear,
+            'revenueByMonth'=>$revenueByMonth,
+            'revenueByDay'=>$revenueByDay,
+            'variationPercentageYear'=>$variationPercentageYear,
+            'variationYear'=>$variationYear,
+            'variationPercentageMonth'=>$variationPercentageMonth,
+            'variationMonth'=>$variationMonth
         ]);
     }
 }

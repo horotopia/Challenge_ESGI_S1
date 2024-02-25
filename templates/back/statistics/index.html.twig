@@ -1,9 +1,203 @@
-{% extends 'back/base.html.twig' %} 
+{% extends 'back/base.html.twig' %}
 
 {% block title %}{{ controller_name }}{% endblock %}
 
-{% block body %}
+{% block body  %}
+    <body class="bg-gray-100">
+    <div class="mt-8 ">
+        <div class="flex flex-row justify-around  items-center  relative">
+            <div class="transition duration-500 ease-in-out transform hover:scale-105 drop-shadow-lg w-[22rem] h-44 mx-5 mt-6 bg-white rounded relative ">
 
-<h1 class="text-center">{{ controller_name }}</h1>
+                <div class=" m-10 flex flex-col items-center">
+                    <img src="https://i.goopics.net/355sd3.png" alt="" class="w-16">
+                    <h1 class="m-0 text-gray-500 text-4xl">{{ totalNumberOfSales }}</h1>
+                    <p class="text-gray-400">Total ventes</p>
+                </div>
+                <div class=" px-2 py-1 rounded-[2.75rem] text-white flex flex-row items-center absolute top-1 right-1
+    {% if salesPercentageAddedToday >= 40 %}
+                    bg-[#7CDF0C] text-white
+                {% else %}
+                    bg-[#DF0C0C] text-white
+                    {% endif %}">
 
+
+                    {{ salesPercentageAddedToday|number_format(0, '.', ',') }}%
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                         stroke="currentColor" aria-hidden="true" class="h-3.5 w-3.5 text-white {% if salesPercentageAddedToday < 40 %} rotate-180 {% endif %} ">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-400 absolute top-3 right-[5rem]"> Par rapport à  aujourd'hui</span>
+
+            </div>
+
+            <div class="transition duration-500 ease-in-out transform hover:scale-105 drop-shadow-lg w-[22rem] h-44 mx-5 mt-6 bg-white rounded relative">
+                <div class="m-10 flex flex-col items-center">
+                    <img src="https://i.goopics.net/rf5q3b.png" alt="" class="w-16">
+                    <h1 class="m-0 text-gray-500 text-4xl">{{ totalNumberOfProducts }}</h1>
+                    <p class="text-gray-400">Total produits</p>
+                </div>
+                <div class=" px-2 py-1 rounded-[2.75rem] text-white flex flex-row items-center absolute top-1 right-1
+     {% if productsPercentageAddedToday >= 40 %}
+            bg-[#7CDF0C] text-white
+        {% else %}
+            bg-[#DF0C0C] text-white
+        {% endif %}">
+                    {{ productsPercentageAddedToday|number_format(0, '.', ',') }}%
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                         stroke="currentColor" aria-hidden="true" class="h-3.5 w-3.5 text-white {% if productsPercentageAddedToday < 40 %} rotate-180 {% endif %}">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-400 absolute top-3 right-[5rem]"> Par rapport à  aujourd'hui</span>
+
+            </div>
+            <div class="transition duration-500 ease-in-out transform hover:scale-105 drop-shadow-lg w-[22rem] h-44 mx-5 mt-6 bg-white rounded relative">
+                <div class="m-10 flex flex-col items-center">
+                    <img src="https://i.goopics.net/dwwgpk.png" alt="" class="w-16">
+                    <h1 class="m-0 text-gray-500 text-4xl">{{ totalNumberOfClients }}</h1>
+                    <p class="text-gray-400">Total clients</p>
+                </div>
+                <div class="px-2 py-1 rounded-[2.75rem] flex flex-row items-center absolute top-1 right-1
+        {% if clientsPercentageAddedToday >= 40 %}
+            bg-[#7CDF0C] text-white
+        {% else %}
+            bg-[#DF0C0C] text-white
+        {% endif %}
+    ">
+                    {{ clientsPercentageAddedToday|number_format(0, '.', ',') }}%
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                         stroke="currentColor" aria-hidden="true"
+                         class="h-3.5 w-3.5 transform {% if clientsPercentageAddedToday < 40 %} rotate-180 {% endif %}">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-400 absolute top-3 right-[5rem]"> Par rapport à aujourd'hui</span>
+            </div>
+
+        </div>
+        <div class="flex flex-row justify-around">
+            <div class=" drop-shadow-lg w-[37rem] mx-5 mt-6 bg-white rounded  p-2">
+                <canvas id="myChartbar"></canvas>
+            </div>
+            <div class=" drop-shadow-lg w-[37rem] mx-5 mt-6 bg-white rounded  p-2">
+                <canvas id="myChartLine"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        const ctx = document.getElementById('myChartbar');
+
+        const labels = {{ monthsLabels | json_encode | raw }};
+        const invoicesData = {{ invoicesData | json_encode | raw }};
+
+        const dataRetard = Object.values(invoicesData).map(item => item['En retard'] ?? 0);
+        const dataARegler = Object.values(invoicesData).map(item => item['En attente'] ?? 0);
+        const dataReglee = Object.values(invoicesData).map(item => item['Payé'] ?? 0);
+
+
+        const totalFactures = dataRetard.map((val, index) => val + dataARegler[index] + dataReglee[index]);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total des factures',
+                    data: totalFactures,
+                    type: 'line',
+                    borderColor: '#2d82f5',
+                    fill: true
+                }, {
+                    label: 'Factures en retard',
+                    data: dataRetard,
+                    backgroundColor: '#DF0C0C',
+                }, {
+                    label: 'Factures à régler',
+                    data: dataARegler,
+                    backgroundColor: '#FFA800',
+                }, {
+                    label: 'Factures réglées',
+                    data: dataReglee,
+                    backgroundColor: '#7CDF0C',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        stacked: true,
+                        type: 'logarithmic',
+                        title: {
+                            display: true,
+                            text: 'Nombre de factures'
+                        }
+                    },
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Mois'
+                        }
+                    }
+                }
+            }
+        });
+        var ctx2 = document.getElementById('myChartLine').getContext('2d');
+        var revenueByMonth = {{ revenueByMonth|json_encode|raw }};
+
+        var monthNames = [
+            'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+            'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+        ];
+
+        var labels2 = [];
+        var data2 = [];
+
+        var entries = Object.entries(revenueByMonth);
+
+        entries.forEach(function(entry) {
+            var monthNumber = parseInt(entry[0]); // Convertir la clé en nombre
+            var monthName = monthNames[monthNumber - 1]; // -1 car les indices de tableau commencent à 0
+            var revenue = entry[1];
+
+            labels2.push(monthName);
+            data2.push(revenue);
+        });
+
+        var chart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: 'Chiffre d\'affaires par mois ' +
+                        '€',
+                    data: data2,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Chiffre d\'affaires (€)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Mois'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+    </body>
 {% endblock %}
