@@ -21,12 +21,21 @@ class PaymentsController extends AbstractController
     {
         $user = $security->getUser();
         $userId = $user->getId();
+        $userRole=$this->getUser()->getRoles();
         $companyId = $user->getCompanyId();
 
         $searchData = new SearchData();
         $formSearch = $this->createForm(SearchType::class, $searchData);
         $formSearch->handleRequest($request);
-        $paymentsList = $invoiceRepository->getAllPayments($request->query->getInt('page', 1),$companyId);
+
+        if ($formSearch->isSubmitted() && $formSearch->isValid()) {
+            $searchData = $formSearch->getData();
+            $paymentsList = $invoiceRepository->getAllPaymentsBySearch($searchData,$request->query->getInt('page', 1),$userRole,$companyId);
+        } else {
+            $paymentsList = $invoiceRepository->getAllPayments($request->query->getInt('page', 1),$companyId);
+        }
+
+
 
         return $this->render('back/payments/index.html.twig', [
             'controller_name' => 'PaymentsController',

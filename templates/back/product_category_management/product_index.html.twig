@@ -53,7 +53,7 @@
             <div class="w-[42.5rem] rounded-[1.5rem] shadow-lg mt-[-12.5rem] relative z-20 bg-white">
 
                 <div class="w-[42.5rem]   p-5 waterGradient rounded-t-[1.5rem] mb-[0.9rem]">
-                    <h4 class="mb-0 text-center font-medium text-2xl text-white">Nouveau Produit</h4>
+                    <h4 class="mb-0 text-center font-medium text-2xl text-white"> Nouveau Produit</h4>
                 </div>
 
 
@@ -70,7 +70,7 @@
                             }
                         }) }}
 
-                        {{ form_help(formProduct.name) }}
+
                         {% if formProduct.name.vars.errors|length > 0 %}
                             {% for error in formProduct.name.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -87,7 +87,7 @@
                                 'placeholder': 'La Marque'
                             }
                         }) }}
-                        {{ form_help(formProduct.brand) }}
+
                         {% if formProduct.brand.vars.errors|length > 0 %}
                             {% for error in formProduct.brand.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -107,7 +107,7 @@
                                 'placeholder': 'Le Prix'
                             }
                         }) }}
-                        {{ form_help(formProduct.unitPrice) }}
+
                         {% if formProduct.unitPrice.vars.errors|length > 0 %}
                             {% for error in formProduct.unitPrice.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -123,7 +123,7 @@
                                 'placeholder': 'TVA'
                             }
                         }) }}
-                         {{ form_help(formProduct.VAT) }}
+
                          {% if formProduct.VAT.vars.errors|length > 0 %}
                              {% for error in formProduct.VAT.vars.errors %}
                                  <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -146,7 +146,7 @@
                                 'placeholder': 'La Quantité'
                             }
                         }) }}
-                         {{ form_help(formProduct.availableQuantity) }}
+
                          {% if formProduct.availableQuantity.vars.errors|length > 0 %}
                              {% for error in formProduct.availableQuantity.vars.errors %}
                                  <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -162,7 +162,7 @@
                                 'placeholder': 'La Catégorie'
                             }
                         }) }}
-                        {{ form_help(formProduct.categoryId) }}
+
                         {% if formProduct.categoryId.vars.errors|length > 0 %}
                             {% for error in formProduct.categoryId.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -183,7 +183,7 @@
                                 'placeholder': 'La Description'
                             }
                         }) }}
-                    {{ form_help(formProduct.description) }}
+
                     {% if formProduct.description.vars.errors|length > 0 %}
                         {% for error in formProduct.description.vars.errors %}
                             <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -228,6 +228,12 @@
                                 'name' : 'addNomProduit',
                             }
                         }) }}
+
+                        {% if formProductUpdate.name.vars.errors|length > 0 %}
+                            {% for error in formProductUpdate.name.vars.errors %}
+                                <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                     <div>
@@ -238,6 +244,12 @@
                                 'placeholder': 'La Marque'
                             }
                         }) }}
+
+                        {% if formProductUpdate.brand.vars.errors|length > 0 %}
+                            {% for error in formProductUpdate.brand.vars.errors %}
+                                <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                 </div>
@@ -252,6 +264,11 @@
                                 'placeholder': 'Le Prix'
                             }
                         }) }}
+                        {% if formProductUpdate.unitPrice.vars.errors|length > 0 %}
+                            {% for error in formProductUpdate.unitPrice.vars.errors %}
+                                <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                      <div>
@@ -262,6 +279,12 @@
                                 'placeholder': 'TVA'
                             }
                         }) }}
+
+                         {% if formProductUpdate.VAT.vars.errors|length > 0 %}
+                             {% for error in formProductUpdate.VAT.vars.errors %}
+                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                             {% endfor %}
+                         {% endif %}
                     </div>
 
                     
@@ -279,6 +302,12 @@
                                 'placeholder': 'La Quantité'
                             }
                         }) }}
+
+                         {% if formProductUpdate.availableQuantity.vars.errors|length > 0 %}
+                             {% for error in formProductUpdate.availableQuantity.vars.errors %}
+                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                             {% endfor %}
+                         {% endif %}
                     </div>
 
                     <div>
@@ -289,6 +318,11 @@
                                 'placeholder': 'La Catégorie'
                             }
                         }) }}
+                        {% if formProductUpdate.categoryId.vars.errors|length > 0 %}
+                            {% for error in formProductUpdate.categoryId.vars.errors %}
+                                <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                 </div>
@@ -304,10 +338,12 @@
                                 'placeholder': 'La Description'
                             }
                         }) }}
-                 
 
-                   
-
+                    {% if formProduct.description.vars.errors|length > 0 %}
+                        {% for error in formProduct.description.vars.errors %}
+                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
                 </div>
 
 
@@ -337,11 +373,11 @@
 </section>
 <div class="flex mt-4 ml-4 justify-between ">
     <div class="flex justify-start sm:w-1/2 ">
-        <svg class="mt-2" width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13.4125 10.5875C14.1938 11.3687 14.1938 12.6375 13.4125 13.4187L3.41255 23.4187C2.6313 24.2 1.36255 24.2 0.581299 23.4187C-0.199951 22.6375 -0.199951 21.3687 0.581299 20.5875L9.1688 12L0.587549 3.41249C-0.193701 2.63124 -0.193701 1.36249 0.587549 0.581238C1.3688 -0.200012 2.63755 -0.200012 3.4188 0.581238L13.4188 10.5812L13.4125 10.5875Z" fill="#D9DDDF"/>
+        <svg class="mt-2" width="14" height="24" viewBox="0 0 14 24" fill="black" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.4125 10.5875C14.1938 11.3687 14.1938 12.6375 13.4125 13.4187L3.41255 23.4187C2.6313 24.2 1.36255 24.2 0.581299 23.4187C-0.199951 22.6375 -0.199951 21.3687 0.581299 20.5875L9.1688 12L0.587549 3.41249C-0.193701 2.63124 -0.193701 1.36249 0.587549 0.581238C1.3688 -0.200012 2.63755 -0.200012 3.4188 0.581238L13.4188 10.5812L13.4125 10.5875Z" fill="black"/>
         </svg>  
 
-        <h2 class="text-gray-300 ">Produits</h2>
+        <h2 class="text-black-300 "> Produits</h2>
     </div>
 
 </div>
@@ -360,7 +396,7 @@
             form:formSearchProducts
         } %}
 
-        <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"> Nouveau Produit </button>
+        <button class="btn-primary " id="addNewProduct" onclick="afficherFormulaire('newProduct')"><i class="fa-solid fa-plus"></i> Nouveau Produit </button>
 
    </div>
         <div class="overflow-x-auto mt-8">
@@ -479,7 +515,7 @@
             formulaire.classList.add('hidden');
             formulaire.classList.remove('fadeOutUp');
         }, 500);
-        $('.error').text('');
+
         $('form[name="product"] :input').val('');
     }
 

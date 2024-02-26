@@ -1,21 +1,19 @@
 <?php
 
 namespace App\Controller;
-use App\Form\Client\EditType;
+use App\Entity\Product;
+use App\Form\product\EditProductType;
+use App\Form\product\ProductType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use DateTime;
-use DateTimeImmutable;
-use App\Entity\Product;
-use App\Form\ProductType;
-use App\Form\EditProductType;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 

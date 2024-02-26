@@ -4,26 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
-use DateTime;
+use App\Form\category\CategoryType;
+use App\Form\category\EditCategoryType;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\CategoryRepository;
-use App\Form\CategoryType;
-use App\Form\EditCategoryType;
-use App\Form\ProductType;
-use Symfony\Component\Security\Core\Security;
 use DataTables\DataTablesFactory;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-
-
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[IsGranted('ROLE_ENTREPRISE')]
 class CategoryController extends AbstractController
@@ -82,12 +79,15 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('product_category_management');
         }
 
-
-
+        //here if search by data case
+        if($formSearchCategory->isSubmitted() && $formSearchCategory->isValid()){
+            $searchData = $formSearchCategory->getData();
+            $categories = $entityManager->getRepository(Category::class)->getCategoriesBySearch($searchData,$request->query->getInt('page', 1),$companyId,$userRoles);
+        }else{
         // $categories = $entityManager->getRepository(Category::class)->findAll();
         $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1),$companyId,$userRoles);
             // $categories=$catRepo->getCategoriesWithProductCount();
-
+        }
         return $this->render('back/product_category_management/index.html.twig', [
             'formCategory' => $form->createView(),
             'categories' => $categories,

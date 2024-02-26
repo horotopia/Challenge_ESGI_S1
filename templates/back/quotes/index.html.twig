@@ -229,7 +229,7 @@
 
 
                         </td>
-                        <td class="pl-6 py-4 text-center flex justify-start gap-2 items-center">
+                        <td class="pl-6 py-4 text-center flex justify-stretch gap-2 items-center">
 
                             <a href="{{ path('app_back_quotes_generate_pdf',{'quotationNumber':quote.quotationNumber}) }}">
                                 <img src="https://i.goopics.net/3mbxm6.png" alt="Icon  télécharger"
@@ -249,9 +249,9 @@
                                          class="w-6 ml-2 cursor-pointer" title="Envoyer par Email">
                                 </a>
                             {% endif %}
-                             <span onclick="showFormPayment('addPayment','{{ quote.quotationNumber }}','{{ quote.lastName }} {{ quote.firstName }}','{{ quote.totalTTC }}','{{ quote.clientId }}','{{ quote.id }}')" aria-label="4.0 stars out of 5, 123 ratings">
+                             <!-- <span onclick="showFormPayment('addPayment','{{ quote.quotationNumber }}','{{ quote.lastName }} {{ quote.firstName }}','{{ quote.totalTTC }}','{{ quote.clientId }}','{{ quote.id }}')" aria-label="4.0 stars out of 5, 123 ratings">
                                     <i class="fa-solid fa-file-invoice-dollar" style="font-size: 22px; color: #0182d4;cursor: pointer" title="Paiement"></i>
-                                </span>
+                                </span> -->
                         </td>
 
                     </tr>
