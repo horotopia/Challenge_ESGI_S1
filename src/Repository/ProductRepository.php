@@ -39,7 +39,7 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         $results = $queryBuilder->getQuery()->getResult();
-        return $this->paginator->paginate($results, $page, 5);
+        return $this->paginator->paginate($results, $page, 2);
     }
 
     public function getAllProducts(int $page):PaginationInterface
@@ -50,7 +50,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return $this->paginator->paginate($products, $page, 15);
+        return $this->paginator->paginate($products, $page, 2);
 
 
 
@@ -59,15 +59,16 @@ class ProductRepository extends ServiceEntityRepository
 
     public function findByProductNameOrCategoryName(SearchData $searchData,int $page):PaginationInterface
     {
-        $products = $this->createQueryBuilder('p')
-            ->select('p, c')
-            ->innerJoin('p.category', 'c')
-            ->where('p.name LIKE (:q) OR c.name LIKE (:q)')
-            ->setParameter('q', '%' . $searchData->q . '%')
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.brand, p.unitPrice, p.VAT, p.availableQuantity, p.createdAt, c.name as categoryName, c.id as categoryId')
+            ->innerJoin('p.categoryId', 'c')
+            ->where('LOWER(p.name) LIKE :q ')
+            ->setParameter('q', '%' . $searchData->q . '%');
+
+         $products=$queryBuilder->getQuery()->getResult();
 
         return $this->paginator->paginate($products, $page, 5);
+
     }
     public function countProductsAddedToday($companyId): int
     {

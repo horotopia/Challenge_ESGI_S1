@@ -59,7 +59,7 @@ class ProductController extends AbstractController
         $product->setAvailableQuantity($formProductUpdate->get('availableQuantity')->getData());
         $product->setUpdatedAt($currentDateTime);
         $product->setUserUpdated($userId);
-        $product->setCategoryId($formProduct->get('categoryId')->getData());
+        $product->setCategoryId($formProductUpdate->get('categoryId')->getData());
         $entityManager->persist($product);
         $entityManager->flush();
         $this->addFlash('success', 'Produit modifié avec succès.');

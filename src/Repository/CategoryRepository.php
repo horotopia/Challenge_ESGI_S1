@@ -69,7 +69,7 @@ public function getCategoriesWithProductCount(int $page,$companyId,$userRole): P
             ->getQuery()
             ->getResult();
             
-            return $this->paginator->paginate($category, $page, 8);
+            return $this->paginator->paginate($category, $page, 3);
     }
 
 

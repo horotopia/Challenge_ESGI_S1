@@ -313,8 +313,6 @@ class InvoiceRepository extends ServiceEntityRepository
 
     public function getAllPayments($companyId): array
     {
-        $currentDate = new \DateTime();
-
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'SELECT i, c
@@ -323,9 +321,6 @@ class InvoiceRepository extends ServiceEntityRepository
         WHERE i.status = :status and c.companyId= :company'
         )->setParameter('status', 'Payé')
             ->setParameter('company', $companyId);
-
-
-
         return $query->getResult();
 
 
