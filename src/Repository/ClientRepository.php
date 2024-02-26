@@ -74,6 +74,21 @@ class ClientRepository extends ServiceEntityRepository
 
 
 
+    /**
+     * Récupère les clients appartenant à une entreprise spécifique.
+     *
+     * @param int $companyId Identifiant de l'entreprise.
+     * @return Client[] Liste des clients de l'entreprise.
+     */
+    public function findByCompany(int $companyId): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.companyId = :companyId')
+            ->setParameter('companyId', $companyId)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    public function findOneBySomeField($value): ?Client
 //    {
 //        return $this->createQueryBuilder('c')

@@ -94,6 +94,34 @@
         }
     </style>
 
+    <div class="mt-10 flex flex-row justify-between items-center">
+        <nav class = "flex px-5 py-3 ml-5 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B]  " aria-label="Breadcrumb">
+            <ol class = "inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ path('app_back_index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        <svg class = "w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Accueil
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="{{path('app_back_email_template')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Template d'email</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="{{path('app_back_email_template_add')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Ajout</a>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="flex flex-row justify-between items-center">
+        <a href="{{ path('app_back_email_template') }}" class="btn-primary">Revenir aux templates</a>
+    </div>
+
     <div class="flex mb-4">
         <div class="w-1/2 bg-gray-500 h-12 p-5">
             {{ form_start(form) }}
@@ -101,26 +129,34 @@
                 <h1 class="font-medium text-3xl text-center text-blue-400">Nouveau modèle d'email</h1>
                 <hr class="my-2 mx-[1.2rem]">
                 <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col ">
+                    <div class="flex flex-col w-full">
+                        {{ form_label(form.type,'Type de modèle') }}
+                        {{ form_widget(form.type, {'attr': {
+                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                        }}) }}
+                    </div>
+                </div>
+                <div class=" flex flex-row justify-around ">
+                    <div class="flex flex-col w-full">
                         {{ form_label(form.name,'Titre de l\'email') }}
                         {{ form_widget(form.name, {'attr': {
-                            'class': 'flex flex-col w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                         }}) }}
                     </div>
                 </div>
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col ">
+                <div id="contentBeforeButtonsSection" class="flex flex-row justify-around">
+                    <div class="flex flex-col w-full">
                         {{ form_label(form.contentBeforeButtons,'Contenu de l\'email (avant boutons si il y en a)') }}
                         {{ form_widget(form.contentBeforeButtons, {'attr': {
-                            'class': 'flex flex-col w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                         }}) }}
                     </div>
                 </div>
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col ">
+                <div id="contentAfterButtonsSection" style="display: none;" class="invoice-or-other flex flex-row justify-around">
+                    <div class="flex flex-col w-full">
                         {{ form_label(form.contentAfterButtons,'Contenu de l\'email (après boutons si il y en a)') }}
                         {{ form_widget(form.contentAfterButtons, {'attr': {
-                            'class': 'flex flex-col w-[22rem] mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
                         }}) }}
                     </div>
                 </div>
@@ -130,7 +166,7 @@
         </div>
         <div class="w-1/2 bg-gray-300 h-12 p-5">
             <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
-                <h2 class="font-medium text-3xl text-center text-blue-400">Aperçu du modèle</h2>
+                <h2 class="font-medium text-3xl text-center text-blue-400">Aperçu du modèle <br> (<span id="preview-type" class="font-medium text-xl text-center text-blue-400">{{ form.vars.value.type ? form.vars.value.type : 'Type' }}</span>)</h2>
                 <hr class="my-2 mx-[1.2rem]">
                 <body id="email-preview" style="word-spacing:normal;background-color:#E7E7E7;">
             <div style="background-color:#E7E7E7;">
@@ -264,40 +300,42 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td align="center" vertical-align="middle"
-                                                                style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                                       role="presentation"
-                                                                       style="border-collapse:separate;width:300px;line-height:100%;">
-                                                                    <tr>
-                                                                        <td align="center" bgcolor="#F41718"
-                                                                            role="presentation"
-                                                                            style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:transparent;"
-                                                                            valign="middle">
-                                                                            <a href="#" style="display:inline-block;width:250px;background:transparent;color:#017ac2;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;border:1px solid #017ac2;" target="_blank">Refuser le devis</a>.
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="center" vertical-align="middle"
-                                                                style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                                       role="presentation"
-                                                                       style="border-collapse:separate;width:300px;line-height:100%;">
-                                                                    <tr>
-                                                                        <td align="center" bgcolor="#017AC2"
-                                                                            role="presentation"
-                                                                            style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#017AC2;"
-                                                                            valign="middle">
-                                                                            <a href="#" style="display:inline-block;width:250px;background:#017AC2;color:#ffffff;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank">Accepter le devis</a>.
+                                                        <tr id="buttonsPreview" class="quote-only">
+                                                            <tr>
+                                                                <td align="center" vertical-align="middle"
+                                                                    style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                    <table border="0" cellpadding="0" cellspacing="0"
+                                                                           role="presentation"
+                                                                           style="border-collapse:separate;width:300px;line-height:100%;">
+                                                                        <tr>
+                                                                            <td align="center" bgcolor="#F41718"
+                                                                                role="presentation"
+                                                                                style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:transparent;"
+                                                                                valign="middle">
+                                                                                <a href="#" style="display:inline-block;width:250px;background:transparent;color:#017ac2;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;border:1px solid #017ac2;" target="_blank">Refuser le devis</a>.
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" vertical-align="middle"
+                                                                    style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                    <table border="0" cellpadding="0" cellspacing="0"
+                                                                           role="presentation"
+                                                                           style="border-collapse:separate;width:300px;line-height:100%;">
+                                                                        <tr>
+                                                                            <td align="center" bgcolor="#017AC2"
+                                                                                role="presentation"
+                                                                                style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#017AC2;"
+                                                                                valign="middle">
+                                                                                <a href="#" style="display:inline-block;width:250px;background:#017AC2;color:#ffffff;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank">Accepter le devis</a>.
 
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
                                                         </tr>
                                                         <tr>
                                                             <td align="left"
@@ -713,18 +751,42 @@
     {{ parent() }}
     <script>
         $(document).ready(function() {
-            $('#{{ form.name.vars.id }}').on('input', function() {
-                var title = $(this).val();
+            function updateFormAndPreview() {
+                var selectedType = $('#{{ form.type.vars.id }}').val();
+
+                if(selectedType === '{{ constant('App\\Entity\\EmailTemplate::TYPE_QUOTE') }}') {
+                    $('#buttonsPreview').show();
+                } else {
+                    $('#buttonsPreview').hide();
+                }
+
+                switch(selectedType) {
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_QUOTE') }}':
+                        $('.quote-only').show();
+                        $('.invoice-or-other').show();
+                        break;
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_INVOICE') }}':
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_OTHER') }}':
+                        $('.quote-only').show();
+                        $('.invoice-or-other').hide();
+                        break;
+                    default:
+                        $('.quote-only').hide();
+                        $('.invoice-or-other').hide();
+                }
+            }
+
+            $('#{{ form.type.vars.id }}').change(updateFormAndPreview);
+            updateFormAndPreview();
+
+            $('#{{ form.name.vars.id }}, #{{ form.contentBeforeButtons.vars.id }}, #{{ form.contentAfterButtons.vars.id }}').on('input', function() {
+                var title = $('#{{ form.name.vars.id }}').val();
                 $('#preview-name').text(title || '[Votre titre ici]');
-            });
 
-            $('#{{ form.contentBeforeButtons.vars.id }}').on('input', function() {
-                var contentBeforeButtons = $(this).val();
+                var contentBeforeButtons = $('#{{ form.contentBeforeButtons.vars.id }}').val();
                 $('#preview-content-before-buttons').text(contentBeforeButtons || '[Votre contenu ici]');
-            });
 
-            $('#{{ form.contentAfterButtons.vars.id }}').on('input', function() {
-                var contentAfterButtons = $(this).val();
+                var contentAfterButtons = $('#{{ form.contentAfterButtons.vars.id }}').val();
                 $('#preview-content-after-buttons').text(contentAfterButtons || '[Votre contenu ici]');
             });
         });

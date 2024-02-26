@@ -1,0 +1,115 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Envoyer un e-mail{% endblock %}
+
+{% block body %}
+
+    <div class="mt-10 flex flex-row justify-between items-center">
+        <nav class = "flex px-5 py-3 ml-5 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B]  " aria-label="Breadcrumb">
+            <ol class = "inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ path('app_back_index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        <svg class = "w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Accueil
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="{{path('app_back_email_template')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Template d'email</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="{{path('app_back_send_email')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Nouveau message</a>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="flex flex-row justify-between items-center">
+        <a href="{{ path('app_back_email_template') }}" class="btn-primary">Revenir aux templates</a>
+    </div>
+
+    <div class="flex mb-4">
+        <div class="w-full bg-gray-500 h-12 p-5">
+        {{ form_start(form, {'attr': {'enctype':'multipart/form-data'}}) }}
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <h1 class="font-medium text-3xl text-center text-blue-400">Envoyer un e-mail</h1>
+            <hr class="my-2 mx-[1.2rem]">
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col w-full">
+                    {{ form_row(form.emailTemplate, {'attr': {
+                        'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                </div>
+            </div>
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col w-full">
+                    {{ form_row(form.recipient, {'attr': {
+                        'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                </div>
+            </div>
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col w-full">
+                    {{ form_row(form.message, {'attr': {
+                        'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                </div>
+            </div>
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col w-full">
+                    {{ form_row(form.send, {'attr': {
+                        'class': 'btn btn-success'
+                    }}) }}
+                </div>
+            </div>
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col w-full">
+                    <div id="attachments-area">
+                        {{ form_row(form.attachments) }}
+                    </div>
+                    <button type="button" id="add-attachment">Ajouter une pièce jointe</button>
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectOption = document.querySelector('#email_sending_type_recipient_select_0');
+            const manualOption = document.querySelector('#email_sending_type_recipient_select_1');
+            const clientField = document.querySelector('#email_sending_type_client').closest('.form-group');
+            const emailField = document.querySelector('#email_sending_type_email').closest('.form-group');
+
+            function toggleFields() {
+                if (selectOption.checked) {
+                    clientField.style.display = 'block';
+                    emailField.style.display = 'none';
+                } else if (manualOption.checked) {
+                    clientField.style.display = 'none';
+                    emailField.style.display = 'block';
+                }
+            }
+
+            selectOption.addEventListener('change', toggleFields);
+            manualOption.addEventListener('change', toggleFields);
+
+            toggleFields();
+
+            var attachmentsArea = document.getElementById('attachments-area');
+            var addAttachmentButton = document.getElementById('add-attachment');
+
+            addAttachmentButton.addEventListener('click', function() {
+                var prototype = attachmentsArea.getAttribute('data-prototype');
+                var newIndex = attachmentsArea.querySelectorAll('.form-group').length;
+
+                var newForm = prototype.replace(/__name__/g, newIndex);
+                attachmentsArea.insertAdjacentHTML('beforeend', newForm);
+            });
+        });
+    </script>
+
+{% endblock %}
