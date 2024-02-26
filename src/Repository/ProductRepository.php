@@ -50,7 +50,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return $this->paginator->paginate($products, $page, 10);
+        return $this->paginator->paginate($products, $page, 5);
 
 
 
@@ -74,7 +74,7 @@ class ProductRepository extends ServiceEntityRepository
 
          $products=$queryBuilder->getQuery()->getResult();
 
-        return $this->paginator->paginate($products, $page, 10);
+        return $this->paginator->paginate($products, $page, 5);
 
     }
     public function countProductsAddedToday($companyId): int

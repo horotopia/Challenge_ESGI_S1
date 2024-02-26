@@ -69,7 +69,7 @@ public function getCategoriesWithProductCount(int $page,$companyId,$userRole): P
             ->getQuery()
             ->getResult();
             
-            return $this->paginator->paginate($category, $page, 10);
+            return $this->paginator->paginate($category, $page, 5);
     }
 
     public function getCategoriesBySearch($searchData,int $page,$companyId,$userRole): PaginationInterface
@@ -87,7 +87,7 @@ public function getCategoriesWithProductCount(int $page,$companyId,$userRole): P
 
         $products=$queryBuilder->getQuery()->getResult();
 
-        return $this->paginator->paginate($products, $page, 10);
+        return $this->paginator->paginate($products, $page, 5);
     }
 
 //    public function findOneBySomeField($value): ?Category

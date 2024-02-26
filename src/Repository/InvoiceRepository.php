@@ -322,7 +322,7 @@ class InvoiceRepository extends ServiceEntityRepository
         )->setParameter('status', 'Payé')
             ->setParameter('company', $companyId);
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, 5);
 
     }
 
@@ -336,7 +336,6 @@ class InvoiceRepository extends ServiceEntityRepository
             ->andwhere('LOWER(c.lastName) LIKE LOWER(:search) ')
             ->orWhere('LOWER(c.firstName) LIKE LOWER(:search) ')
             ->andWhere('LOWER(i.status) LIKE LOWER(:status) ')
-
             ->setParameter('status', 'Payé')
             ->setParameter('company', $companyId)
             ->setParameter('search', $searchData->q);
@@ -344,7 +343,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
 
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, 5);
 
     }
 
