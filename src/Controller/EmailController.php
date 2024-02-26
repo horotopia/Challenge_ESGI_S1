@@ -37,7 +37,7 @@ class EmailController extends AbstractController
             } elseif (isset($data['recipient']['email'])) {
                 $recipient = $data['recipient']['email'];
             } else {
-                $recipient = 'ilyesse@bhgroupe.com';
+                $recipient = 'ilyesse@bhgroupe.fr';
             }
 
             $email = (new Email())
@@ -46,9 +46,18 @@ class EmailController extends AbstractController
                 ->subject($emailTemplate->getName())
                 ->html($emailTemplate->getContentBeforeButtons() . $data['message'] . $emailTemplate->getContentAfterButtons());
 
-            foreach ($data['attachments'] as $attachment) {
-                $attachmentPath = $attachment->getRealPath();
-                $email->attachFromPath($attachmentPath);
+            $attachments = $form->get('attachments')->getData();
+
+            if ($attachments) {
+                foreach ($attachments as $attachment) {
+                    if ($attachment) {
+                        $email->attachFromPath(
+                            $attachment->getRealPath(),
+                            $attachment->getClientOriginalName(),
+                            $attachment->getMimeType()
+                        );
+                    }
+                }
             }
 
             $mailer->send($email);

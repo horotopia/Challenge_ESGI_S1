@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use DateTimeInterface;
 
 #[ORM\Entity]
 #[Vich\Uploadable]
@@ -21,6 +22,9 @@ class EmailAttachment
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $fileName = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $updatedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,7 +38,9 @@ class EmailAttachment
     public function setFile(?File $file = null): self
     {
         $this->file = $file;
-
+        if ($file) {
+            $this->updatedAt = new \DateTime('now');
+        }
         return $this;
     }
 
@@ -46,7 +52,17 @@ class EmailAttachment
     public function setFileName(?string $fileName): self
     {
         $this->fileName = $fileName;
+        return $this;
+    }
 
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 }
