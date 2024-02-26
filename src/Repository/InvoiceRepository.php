@@ -155,7 +155,7 @@ class InvoiceRepository extends ServiceEntityRepository
     }
     public function getInvoiceTypesByMonth($companyId): array
     {
-        $currentDate = new \DateTimeImmutable();
+        $currentDate = new \DateTime();
 
         $query = $this->_em->createQueryBuilder()
             ->select('i.createdAt AS createdAt, i.status AS status, i.dueDate AS dueDate')
@@ -173,7 +173,7 @@ class InvoiceRepository extends ServiceEntityRepository
             $createdAt = $invoice['createdAt'];
             $dueDate = $invoice['dueDate'];
 
-            if ($createdAt instanceof \DateTimeImmutable && $dueDate instanceof \DateTimeInterface) {
+            if ($createdAt instanceof \DateTime && $dueDate instanceof \DateTimeInterface) {
                 $month = $createdAt->format('n');
                 $status = $invoice['status'];
 
@@ -313,8 +313,6 @@ class InvoiceRepository extends ServiceEntityRepository
 
     public function getAllPayments($companyId): array
     {
-        $currentDate = new \DateTime();
-
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'SELECT i, c
@@ -323,9 +321,6 @@ class InvoiceRepository extends ServiceEntityRepository
         WHERE i.status = :status and c.companyId= :company'
         )->setParameter('status', 'Payé')
             ->setParameter('company', $companyId);
-
-
-
         return $query->getResult();
 
 
