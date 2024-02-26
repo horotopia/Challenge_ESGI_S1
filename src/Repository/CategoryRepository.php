@@ -69,10 +69,26 @@ public function getCategoriesWithProductCount(int $page,$companyId,$userRole): P
             ->getQuery()
             ->getResult();
             
-            return $this->paginator->paginate($category, $page, 3);
+            return $this->paginator->paginate($category, $page, 10);
     }
 
+    public function getCategoriesBySearch($searchData,int $page,$companyId,$userRole): PaginationInterface
+    {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c,c.name, COUNT(p.id) as productCount')
+            ->leftJoin('c.products', 'p')
+            ->groupBy('c.id')
+            ->Where('LOWER(c.name) LIKE LOWER(:q)')
+            ->setParameter('q', '%' . $searchData->q . '%');
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->andWhere('com.id = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
 
+        $products=$queryBuilder->getQuery()->getResult();
+
+        return $this->paginator->paginate($products, $page, 10);
+    }
 
 //    public function findOneBySomeField($value): ?Category
 //    {

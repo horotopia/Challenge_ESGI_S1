@@ -44,7 +44,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        return $this->paginator->paginate($query, $page, 5);
+        return $this->paginator->paginate($query, $page, 10);
     }
 
     public function findBySearchData(SearchData $searchData,  $userRole,$companyId): PaginationInterface
@@ -67,7 +67,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->orderBy('i.createdAt', 'DESC')
             ->getQuery();
 
-        return $this->paginator->paginate($query, $searchData->page, 5);
+        return $this->paginator->paginate($query, $searchData->page, 10);
     }
 
 
@@ -311,7 +311,7 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
 
-    public function getAllPayments($companyId): array
+    public function getAllPayments($page,$companyId): PaginationInterface
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
@@ -321,8 +321,30 @@ class InvoiceRepository extends ServiceEntityRepository
         WHERE i.status = :status and c.companyId= :company'
         )->setParameter('status', 'Payé')
             ->setParameter('company', $companyId);
-        return $query->getResult();
 
+        return $this->paginator->paginate($query, $page, 10);
+
+    }
+
+    public function getAllPaymentsBySearch(SearchData $searchData,$page,$userRole,$companyId): PaginationInterface
+    {
+
+        $query = $this->createQueryBuilder('i')
+            ->select('i,c')
+            ->innerJoin('i.client ', 'c')
+            ->where('c.companyId = :company ')
+            ->andwhere('LOWER(c.lastName) LIKE LOWER(:search) ')
+            ->orWhere('LOWER(c.firstName) LIKE LOWER(:search) ')
+            ->andWhere('LOWER(i.status) LIKE LOWER(:status) ')
+
+            ->setParameter('status', 'Payé')
+            ->setParameter('company', $companyId)
+            ->setParameter('search', $searchData->q);
+
+
+
+
+        return $this->paginator->paginate($query, $page, 10);
 
     }
 
