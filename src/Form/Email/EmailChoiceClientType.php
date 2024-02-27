@@ -19,15 +19,15 @@ class EmailChoiceClientType extends AbstractType
     {
         $builder
             ->add('select', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Choisir un client existant' => 'existing',
                     'Saisir une adresse e-mail' => 'manual',
                 ],
-                'label' => 'À',
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => false,
-                'attr' => ['class' => 'flex flex-row w-full p-2 mb-3 mr-2 outline-none'],
+                'attr' => ['class' => 'flex flex-row w-full p-2 mb-3 gap-2 mr-2 outline-none'],
             ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,
@@ -40,12 +40,15 @@ class EmailChoiceClientType extends AbstractType
                         ->setParameter('companyId', $options['company_id']);
                 },
                 'required' => false,
-                'placeholder' => 'Sélectionnez un client',
-                'attr' => ['class' => 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'],
+                'placeholder' => '-- Sélectionnez un client --',
+                'row_attr' => ['class' => 'client-field-container'],
+                'attr' => ['class' => 'client-field flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'],
             ])
             ->add('email', EmailType::class, [
+                'label' => 'Email du client',
                 'required' => false,
-                'attr' => ['class' => 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'],
+                'row_attr' => ['class' => 'email-field-container'],
+                'attr' => ['class' => 'email-field flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none', 'placeholder' => 'text@example.com'],
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();

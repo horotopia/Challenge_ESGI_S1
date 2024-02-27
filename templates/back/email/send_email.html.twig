@@ -28,91 +28,81 @@
             </ol>
         </nav>
     </div>
-    <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row justify-between items-center p-4">
         <a href="{{ path('app_back_email_template') }}" class="btn-primary">Revenir aux templates</a>
     </div>
 
     <div class="flex mb-4">
-        <div class="w-full bg-gray-500 h-12 p-5">
-        {{ form_start(form, {'attr': {'enctype':'multipart/form-data'}}) }}
-            <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
-                <h1 class="font-medium text-3xl text-center text-blue-400">Envoyer un e-mail</h1>
-                <hr class="my-2 mx-[1.2rem]">
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col w-full">
-                        {{ form_row(form.emailTemplate, {'attr': {
-                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
-                        }}) }}
+        <div class="w-full p-5">
+            {{ form_start(form, {'attr': {'enctype':'multipart/form-data'}}) }}
+                <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+                    <h1 class="font-medium text-3xl text-center text-blue-400">Envoyer un e-mail</h1>
+                    <hr class="my-2 mx-[1.2rem]">
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-col w-full">
+                            {{ form_row(form.emailTemplate, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-col w-full">
+                            {{ form_row(form.recipient, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-row justify-around">
+                        <div class="flex flex-col w-full">
+                            {{ form_row(form.attachments, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-col w-full">
+                            {{ form_row(form.message, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-row w-full justify-between items-center">
+                            {{ form_row(form.send, {'attr': {
+                                'class': 'btn-primary'
+                            }}) }}
+                        </div>
                     </div>
                 </div>
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col w-full">
-                        {{ form_row(form.recipient, {'attr': {
-                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
-                        }}) }}
-                    </div>
                 </div>
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col w-full">
-                        {{ form_row(form.message, {'attr': {
-                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
-                        }}) }}
-                    </div>
-                </div>
-                <div class="flex flex-row justify-around">
-                    <div class="flex flex-col w-full">
-                        {{ form_row(form.attachments, {'attr': {
-                            'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
-                        }}) }}
-                    </div>
-                </div>
-                <div class=" flex flex-row justify-around ">
-                    <div class="flex flex-col w-full">
-                        {{ form_row(form.send, {'attr': {
-                            'class': 'btn btn-success'
-                        }}) }}
-                    </div>
-                </div>
-            </div>
-            </div>
-        {{ form_end(form) }}
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
 
-
 {% block javascripts %}
-    {{ parent() }}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const selectOption = document.querySelector('#email_sending_type_recipient_select_0');
-            const manualOption = document.querySelector('#email_sending_type_recipient_select_1');
-            const clientField = document.querySelector('#email_sending_type_client').closest('.form-group');
-            const emailField = document.querySelector('#email_sending_type_email').closest('.form-group');
+        document.addEventListener('DOMContentLoaded', function () {
+            const choiceExisting = document.getElementById('email_sending_recipient_select_0');
+            const choiceManual = document.getElementById('email_sending_recipient_select_1');
+
+            const clientContainer = document.querySelector('.client-field-container');
+            const emailContainer = document.querySelector('.email-field-container');
 
             function toggleFields() {
-                if (selectOption.checked) {
-                    clientField.style.display = 'block';
-                    emailField.style.display = 'none';
-                } else if (manualOption.checked) {
-                    clientField.style.display = 'none';
-                    emailField.style.display = 'block';
+                if (choiceExisting.checked) {
+                    clientContainer.style.display = '';
+                    emailContainer.style.display = 'none';
+                } else if (choiceManual.checked) {
+                    clientContainer.style.display = 'none';
+                    emailContainer.style.display = '';
                 }
             }
 
-            selectOption.addEventListener('change', toggleFields);
-            manualOption.addEventListener('change', toggleFields);
+            choiceExisting.addEventListener('change', toggleFields);
+            choiceManual.addEventListener('change', toggleFields);
 
             toggleFields();
-        });
-    </script>
-
-    <script>
-        var collectionHolder = document.querySelector('#attachment-fields-list');
-        document.getElementById('add-another-attachment').addEventListener('click', function() {
-            var item = document.createElement('div');
-            item.classList.add('attachment-field');
-            item.innerHTML = collectionHolder.dataset.prototype.replace(/__name__/g, collectionHolder.children.length);
-            collectionHolder.appendChild(item);
         });
     </script>
 {% endblock %}

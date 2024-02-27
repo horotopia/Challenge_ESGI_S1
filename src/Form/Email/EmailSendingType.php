@@ -30,11 +30,13 @@ class EmailSendingType extends AbstractType
     {
         $builder
             ->add('emailTemplate', EntityType::class, [
+                'label' => 'Structure de l\'email',
                 'class' => EmailTemplate::class,
                 'choice_label' => 'name',
             ])
 
             ->add('recipient', EmailChoiceClientType::class, [
+                'label' => 'Envoyer à',
                 'company_id' => $options['company_id'],
             ])
             ->add('message', TextareaType::class)
