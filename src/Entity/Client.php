@@ -16,51 +16,51 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $ville = null;
+    private ?string $city = null;
 
     #[ORM\Column]
-    private ?int $code_postal = null;
+    private ?int $postalCode = null;
 
     #[ORM\Column]
-    private ?int $telephone = null;
+    private ?string $phone = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $create_at = null;
+    private ?\DateTime $createdAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $update_at = null;
+    #[ORM\Column(nullable:true)]
+    private ?\DateTime $updatedAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $user_create = null;
+    #[ORM\Column(length: 255,nullable:true)]
+    private ?string $userCreated = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $user_update = null;
+    #[ORM\Column(length: 255,nullable: true)]
+    private ?string $userUpdated = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
-    private ?entreprise $id_entreprise = null;
+    private ?Company $companyId = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
-    private Collection $devis;
+    #[ORM\OneToMany(mappedBy: 'clientId', targetEntity: Quote::class)]
+    private Collection $quotes;
 
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Facture::class)]
-    private Collection $factures;
+    #[ORM\OneToMany(mappedBy: 'clientId', targetEntity: Invoice::class)]
+    private Collection $invoices;
 
     public function __construct()
     {
-        $this->devis = new ArrayCollection();
-        $this->factures = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,26 +68,26 @@ class Client
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastName;
     }
 
-    public function setNom(string $nom): static
+    public function setLastName(string $lastName): static
     {
-        $this->nom = $nom;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstName;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setFirstName(string $firstName): static
     {
-        $this->prenom = $prenom;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -104,138 +104,138 @@ class Client
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAddress(string $address): static
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }
 
-    public function getVille(): ?string
+    public function getCity(): ?string
     {
-        return $this->ville;
+        return $this->city;
     }
 
-    public function setVille(string $ville): static
+    public function setCity(string $city): static
     {
-        $this->ville = $ville;
+        $this->city = $city;
 
         return $this;
     }
 
-    public function getCodePostal(): ?int
+    public function getPostalCode(): ?int
     {
-        return $this->code_postal;
+        return $this->postalCode;
     }
 
-    public function setCodePostal(int $code_postal): static
+    public function setPostalCode(int $postalCode): static
     {
-        $this->code_postal = $code_postal;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
 
-    public function getTelephone(): ?int
+    public function getPhone(): ?int
     {
-        return $this->telephone;
+        return $this->phone;
     }
 
-    public function setTelephone(int $telephone): static
+    public function setPhone(int $phone): static
     {
-        $this->telephone = $telephone;
+        $this->phone = $phone;
 
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
-        return $this->create_at;
+        return $this->createdAt;
     }
 
-    public function setCreateAt(\DateTimeImmutable $create_at): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
-        $this->create_at = $create_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
-        return $this->update_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdatedAt(\DateTime $updatedAt): static
     {
-        $this->update_at = $update_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getUserCreate(): ?string
+    public function getUserCreated(): ?string
     {
-        return $this->user_create;
+        return $this->userCreated;
     }
 
-    public function setUserCreate(string $user_create): static
+    public function setUserCreated(string $userCreated): static
     {
-        $this->user_create = $user_create;
+        $this->userCreated = $userCreated;
 
         return $this;
     }
 
-    public function getUserUpdate(): ?string
+    public function getUserUpdated(): ?string
     {
-        return $this->user_update;
+        return $this->userUpdated;
     }
 
-    public function setUserUpdate(string $user_update): static
+    public function setUserUpdated(string $userUpdated): static
     {
-        $this->user_update = $user_update;
+        $this->userUpdated = $userUpdated;
 
         return $this;
     }
 
-    public function getIdEntreprise(): ?entreprise
+    public function getCompanyId(): ?Company
     {
-        return $this->id_entreprise;
+        return $this->companyId;
     }
 
-    public function setIdEntreprise(?entreprise $id_entreprise): static
+    public function setCompanyId(?Company $companyId): static
     {
-        $this->id_entreprise = $id_entreprise;
+        $this->companyId = $companyId;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Devis>
+     * @return Collection<int, Quote>
      */
-    public function getDevis(): Collection
+    public function getQuotes(): Collection
     {
-        return $this->devis;
+        return $this->quotes;
     }
 
-    public function addDevi(Devis $devi): static
+    public function addQuote(Quote $quote): static
     {
-        if (!$this->devis->contains($devi)) {
-            $this->devis->add($devi);
-            $devi->setIdClient($this);
+        if (!$this->quotes->contains($quote)) {
+            $this->quotes->add($quote);
+            $quote->setClientId($this);
         }
 
         return $this;
     }
 
-    public function removeDevi(Devis $devi): static
+    public function removeQuote(Quote $quote): static
     {
-        if ($this->devis->removeElement($devi)) {
+        if ($this->quotes->removeElement($quote)) {
             // set the owning side to null (unless already changed)
-            if ($devi->getIdClient() === $this) {
-                $devi->setIdClient(null);
+            if ($quote->getClientId() === $this) {
+                $quote->setClientId(null);
             }
         }
 
@@ -243,29 +243,29 @@ class Client
     }
 
     /**
-     * @return Collection<int, Facture>
+     * @return Collection<int, Invoice>
      */
-    public function getFactures(): Collection
+    public function getInvoices(): Collection
     {
-        return $this->factures;
+        return $this->invoices;
     }
 
-    public function addFacture(Facture $facture): static
+    public function addInvoice(Invoice $invoice): static
     {
-        if (!$this->factures->contains($facture)) {
-            $this->factures->add($facture);
-            $facture->setIdClient($this);
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setClientId($this);
         }
 
         return $this;
     }
 
-    public function removeFacture(Facture $facture): static
+    public function removeInvoice(Invoice $invoice): static
     {
-        if ($this->factures->removeElement($facture)) {
+        if ($this->invoices->removeElement($invoice)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getIdClient() === $this) {
-                $facture->setIdClient(null);
+            if ($invoice->getClientId() === $this) {
+                $invoice->setClientId(null);
             }
         }
 

@@ -1,0 +1,163 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Ajouter un devis{% endblock %}
+
+{% block body %}
+    {% for type, messagesOfType in app.flashes %}
+        {% for message in messagesOfType %}
+            {% set alertClass = (type == 'error') ? 'bg-red-200' : 'bg-green-200' %}
+            <div class="alert hidden w-50 {{ alertClass }} px-4 py-3 rounded absolute top-[7rem] left-[37rem]" role="alert">
+                <div class="flex flex-row items-center ">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="{{ (type == 'error') ? '#FF0000' : '#3EEF00' }}" aria-hidden="true" class="w-5 h-5">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="{{ (type == 'error') ? 'text-red-900' : 'text-green-900' }} text-xs ml-2">{{ message }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="mt-8 ml-5 mr-48">
+        <nav class = "flex px-5 py-3  text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B]  " aria-label="Breadcrumb">
+            <ol class = "inline-flex items-center space-x-1 md:space-x-3">
+                <li class = "inline-flex items-center">
+                    <a href="{{ path('app_back_index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        <svg class = "w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Accueil
+                    </a>
+                </li>
+                <li>
+                    <div class = "flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="{{path('app_back_invoices')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Factures</a>
+                    </div>
+                </li>
+                <li>
+                    <div class = "flex items-center">
+                        <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                        <a href="#" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{ controller_name }}</a>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        {{ form_start(form) }}
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <h4 class="font-medium text-3xl text-center text-blue-400">Nouvelle facture </h4>
+            <hr class="my-2 mx-[1.2rem]">
+            <div class=" flex flex-row justify-around ">
+                <div class="flex flex-col ">
+                    {{ form_label(form.quotes,'Devis') }}
+                    {{ form_widget(form.quotes, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-1 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.quotes) }}
+                    {% if form.quotes.vars.errors|length > 0 %}
+                        {% for error in form.quotes.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="flex flex-col ">
+                    {{ form_label(form.dueDate,'Date échéance') }}
+                    {{ form_widget(form.dueDate, {'attr': {
+                        'class': 'w-[22rem] mt-1 p-2 mb-3 mr-1 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.dueDate) }}
+                    {% if form.dueDate.vars.errors|length > 0 %}
+                        {% for error in form.dueDate.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="flex flex-col">
+
+                    {{ form_label(form.statut,'Statuts') }}
+                    {{ form_widget(form.statut, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-1 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.statut) }}
+                    {% if form.statut.vars.errors|length > 0 %}
+                        {% for error in form.statut.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+            <h4 class="font-medium text-3xl text-center text-blue-400">Informations devis </h4>
+            <hr class="my-2 mx-[1.2rem]">
+            <div class="flex flex-row justify-around ">
+            <div class="flex flex-col ">
+                {{ form_label(form.client,'Client') }}
+                {{ form_widget(form.client, {'attr': {
+                    'class': 'flex flex-col w-[22rem] mt-1 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                }}) }}
+                {{ form_help(form.client) }}
+                {% if form.client.vars.errors|length > 0 %}
+                    {% for error in form.client.vars.errors %}
+                        <span class="text-xs text-red-500">{{ error.message }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+                <div class="flex flex-col ">
+                    {{ form_label(form.totalTTC,'Montant') }}
+                    {{ form_widget(form.totalTTC, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-1 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.totalTTC) }}
+                    {% if form.totalTTC.vars.errors|length > 0 %}
+                        {% for error in form.totalTTC.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="flex flex-col ">
+                    {{ form_label(form.paymentMethod) }}
+                    {{ form_widget(form.paymentMethod, {'attr': {
+                        'class': 'flex flex-col w-[22rem] mt-1 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                    }}) }}
+                    {{ form_help(form.paymentMethod) }}
+                    {% if form.paymentMethod.vars.errors|length > 0 %}
+                        {% for error in form.paymentMethod.vars.errors %}
+                            <span class="text-xs text-red-500">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            </div>
+            <button type="submit" name="createInvoice" class=" px-4 ml-5 py-2 bg-blue-500  rounded-md">
+
+                <span class="flex flex-row items-center text-white"><img src="https://i.goopics.net/kroi32.png" alt="Icon save " class="w-5 mr-2">Enregistrer</span>
+            </button>
+        </div>
+
+
+
+        </div>
+
+    {{ form_end(form) }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var quotesSelect = document.getElementById('invoice_quotes');
+            var amountInput = document.getElementById('invoice_totalTTC');
+            var clientInput = document.getElementById('invoice_client');
+
+            quotesSelect.addEventListener('change', function() {
+                var quoteId = this.value;
+                if (quoteId) {
+                    fetch('{{ path('app_back_invoices_get_quote_details') }}?quote_id=' + quoteId)
+                        .then(response => response.json())
+                        .then(data => {
+                            amountInput.value = data.totalTTC;
+                            clientInput.value = data.client.firstName + ' ' + data.client.lastName;
+                        });
+                } else {
+                    amountInput.value = '';
+                    clientInput.value = '';
+                }
+            });
+        });
+    </script>
+
+
+{% endblock %}

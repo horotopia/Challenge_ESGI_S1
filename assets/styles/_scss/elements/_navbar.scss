@@ -1,0 +1,101 @@
+#navbar {
+    background: white;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    padding: 13px 0px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+    z-index: 9999999;
+    // overflow: hidden;
+    transition: height, 0.25s ease-out all;
+
+    #navbar-container {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+        
+        #navbar-left {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            @media (max-width: 992px) {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        #navbar-right {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            @media (max-width: 992px) {
+                // opacity: 0;
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        #navbar-logo {
+            img, svg {
+                width: 100px;
+            }
+        }
+
+        #navbar-nav {
+            display: flex;
+            flex-direction: row;
+
+            @media (max-width: 992px) {
+                // opacity: 0;
+                flex-direction: column;
+                padding: 20px 0px 0px 0px;
+            }
+        }
+
+        .navbar-link {
+            padding: 0px 10px;
+            font-size: 15px;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+
+            &:hover {
+                color: #017AC2;
+            }
+
+            @media (max-width: 992px) {
+                margin: 15px 0px;
+            }
+        }
+
+        .btn {
+            margin: 0px 10px;
+
+            @media (max-width: 992px) {
+                margin: 15px 0px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            flex-direction: column;
+        }
+    }
+
+    #navbar-toggle {
+        @media (max-width: 992px) {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            
+            div {
+                width: 30px;
+                height: 3px;
+                background: #017AC2;
+                margin: 7px 5px;
+            }
+        }
+    }
+}

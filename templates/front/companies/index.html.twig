@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos de Fast Invoice: Gestion des solutions pour équipements médicaux{% endblock %}
+{% block og_title %}À propos de Fast Invoice: Gestion des solutions pour équipements médicaux{% endblock %}
+{% block description %}Découvrez comment Fast Invoice simplifie la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block og_description %}Découvrez comment Fast Invoice simplifie la gestion des solutions pour équipements médicaux à travers des outils fiables et adaptés à vos besoins.{% endblock %}
+{% block keywords %}Fast Invoice, gestion équipements médicaux{% endblock %}
+
+{% block body %}
+    <header id="jumbotron" class="flex flex-col justify-center items-center">
+        <div class="container">
+            <div class="py-16 linearGradientColor sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+                <div class="sm:w-full pl-20 pr-10  md:pl-32 md:pr-20 lg:w-2/4 lg:pl-1 lg:pr-12 2xl:p-16 ">
+                    <h1 class="mb-3 text-start p-0 sm: m-0  lg:text-4xl 2xl:text-5xl">Qui sommes-nous</h1>
+                    <p class="pt-1 text-start text-gray-400 2xl:text-xl">Fast Invoice, une entreprise dynamique et
+                        innovante en pleine croissance depuis pluis de 10 ans.</p>
+                    <div class="btn-wrapper mt-5 ">
+                        <a href="{{ path("app_contact") }}" class="btn btn-primary "
+                           aria-label="Nous contacter pour une démonstration de notre logiciel Fast Invoice">Nous
+                            contacter</a>
+                        <a href="#" class="btn btn-outline-primary  " aria-label="Nous rejoindre">Nous rejoindre</a>
+                    </div>
+                </div>
+                <div class="lg:w-2/4  xl:w-2/4" id="jumbotron_anim">
+                    <div id="anim_replacement" class="mt-5">
+                        <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png"
+                             alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="p-5 mb-72">
+        <div class="container flex flex-col justify-center items-center ">
+            <h2 class="text-center">Implanté en Ile-de-France</h2>
+            <div id="anim_replacement" class="m-10 sm:w-full lg:w-1/2">
+                <img src="https://image.noelshack.com/fichiers/2023/46/7/1700430592-image-a-remplacer.png"
+                     alt="Simplifier vous le travail avec Fast Invoice" class="w-full">
+            </div>
+        </div>
+    </section>
+    <section class="relative ">
+        <div class="container relative z-10 flex flex-col justify-around items-center xl:flex-row">
+            <div class="card  mt-[-260px]">
+                <div class=" flex flex-row  items-center px-6 py-4">
+                    <div class="w-6 h-6 rounded-full flex flex-row justify-around items-center bg-blue-500 mr-3">
+                        <img src="https://i.goopics.net/bgnqfy.png" alt="Icône Dollar" >
+                    </div>
+                    <h3 class="text-2xl">Notre histoire</h3>
+                </div>
+
+                <div>
+                    <p class=" px-6 text-gray-400 text-lg text-start">  Fast Invoice, une entreprise familiale depuis 2013, a émergé comme une force sur le marché. Notre histoire est imprégnée de détermination, d'innovation et d'engagement envers nos clients.
+                        <br>
+                        <br>
+                        Depuis nos modestes débuts, nous nous sommes développés pour devenir un acteur clé, offrant des solutions de pointe.
+                        <br>
+                        <br>
+                        Notre voyage continue, guidé par notre passion pour la qualité et le service.</p>
+                </div>
+            </div>
+            <div class="card mt-10 xl:mt-[-260px] ">
+                <div class=" flex flex-row  items-center px-6 py-4">
+                    <div class="w-6 h-6 rounded-full flex flex-row justify-around items-center bg-blue-500 mr-3">
+                        <img src="https://i.goopics.net/66f7am.png" alt="Icône Groupe" >
+                    </div>
+                    <h3 class="text-2xl">Notre mission</h3>
+                </div>
+
+                <div>
+                    <p class="px-6 text-gray-400 text-lg text-start">Nous proposons un outil pour les entreprises et collectivités, visant à éliminer l'utilisation du papier et des tableurs. Notre priorité est d'optimiser le temps, d'accroître la performance de vos équipes et d'améliorer leur confort.
+                   <br><br>
+                        Notre logiciel a pour objectif de simplifier la gestion des données et des processus, améliorant ainsi la productivité. De plus, notre interface conviviale accroît le confort des collaborateurs.​</p>
+                </div>
+            </div>
+            <div class="card mt-10 xl:mt-[-260px]">
+                <div class=" flex flex-row items-center px-6 py-4">
+                    <div class="w-6 h-6 rounded-full flex flex-row justify-around items-center bg-blue-500 mr-3">
+                        <img src="https://i.goopics.net/9v4cfe.png" alt="Icône Téléphone">
+                    </div>
+                    <h3 class="text-2xl">Nos valeurs</h3>
+                </div>
+
+                <div>
+                    <p class="pl-6 pr-4 text-gray-400 text-lg text-start">Chez Fast Invoice, nos valeurs forment le socle de notre entreprise. L'entraide est notre leitmotiv, nous croyons en la force de l'équipe pour surmonter les défis. La performance est ancrée dans notre ADN, stimulant l'innovation constante pour offrir à nos clients des solutions optimales. L'intégrité guide nos actions, nous bâtissons des relations de confiance. La diversité est célébrée, car elle enrichit notre perspective. Enfin, l'excellence est notre objectif, nous visons toujours l'amélioration continue pour offrir un service exceptionnel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container absolute top-0 left-0 z-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-full" height="349" viewBox="0 0 1536 349" fill="none">
+                <path d="M576.812 17.833C248.419 47.4356 115.962 -16.7206 0 10.7681V349H1536V54.4311C1536 54.4311 1362.06 22.6843 1178.12 10.7681C878.214 -8.65999 724.764 4.49602 576.812 17.833Z"
+                      fill="url(#paint0_linear_30_888)"/>
+                <defs>
+                    <linearGradient id="paint0_linear_30_888" x1="768" y1="-125.944" x2="768" y2="349"
+                                    gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#F3F3F3"/>
+                        <stop offset="1" stop-color="#EDEDED" stop-opacity="0.01"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </section>
+    <section class="p-20 m-10 ">
+        <div class="container">
+        <h2 class=" py-16 font-medium text-3xl text-center">Les fondateurs</h2>
+            <div class=" flex flex-col justify-around items-center lg:flex-row lg:justify-around lg:justify-between  ">
+                <div class="p-6 mt-5 rounded-xl shadow-lg flex flex-col justify-center items-center lg:mr-2">
+                    <img src="https://i.goopics.net/bht5xx.png">
+                    <h4 class="mt-5  text-xl font-medium text-[#017AC2] lg:text-sm xl:text-base 2xl:text-2xl ">Ilyes KABRINE</h4>
+                </div>
+                <div class="p-6 mt-5 rounded-xl  shadow-lg flex flex-col justify-center items-center lg:mr-2 ">
+                    <img src="https://i.goopics.net/7929ox.png">
+                    <h4 class="mt-5  text-xl font-medium text-[#017AC2] lg:text-sm xl:text-base 2xl:text-2xl">Léo GUIRADO</h4>
+                </div>
+                <div class="p-6 mt-5 rounded-xl  shadow-lg flex flex-col justify-center items-center lg:mr-2">
+                    <img src="https://i.goopics.net/zr8jsb.png">
+                    <h4 class="mt-5 text-xl font-medium text-[#017AC2] lg:text-sm xl:text-base 2xl:text-2xl">Ali KHELIFA</h4>
+                </div>
+                <div class="p-6 mt-5  rounded-xl shadow-lg  flex flex-col justify-center items-center lg:mr-2 ">
+                    <img src="https://i.goopics.net/lv6mih.png">
+                    <h4 class="mt-5 text-xl font-medium text-[#017AC2] lg:text-sm xl:text-base 2xl:text-2xl">Ilyesse HAMCHERIF</h4>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section>
+    <div class="container">
+        <div class="py-16  sm:flex flex-col justify-center items-center lg:flex-row lg:justify-around lg:px-14 xl:px-48">
+            <div class="sm:w-full pl-20 pr-10  md:pl-32 md:pr-20 lg:w-2/4 lg:pl-1 lg:pr-12 2xl:p-10 ">
+                <h1 class="mb-3 text-start p-0 sm: m-0 lg:text-3xl 2xl:text-4xl ">Ils nous font confiance</h1>
+                <p class="pt-1  text-start font-normal text-gray-400 2xl:pr-24"> Nos clients témoignent. Plus de 1500 entreprises nous confient
+                   la dématérialisation de leur gestion de facture et de devis au quotidien. </p>
+                <div class=" mt-5 ">
+                    <a href="#" class="btn btn-primary  " aria-label="Accéder aux avis"> <img src="https://i.goopics.net/xvflh4.png" alt="Accéder aux avis">Accéder aux avis</a>
+                </div>
+            </div>
+            <div class="lg:w-2/4  xl:w-2/4" id="jumbotron_anim">
+                <div id="anim_replacement" class="mt-5">
+                    <img src="https://image.noelshack.com/fichiers/2023/50/3/1702507925-bloc-de-droite.png"
+                         alt="Simplifier vous le travail avec Fast Invoice" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div></section>
+
+{% endblock %}

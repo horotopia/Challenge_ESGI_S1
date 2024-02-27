@@ -1,0 +1,28 @@
+<nav id="navbar" class="d-flex d-sm-block" tabindex="0">
+    <div class="container" id="navbar-container">
+        <div id="navbar-logo" class="h-100 h-sm-auto">
+            <a href="{{ path("app_index") }}" aria-label="Logo Fast Invoice" tabindex="1" class="h-100 h-sm-auto d-flex justify-content-center align-items-center d-sm-block">
+                <img src="https://i.goopics.net/g0scmw.png" alt="Logo Fast Invoice">
+            </a>
+        </div>
+        <div id="navbar-left">
+            <div id="navbar-nav">
+                <a href="{{ path("app_index") }}" aria-label="Accueil" class="navbar-link">Accueil</a>
+                <a href="{{ path("app_company") }}" aria-label="À propos" class="navbar-link">À propos</a>
+                <a href="{{ path("app_prices") }}" aria-label="Tarifs" class="navbar-link">Tarifs</a>
+                <a href="{{ path("app_contact") }}" aria-label="Contact" class="navbar-link">Contact</a>
+            </div>
+        </div>
+        <div id="navbar-right">
+            <a href="{{ path("app_login") }}" class="navbar-link" aria-label="Se connecter">Se connecter</a>
+            <a href="{{ path("app_register") }}" class="navbar-link" aria-label="Se connecter">S'inscrire</a>
+            <a href="#" class="btn btn-primary px5 py5 fs-14" aria-label="Essayer gratuitement">Essayer gratuitement</a>
+        </div>
+    </div>
+
+    <div id="navbar-toggle">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</nav>

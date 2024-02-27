@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -23,6 +26,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
+    #[ORM\Column]
+    private ?string  $phone=null ;
     /**
      * @var string The hashed password
      */
@@ -33,8 +38,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Entreprise $id_entreprise = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Company $companyId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tokenRegistration = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable:true)]
+    private ?\DateTimeInterface $tokenRegistrationLifeTime = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'userCreated', targetEntity: Category::class)]
+    private Collection $categories;
+     public function __construct()
+     {
+         $this->isVerified=false;
+         if ($this->tokenRegistrationLifeTime === null) {
+             $this->tokenRegistrationLifeTime = (new \DateTime('now'))->add(new \DateInterval('P1D'));
+         }
+         $this->categories = new ArrayCollection();     }
 
     public function getId(): ?int
     {
@@ -97,6 +130,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
     /**
      * @see UserInterface
      */
@@ -118,14 +161,116 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdEntreprise(): ?Entreprise
+    public function getCompanyId(): ?Company
     {
-        return $this->id_entreprise;
+        return $this->companyId;
     }
 
-    public function setIdEntreprise(?Entreprise $id_entreprise): static
+    public function setCompanyId(?Company $companyId): static
     {
-        $this->id_entreprise = $id_entreprise;
+        $this->companyId = $companyId;
+
+        return $this;
+    }
+
+    public function getTokenRegistration(): ?string
+    {
+        return $this->tokenRegistration;
+    }
+
+    public function setTokenRegistration(?string $tokenRegistration): static
+    {
+        $this->tokenRegistration = $tokenRegistration;
+
+        return $this;
+    }
+
+    public function getTokenRegistrationLifeTime(): ?\DateTime
+    {
+        return $this->tokenRegistrationLifeTime;
+    }
+
+    public function setTokenRegistrationLifeTime(\DateTime $tokenRegistrationLifeTime): static
+    {
+        $this->tokenRegistrationLifeTime = $tokenRegistrationLifeTime;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTime $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTime $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setUserCreated($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getUserCreated() === $this) {
+                $category->setUserCreated(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#ffffff" />
+
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="description" content="{% block description %}{% endblock %}" />
+        <meta name="keywords" content="{% block keywords %}{% endblock %}" />
+        <meta name="application-name" content="Fast Invoice" />
+        <meta name="apple-mobile-web-app-title" content="Fast Invoice" />
+        <meta name="author" content="Fast Invoice : Ilyes KABRINE, Léo GUIRADO, Ali KHELIFA & Ilyesse HAMCHERIF" />
+
+        <meta property="og:title" content="{% block og_title %}{% endblock %}" />
+        <meta property="og:locale" content="fr_FR" />
+        <meta property="og:description" content="{% block og_description %}{% endblock %}" />
+        <meta property="og:url" content="" />
+        <meta property="og:site_name" content="" />
+
+        <link rel="icon" type="image/x-icon" href="https://image.noelshack.com/fichiers/2023/46/7/1700429800-favicon.png" />
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            {{ encore_entry_link_tags('app') }}
+
+
+            <style>
+                .nav-closed .link-text {
+                    display: none;
+                }
+
+                .nav-open .link-text {
+                    display: inline;
+                }
+            </style>
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const alerts = document.querySelectorAll('.alert');
+                    alerts.forEach((alert) => {
+                        alert.classList.remove('hidden');
+                        setTimeout(() => {
+                            alert.classList.add('hidden');
+                        }, 2000);
+                    });
+                });
+
+                function handleClick() {
+                    activeNavItems.forEach(function (item) {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+
+                activeNavItems.forEach(function (item) {
+                    item.addEventListener('click', handleClick);
+                });
+                function toggleDropdown() {
+                    const dropdown = document.getElementById('myDropdown');
+                    dropdown.classList.toggle('hidden');
+                }
+
+                window.addEventListener('click', function (event) {
+                    const dropdown = document.getElementById('myDropdown');
+                    const button = document.getElementById('dropdownButton');
+
+                    if (event.target === button || event.target.closest('#myDropdown')) {
+                        return;
+                    }
+
+                    dropdown.classList.add('hidden');
+                });
+
+
+            </script>
+            {{ encore_entry_script_tags('app') }}
+
+        {% endblock %}
+    </head>
+    <body>
+
+        {% include "back/blocks/navbar.html.twig" %}
+
+        <div class="flex min-h-screen">
+
+            {% include "back/blocks/sidebar.html.twig" %}
+
+            <div id="mainContent" class="flex-1 ml-16 mt-[89px]">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+
+        <br>
+        {% for type, flashMessages in app.flashes %}
+            {% for message in flashMessages %}
+                {{ type }} - {{ message }} <br>
+            {% endfor %}
+        {% endfor %}
+
+        {# {% include "blocks/footer.html.twig" %} #}
+
+
+
+    </body>
+</html>
