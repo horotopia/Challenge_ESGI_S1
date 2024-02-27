@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% block body %}
+        <div class="mt-32 flex flex-row justify-around">
+            <div class="ml-48 mt-20">
+                <h1 class="text-[#55B4FA] mb-8 text-4xl">Réinitialisation du mot de passe</h1>
+                <p class="text-base text-[#6A7981]">Un lien de réinitialisation de mot de passe a été envoyé à l'adresse e-mail <span class="text-[#55B4FA] font-bold"></span>.
+                    <span class="text-green-400 font-bold"> Remarque</span> : Si vous ne recevez pas l'e-mail dans quelques minutes : </p>
+                <ul>
+                    <li class="text-[#6A7981] text-sm"> - Vérifiez le dossier spam</li>
+                    <li class="text-[#6A7981] text-sm"> - Vérifiez si vous avez correctement saisi votre adresse e-mail</li>
+                    <li class="text-[#6A7981] text-sm"> - Si vous ne parvenez pas à résoudre le problème, veuillez contacter le FastInovice@gmail.com</li>
+                    <li class="text-[#6A7981] text-sm"> - Si vous ne recevez pas l'e-mail, veuillez vérifier votre dossier de spam ou <a href="{{ path('app_forgot_password_request') }}" class="text-blue-500">Réessayer!</a> </li>
+                </ul>
+            </div>
+            <div>
+                <img src="https://image.noelshack.com/fichiers/2023/51/7/1703412971-hand-check.png" class="w-50">
+            </div>
+        </div>
+
+{% endblock %}

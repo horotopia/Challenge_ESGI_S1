@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        @page { margin: 10px; }
+
+
+        .header img {
+            float: right;
+            width: 150px;
+            height: 110px;
+        }
+
+        .header .devis-section {
+            float: left;
+
+        }
+
+        .header .client {
+            float: right;
+        }
+
+        .header h1{
+            text-align: center;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .header .devis-section p {
+            margin: 1px;
+        }
+
+        .header .client p {
+            margin: 1px;
+        }
+
+        hr {
+            width: 100%;
+            height: 2px;
+            background-color: #3498db;
+            margin: 0px;
+            position: absolute;
+            left: 0;
+            bottom: 10px;
+        }
+
+
+        .info .company p {
+            margin: 5px;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        table {
+            margin-top: 70px;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid rgb(230, 228, 228);
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        .signateur_client {
+            float: right;
+            margin: 20px;
+        }
+
+        .payment-info {
+            margin: 20px;
+        }
+
+        .footer {
+            width: 100%;
+            position: absolute;
+            left: 150px;
+            bottom: 0;
+        }
+
+        .footer p {
+            text-align: center;
+            margin: 1px;
+            color: #cecece;
+            font-size: 12px;
+        }
+
+        .signateur{
+            border:2px solid #c2bfbf;
+            height: 100px;
+            width: 200px;}
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Facture</h1>
+        <div class="devis-section">
+            <p><strong>N°:</strong> {{ invoice.id }}</p>
+            <p><strong>Date de création:</strong> {{ invoice.createdAt|date('d/m/Y') }}</p>
+            <p><strong>Échéance au:</strong> {{ invoice.dueDate|date('d/m/Y') }}</p>
+        </div>
+        <div class="client">
+            <p><strong>Nom:</strong> {{ invoice.clientId.lastName }}</p>
+            <p><strong>Adresse:</strong> {{ invoice.clientId.address }}</p>
+            <p><strong>Email:</strong> {{ invoice.clientId.email }}</p>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <<!-- Tableau des produits -->
+    <table>
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix unitaire (HT)</th>
+            <th>TVA%</th>
+            <th>Total (HT)</th>
+            <th>Total (TTC)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Ajoutez les lignes pour chaque products ici -->
+        {% for product in productList %}
+            <tr>
+                {% if product.product is iterable %}
+                    <td>{{ product.product.name }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.product.unitPrice }}</td>
+                    <td>{{ product.product.VAT }}</td>
+                    <td>{{ product.THT }}</td>
+                    <td>{{ product.TTC }}</td>
+                {% else %}
+                    <td colspan="6">Information produit incorrecte</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        <!-- Ajoutez d'autres lignes de produits ici -->
+        <tr>
+            <td colspan="5" style="text-align: right;  color:#949292"><strong>Total HT:</strong></td>
+            <td style="text-align: right;">{{ totalTHT }} €</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right;  color:#949292"> <strong>Total TTC:</strong></td>
+            <td style="text-align: right;">{{ totalTTC }} €</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="signateur_client">
+        <p> <strong>Signateur client:</strong></p>
+        <div class="signateur">
+            <p style="text-align: center; color: #cecece; margin-top:40px">FAST Invoices</p>
+        </div>
+    </div>
+
+    <!-- Informations de paiement -->
+    <div class="payment-info">
+        <p><strong>Veuillez choisir votre méthode de paiement :</strong></p>
+        <a href="{{ path('payment_full', {'id': invoice.id}) }}">Payer la totalité</a>
+        <a href="{{ path('payment_installments', {'id': invoice.id}) }}">Payer en plusieurs fois</a>
+        <a href="{{ path('payment_deposit', {'id': invoice.id}) }}">Payer un acompte</a>
+        <a href="{{ path('invoice_download', {'id': invoice.id}) }}">Télécharger la facture en PDF</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <hr>
+        <p>Conditions générales de vente | Politique de confidentialité</p>
+        <p>&copy; 2024 {{ companyInfo.name }}. Tous droits réservés.</p>
+    </div>
+</div>
+</body>
+
+</html>

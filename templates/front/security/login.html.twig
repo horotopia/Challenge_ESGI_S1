@@ -30,21 +30,21 @@
                             {{ message }}
                         </div>
                     {% endfor %}
-                    <div class="w-[42.5rem] p-5 waterGradient rounded-t-[1.5rem]">
+                    <div class="w-[42.5rem] p-3 waterGradient rounded-t-[1.5rem]">
                     <h4 class="mb-0 text-center font-medium text-2xl text-white">Connexion</h4>
                    </div>
-                    <label for="inputEmail" class="text-base mt-4 ml-10">Adresse e-mail</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-[36.8rem] mt-3 ml-10 p-2 rounded-[15rem] border border-solid border-[#A0A0A0] outline-none" autocomplete="email" placeholder="exemple@test.fr" required autofocus >
-                    <label for="inputPassword" class="text-base mt-4  ml-10">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword" class="w-[590px] mt-3 ml-10 rounded-[1.5rem] p-2 border border-solid border-[#A0A0A0] outline-none" autocomplete="current-password" required>
+                    <label for="inputEmail" class="text-base mt-3 ml-10">Adresse e-mail</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-[36.8rem] mt-1 ml-10 p-2 rounded-[15rem] border border-solid border-[#A0A0A0] outline-none" autocomplete="email" placeholder="exemple@test.fr" required autofocus >
+                    <label for="inputPassword" class="text-base mt-3  ml-10">Mot de passe</label>
+                    <input type="password" name="password" id="inputPassword" class="w-[590px] mt-1 ml-10 rounded-[1.5rem] p-2 border border-solid border-[#A0A0A0] outline-none" autocomplete="current-password" required>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
                     {% if error %}
                         <div class="text-xs text-red-500 ml-20">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
                     <div class=" mt-6 flex flex-row justify-around items-center">
-                    <a href="" class="text-[#007AC2] text-base">Mot de passe oublié</a>
+                    <a href="{{ path('app_forgot_password_request') }}" class="text-[#007AC2] text-base">Mot de passe oublié</a>
                     <button class="btn-primary hover:bg-blue-500" type="submit">
-                        se connecter
+                        Se connecter
                     </button>
                     </div>
                     <p class="text-center mt-4 text-base"> Pas encore inscrit ? <a href="{{ path('app_register') }}" class="text-[#007AC2]">Créer votre compte</a> </p>

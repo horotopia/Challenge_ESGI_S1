@@ -19,6 +19,7 @@
         <meta property="og:description" content="{% block og_description %}{% endblock %}" />
         <meta property="og:url" content="" />
         <meta property="og:site_name" content="" />
+
         <link rel="icon" type="image/x-icon" href="https://image.noelshack.com/fichiers/2023/46/7/1700429800-favicon.png" />
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -42,86 +43,28 @@
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-            <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-            <script src="{{ asset('js/accuiel_admin.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const toggleBtn = document.getElementById('navbarAdminToggle');
-                    let isNavbarOpen = false;
-
-                    toggleBtn.addEventListener('click', () => {
-                        const navbar = document.getElementById('navbarAdmin');
-                        const navLinks = document.getElementsByClassName('nav-link');
-                        const mainContent = document.getElementById('mainContent');
-                        const ellipseOne = document.getElementById('ellipse1');
-                        const ellipseThree = document.getElementById('ellipse3');
-                        const ellipseFive = document.getElementById('ellipse5');
-                        const ellipseEight = document.getElementById('ellipse8');
-                        const burgerMenu = document.getElementById('burger-menu');
-
-                        if (isNavbarOpen) {
-                            navbar.style.width = '4rem';
-                            mainContent.style.marginLeft = '4rem';
-                            mainContent.style.transition = "all .2s";
-                            burgerMenu.style.rotate = '0deg';
-                            burgerMenu.style.transition = "all .2s";
-                            ellipseOne.style.opacity = "1";
-                            ellipseOne.style.transition = "all .2s";
-                            ellipseThree.style.opacity = "1";
-                            ellipseThree.style.transition = "all .2s";
-                            ellipseFive.style.opacity = "1";
-                            ellipseFive.style.transition = "all .2s";
-                            ellipseEight.style.opacity = "1";
-                            ellipseEight.style.transition = "all .2s";
-                            for(let i = 0; i < navLinks.length; i++) {
-                                const link = navLinks[i];
-                                link.style.justifyContent = 'center';
-                                link.style.transition = "all .2s";
-                            }
-                            navbar.classList.remove('nav-open');
-                            navbar.classList.add('nav-closed');
-                            navbar.style.transition = "all .2s";
-                        } else {
-                            navbar.style.width = '18rem';
-                            mainContent.style.marginLeft = '18rem';
-                            mainContent.style.transition = "all .2s";
-                            burgerMenu.style.rotate = '90deg';
-                            burgerMenu.style.transition = "all .2s";
-                            ellipseOne.style.opacity = "0";
-                            ellipseOne.style.transition = "all .2s";
-                            ellipseThree.style.opacity = "0";
-                            ellipseThree.style.transition = "all .2s";
-                            ellipseFive.style.opacity = "0";
-                            ellipseFive.style.transition = "all .2s";
-                            ellipseEight.style.opacity = "0";
-                            ellipseEight.style.transition = "all .2s";
-                            for(let i = 0; i < navLinks.length; i++) {
-                                const link = navLinks[i];
-                                link.style.justifyContent = 'flex-start';
-                                link.style.transition = "all .2s";
-                            }
-                            navbar.classList.remove('nav-closed');
-                            navbar.classList.add('nav-open');
-                            navbar.style.transition = "all .2s";
-                        }
-
-                        isNavbarOpen = !isNavbarOpen;
+                document.addEventListener('DOMContentLoaded', function () {
+                    const alerts = document.querySelectorAll('.alert');
+                    alerts.forEach((alert) => {
+                        alert.classList.remove('hidden');
+                        setTimeout(() => {
+                            alert.classList.add('hidden');
+                        }, 2000);
                     });
                 });
 
-                var activeNavItems = document.querySelectorAll('.nav-link');
-
                 function handleClick() {
-                    activeNavItems.forEach(function(item) {
+                    activeNavItems.forEach(function (item) {
                         item.classList.remove('active');
                     });
                     this.classList.add('active');
                 }
 
-                activeNavItems.forEach(function(item) {
+                activeNavItems.forEach(function (item) {
                     item.addEventListener('click', handleClick);
                 });
                 function toggleDropdown() {
@@ -129,7 +72,7 @@
                     dropdown.classList.toggle('hidden');
                 }
 
-                window.addEventListener('click', function(event) {
+                window.addEventListener('click', function (event) {
                     const dropdown = document.getElementById('myDropdown');
                     const button = document.getElementById('dropdownButton');
 
@@ -140,22 +83,10 @@
                     dropdown.classList.add('hidden');
                 });
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    const alerts = document.querySelectorAll('.alert');
-                    alerts.forEach((alert) => {
-                        alert.classList.remove('hidden');
-                        setTimeout(() => {
-                            alert.classList.add('hidden');
-                        }, 2000);
-                    });
-                });
-                $(document).ready(function() {
-                    $('.select2').select2({ width: '32rem' });
-                    $('.select2-container--default .select2-selection--multiple')
-                        .css('padding-bottom', '0.75rem');
-                });
 
             </script>
+            {{ encore_entry_script_tags('app') }}
+
         {% endblock %}
     </head>
     <body>
@@ -179,5 +110,8 @@
         {% endfor %}
 
         {# {% include "blocks/footer.html.twig" %} #}
+
+
+
     </body>
 </html>

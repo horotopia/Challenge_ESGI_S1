@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use App\Form\inscription\RegistrationFormType;
+use App\Form\Registration\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -43,13 +43,13 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setRoles(["ROLE_ENTERPRISE"]);
+            $user->setRoles(["ROLE_ENTREPRISE"]);
             $user->setCreatedAt(new \DateTime());
 
-            $user->setTelephone( $form->get('telephone')->getData());
+            $user->setPhone( $form->get('phone')->getData());
             $user->setTokenRegistration($tokenRegistration);
-            $entreprise = $form->get('id_entreprise')->getData();
-            $entityManager->persist($entreprise);
+            $company = $form->get('companyId')->getData();
+            $entityManager->persist($company);
             $entityManager->persist($user);
             $entityManager->flush();
 

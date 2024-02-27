@@ -16,7 +16,6 @@ use App\Repository\DevisRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\ProduitRepository;
 use App\Service\PDFService;
-use Cassandra\Date;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\HttpClient\HttpClient;
 
 #[IsGranted('ROLE_ENTERPRISE')]
 class DevisController extends AbstractController
@@ -54,7 +52,6 @@ class DevisController extends AbstractController
     #[Route('/admin/devis/add', name: 'add_devis')]
     public function AddDevis(Request $request, ProduitRepository $produitRepository,ClientRepository $clientRepository,EntrepriseRepository $entrepriseRepository, SessionInterface $session,PDFService $PDFService,EntityManagerInterface $entityManager): Response
     {
-
         $form = $this->createForm(AddTypeForm::class);
         $productList = $session->get('productList', []);
 
@@ -70,39 +67,56 @@ class DevisController extends AbstractController
                 if ($idProduit) {
                     $product = $produitRepository->find($idProduit);
 
-                    if($quantity >=1 ){
+                    if ($quantity >= 1) {
                         if ($product) {
-                            $tht = str_replace(',', '', $product->getPrixUnitaire() * $quantity);
-                            $tcc = str_replace(',', '', $product->getPrixUnitaire() * $quantity * (1 + $product->getTva() / 100));
+                            $productList = $session->get('productList', []);
+                            $productExists = false;
+                            foreach ($productList as &$item) {
+                                if ($item['id'] === $product->getId()) {
+                                    $item['quantite'] += $quantity;
 
-                            $productList[] = [
-                                'id' => $product->getId(),
-                                'nom' => $product->getNom(),
-                                'prix_unitaire' => number_format($product->getPrixUnitaire(), 2),
-                                'quantite' => $quantity,
-                                'THT' => number_format($tht, 2),
-                                'TVA' => $product->getTva(),
-                                'TTC' => number_format($tcc, 2)
-                            ];
+                                    $tht = str_replace(',', '', $product->getPrixUnitaire() * $item['quantite']);
+                                    $tcc = str_replace(',', '', $product->getPrixUnitaire() * $item['quantite'] * (1 + $product->getTva() / 100));
+                                    $item['THT'] = number_format($tht, 2);
+                                    $item['TTC'] = number_format($tcc, 2);
+
+                                    $productExists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$productExists) {
+                                $tht = str_replace(',', '', $product->getPrixUnitaire() * $quantity);
+                                $tcc = str_replace(',', '', $product->getPrixUnitaire() * $quantity * (1 + $product->getTva() / 100));
+
+                                $productList[] = [
+                                    'id' => $product->getId(),
+                                    'nom' => $product->getNom(),
+                                    'prix_unitaire' => number_format($product->getPrixUnitaire(), 2),
+                                    'quantite' => $quantity,
+                                    'THT' => number_format($tht, 2),
+                                    'TVA' => $product->getTva(),
+                                    'TTC' => number_format($tcc, 2)
+                                ];
+                            }
+
+                            $session->set('productList', $productList);
                             $this->addFlash("success", "Produit ajouté avec succès!");
-
+                        } else {
+                            $this->addFlash("error", "Produit non trouvé dans la base de données.");
                         }
-
-                        $session->set('productList', $productList);
-                    }else{
+                    } else {
                         $this->addFlash("error", "La quantité doit être supérieure à zéro.");
-
                     }
                 } else {
                     $this->addFlash("error", "Vous n'avez pas sélectionné de produit.");
                 }
             }
+
             foreach ($productList as $product) {
                 $totalTHT += floatval(str_replace(',', '', $product['THT']));
                 $totalTTC += floatval(str_replace(',', '', $product['TTC']));
             }
-           //$totalTHT = number_format($totalTHT, 2);
-            //$totalTTC = number_format($totalTTC, 2);
             if ($request->request->has('create_devis')) {
 
                 $devis = new Devis();
@@ -245,7 +259,7 @@ class DevisController extends AbstractController
             $quantite = $product->getQuantite();
             $tva = $product->getProduit()->getTVA();
 
-            // Calculate THT
+
             $tht = str_replace(',', '',number_format($prixUnitaire * $quantite, 2));
 
             // Calculate TTC
@@ -282,7 +296,6 @@ class DevisController extends AbstractController
             throw $this->createNotFoundException('Devis non trouvé');
         }
 
-        // Supprimer le Devis
         $entityManager->remove($devis);
         $entityManager->flush();
 
@@ -332,34 +345,57 @@ class DevisController extends AbstractController
                 if ($idProduit) {
                     $product = $produitRepository->find($idProduit);
 
-                      if($quantity >=1 ){
-                    if ($product) {
-                        $tht = str_replace(',', '', $product->getPrixUnitaire() * $quantity);
-                        $tcc = str_replace(',', '', $product->getPrixUnitaire() * $quantity * (1 + $product->getTva() / 100));
+                    if($quantity >= 1){
+                        if ($product) {
+                            $productList = $session->get('productList', []);
 
-                        $productList[] = [
-                            'id' => $product->getId(),
-                            'nom' => $product->getNom(),
-                            'prix_unitaire' => number_format($product->getPrixUnitaire(), 2),
-                            'quantite' => $quantity,
-                            'numDevis' => $numDevis,
-                            'THT' => number_format($tht, 2),
-                            'TVA' => $product->getTva(),
-                            'TTC' => number_format($tcc, 2)
-                        ];
-                        $this->addFlash("success", "Produit ajouté avec succès!");
+                            // Vérifier si le produit existe déjà dans la liste
+                            $productExists = false;
+                            foreach ($productList as &$item) {
+                                if ($item['id'] === $product->getId()) {
 
+                                    $item['quantite'] += $quantity;
+
+                                    $tht = str_replace(',', '', $product->getPrixUnitaire() * $item['quantite']);
+                                    $tcc = str_replace(',', '', $product->getPrixUnitaire() * $item['quantite'] * (1 + $product->getTva() / 100));
+                                    $item['THT'] = number_format($tht, 2);
+                                    $item['TTC'] = number_format($tcc, 2);
+
+                                    $productExists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$productExists) {
+                                // Ajouter le produit à la liste s'il n'existe pas déjà
+                                $tht = str_replace(',', '', $product->getPrixUnitaire() * $quantity);
+                                $tcc = str_replace(',', '', $product->getPrixUnitaire() * $quantity * (1 + $product->getTva() / 100));
+
+                                $productList[] = [
+                                    'id' => $product->getId(),
+                                    'nom' => $product->getNom(),
+                                    'prix_unitaire' => number_format($product->getPrixUnitaire(), 2),
+                                    'quantite' => $quantity,
+                                    'numDevis' => $numDevis,
+                                    'THT' => number_format($tht, 2),
+                                    'TVA' => $product->getTva(),
+                                    'TTC' => number_format($tcc, 2)
+                                ];
+                            }
+
+                            $session->set('productList', $productList);
+                            $this->addFlash("success", "Produit ajouté avec succès!");
+                        } else {
+                            $this->addFlash("error", "Produit non trouvé dans la base de données.");
+                        }
+                    } else {
+                        $this->addFlash("error", "La quantité doit être supérieure à zéro.");
                     }
-
-                    $session->set('productList', $productList);
-                      }else{
-                          $this->addFlash("error", "La quantité doit être supérieure à zéro.");
-
-                      }
                 } else {
                     $this->addFlash("error", "Vous n'avez pas sélectionné de produit.");
                 }
             }
+
 
             foreach ($productList as $product) {
                 $totalTHT += floatval(str_replace(',', '', $product['THT']));
@@ -379,26 +415,35 @@ class DevisController extends AbstractController
                 $entityManager->flush();
                 foreach ($productList as $productData) {
                     $productId = $productData['id'];
-                    $produit = $entityManager->getRepository(Produit::class)->find($productId);
-
-                    $isProductAlreadyAdded = false;
-                    foreach ($devis->getDevisProduits() as $existingDevisProduit) {
-                        if ($existingDevisProduit->getProduit()->getId() === $productId){
-                            $isProductAlreadyAdded = true;
+                    $quantity = $productData['quantite'];
+                    $existingDevisProduit = null;
+                    foreach ($devis->getDevisProduits() as $devisProduit) {
+                        if ($devisProduit->getProduit()->getId() === $productId) {
+                            $existingDevisProduit = $devisProduit;
                             break;
                         }
                     }
 
-                    if ($produit && !$isProductAlreadyAdded) {
-                        $devisProduit = new DevisProduit();
-                        $devisProduit->setProduit($produit);
-                        $devisProduit->setQuantite($productData['quantite']);
-                        $devis->addDevisProduit($devisProduit);
-                        $entityManager->persist($devis);
-                        $entityManager->flush();
+                    if ($existingDevisProduit) {
+                        if ($existingDevisProduit->getQuantite() !== $quantity) {
+                            $existingDevisProduit->setQuantite($quantity);
+                            $entityManager->persist($existingDevisProduit);
+                            $entityManager->flush();
 
+                        }
+                    } else {
+                        $produit = $entityManager->getRepository(Produit::class)->find($productId);
+                        if ($produit) {
+                            $devisProduit = new DevisProduit();
+                            $devisProduit->setProduit($produit);
+                            $devisProduit->setQuantite($quantity);
+                            $devis->addDevisProduit($devisProduit);
+                            $entityManager->persist($devis);
+                            $entityManager->flush();
+                        }
                     }
                 }
+
                 $session->clear();
                 $this->addFlash("success", "Votre devis a été modifié avec succès");
                 return $this->redirectToRoute('app_back_devis');
