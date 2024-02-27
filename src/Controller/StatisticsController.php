@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Repository\ClientRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\ProductRepository;
+use App\Service\PDFService;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -55,4 +59,34 @@ class StatisticsController extends AbstractController
              'revenueByMonth'=>$revenueByMonth
         ]);
     }
+
+
+    #[Route('/admin/download/{type}', name: 'app_back_report_download')]
+    public function downloadReport(string $type, ProductRepository $productRepository, CompanyRepository $companyRepository, InvoiceRepository $invoiceRepository, PDFService $PDFService, Request $request): Response {
+        $companyId = $this->getUser()->getcompanyId();
+        $companyInfo = $companyRepository->find($companyId);
+        if ($type === 'salesByClient') {
+            $data = $invoiceRepository->getSalesByClient($companyId);
+            $view = 'back/reports/report_PdfSalesByCustomer.html.twig';
+            $fileName = 'ventes_par_clients';
+        } elseif ($type === 'salesByProduct') {
+            $data = $invoiceRepository->getSalesByProduct($companyId);
+            $view = 'back/reports/report_PdfSalesByProduct.html.twig';
+            $fileName = 'ventes_par_produits';
+        } else {
+            throw $this->createNotFoundException('Type de rapport invalide');
+        }
+
+        $html = $this->renderView($view, [
+            'controller_name' => 'StatisticsController',
+            'data' => $data,
+            'companyInfo' => $companyInfo
+        ]);
+
+
+        $PDFService->showPDF($html, $fileName);
+
+            return new Response();
+    }
+
 }
