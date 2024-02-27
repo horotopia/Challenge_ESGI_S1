@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\product;
 
 use App\Entity\Category;
-use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProductType extends AbstractType
+class EditProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -22,54 +21,51 @@ class ProductType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'Nom',
             ])
             ->add('description',TextType::class, [
+        'constraints' => [
+            new Assert\NotBlank(),
+            new Assert\Length(['max' => 255]),
+        ],
+        'label' => 'Description',
+    ])
+            ->add('brand' ,TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
-                    new Assert\Length(['max' => 255]),
-                ],
-                'label' => 'Description',
-            ])
-            ->add('brand',TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'Marque',
             ])
-            ->add('unitPrice',NumberType::class, [
+            ->add('unitPrice' ,NumberType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'Prix',
             ])
-            ->add('VAT',NumberType::class, [
+            ->add('Id' ,NumberType::class, [
+                'label_attr' => [
+                    'class' => 'hidden', // Classe CSS pour le label
+                ],
+                'attr' => [
+                    'class' => 'hidden',
+                ],
+            ])
+
+            ->add('VAT' ,NumberType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'TVA',
             ])
-            ->add('availableQuantity',NumberType::class, [
+            ->add('availableQuantity' ,NumberType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Ce champ ne doit pas être vide.',
-                    ]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'Quantité',
@@ -92,7 +88,6 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-
             'company_id' => null,
         ]);
     }

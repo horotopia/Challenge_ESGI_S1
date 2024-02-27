@@ -39,7 +39,7 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         $results = $queryBuilder->getQuery()->getResult();
-        return $this->paginator->paginate($results, $page, 2);
+        return $this->paginator->paginate($results, $page, 10);
     }
 
     public function getAllProducts(int $page):PaginationInterface
@@ -50,20 +50,27 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return $this->paginator->paginate($products, $page, 2);
+        return $this->paginator->paginate($products, $page, 5);
 
 
 
     }
 
 
-    public function findByProductNameOrCategoryName(SearchData $searchData,int $page):PaginationInterface
+    public function findByProductNameOrCategoryName(SearchData $searchData,$page, $companyId, $userRole):PaginationInterface
     {
         $queryBuilder = $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.brand, p.unitPrice, p.VAT, p.availableQuantity, p.createdAt, c.name as categoryName, c.id as categoryId')
+            ->select('p.id,com.id as company, p.name, p.description, p.brand, p.unitPrice, p.VAT, p.availableQuantity, p.createdAt, c.name as categoryName, c.id as categoryId ')
             ->innerJoin('p.categoryId', 'c')
-            ->where('LOWER(p.name) LIKE :q ')
+            ->innerJoin('p.companyId', 'com')
+            ->where('LOWER(p.name) LIKE LOWER(:q) ')
+            ->orwhere('LOWER(p.brand) LIKE LOWER(:q) ')
+            ->orWhere('LOWER(c.name) LIKE LOWER(:q) ')
             ->setParameter('q', '%' . $searchData->q . '%');
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->andWhere('com.id = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
 
          $products=$queryBuilder->getQuery()->getResult();
 
