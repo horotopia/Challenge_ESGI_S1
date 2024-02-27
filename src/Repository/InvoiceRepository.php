@@ -34,7 +34,7 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('i')
             ->select('i,c')
-            ->leftJoin('i.client', 'c')
+            ->innerJoin('i.client', 'c')
             ->orderBy('i.createdAt', 'DESC');
 
         if (!in_array('ROLE_ADMIN', $userRole)) {
@@ -44,15 +44,15 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, 5);
     }
 
     public function findBySearchData(SearchData $searchData,  $userRole,$companyId): PaginationInterface
     {
+
         $queryBuilder = $this->createQueryBuilder('i')
-            ->select('i.invoiceNumber, i.createdAt, i.status, i.totalTTC,i.totalHT, c.lastName, c.firstName')
-            ->leftJoin('i.client', 'c')
-            ->leftJoin('i.quote', 'q')
+            ->select('i,c')
+            ->innerJoin('i.client', 'c')
             ->where('LOWER(i.invoiceNumber) LIKE LOWER(:q)')
             ->orWhere('LOWER(i.status) LIKE LOWER(:q)')
             ->orWhere('LOWER(c.lastName) LIKE LOWER(:q)')
@@ -65,9 +65,9 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->setParameter('q', '%' . $searchData->q . '%')
             ->orderBy('i.createdAt', 'DESC')
-            ->getQuery();
+            ->getQuery()->getResult();
 
-        return $this->paginator->paginate($query, $searchData->page, 10);
+        return $this->paginator->paginate($query, $searchData->page, 5);
     }
 
 
@@ -263,7 +263,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $endDate = (clone $startDate)->modify('last day of this month');
         $qb = $this->createQueryBuilder('i');
         $qb->select('SUM(i.totalTTC)');
-        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->where('i.paymentDate BETWEEN :startDate AND :endDate');
         $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
         $qb->andWhere('i.status=:status');
         $qb->setParameter('status', 'Payé');
@@ -280,7 +280,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('i');
         $qb->select('SUM(i.totalTTC)');
-        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->where('i.paymentDate BETWEEN :startDate AND :endDate');
         $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
         $qb->andWhere('i.status=:status');
         $qb->setParameter('status', 'Payé');
@@ -299,14 +299,13 @@ class InvoiceRepository extends ServiceEntityRepository
         $endDate = (clone $startDate)->modify('+1 day');
         $qb = $this->createQueryBuilder('i');
         $qb->select('SUM(i.totalTTC)');
-        $qb->where('i.createdAt BETWEEN :startDate AND :endDate');
+        $qb->where('i.paymentDate BETWEEN :startDate AND :endDate');
         $qb->andWhere('i.client IN (SELECT c.id FROM App\Entity\Client c WHERE c.companyId = :companyId)');
         $qb->andWhere('i.status=:status');
         $qb->setParameter('status', 'Payé');
         $qb->setParameter('startDate', $startDate);
         $qb->setParameter('endDate', $endDate);
         $qb->setParameter('companyId', $companyId);
-
         return (float) $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -326,26 +325,26 @@ class InvoiceRepository extends ServiceEntityRepository
 
     }
 
-    public function getAllPaymentsBySearch(SearchData $searchData,$page,$userRole,$companyId): PaginationInterface
+    public function getAllPaymentsBySearch(SearchData $searchData, $page, $userRole, $companyId): PaginationInterface
     {
 
         $query = $this->createQueryBuilder('i')
-            ->select('i,c')
-            ->innerJoin('i.client ', 'c')
-            ->where('c.companyId = :company ')
-            ->andwhere('LOWER(c.lastName) LIKE LOWER(:search) ')
-            ->orWhere('LOWER(c.firstName) LIKE LOWER(:search) ')
-            ->andWhere('LOWER(i.status) LIKE LOWER(:status) ')
-            ->setParameter('status', 'Payé')
+            ->select('i, c')
+            ->innerJoin('i.client', 'c')
+            ->where('c.companyId = :company')
+            ->andWhere('(
+            LOWER(c.lastName) LIKE LOWER(:search) OR
+            LOWER(c.firstName) LIKE LOWER(:search) OR
+            LOWER(i.invoiceNumber) LIKE LOWER(:search)
+        )')
+            ->andWhere('i.status = :status')
             ->setParameter('company', $companyId)
-            ->setParameter('search', $searchData->q);
-
-
-
+            ->setParameter('search', '%' . $searchData->q . '%')
+            ->setParameter('status', 'Payé');
 
         return $this->paginator->paginate($query, $page, 5);
-
     }
+
     public function getSalesByClient($companyId): array
     {
         $query = $this->_em->createQueryBuilder()

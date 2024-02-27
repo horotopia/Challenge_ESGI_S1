@@ -27,8 +27,6 @@ class PaymentsController extends AbstractController
         $searchData = new SearchData();
         $formSearch = $this->createForm(SearchType::class, $searchData);
         $formSearch->handleRequest($request);
-        $paymentsList = $invoiceRepository->getAllPayments($companyId);
-
 
         if ($formSearch->isSubmitted() && $formSearch->isValid()) {
             $searchData = $formSearch->getData();

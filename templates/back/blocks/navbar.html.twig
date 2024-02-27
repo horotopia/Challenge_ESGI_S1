@@ -20,7 +20,13 @@
 	<div class="flex items-center justify-center gap-4">
 		<div class="profile flex flex-row">
 			<div class="profile-info flex flex-col items-end mr-2 mt-4">
-				<p class="text-gray-400">ESGI</p>
+				<p class="text-gray-400 text-xs">
+					{% if app.user %}
+						{% if app.user.companyId %}
+							{{ app.user.companyId.name|upper  }}
+						{% endif %}
+					{% endif %}
+
 				<div class="flex items-center justify-center gap-4 ">
 					<div class="relative">
 

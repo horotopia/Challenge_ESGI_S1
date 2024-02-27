@@ -76,7 +76,7 @@ class InvoiceController extends AbstractController
         ]);
     }
     #[Route('/admin/invoices/add', name: 'app_back_invoices_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
     {
         $companyId = $this->getUser()->getCompanyId()->getId();
         $form = $this->createForm(InvoiceType::class, null, ["companyId" => $companyId]);
@@ -84,6 +84,12 @@ class InvoiceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
+            $existingInvoice = $invoiceRepository->findOneBy(['quote' => $formData['quotes']]);
+            if ($existingInvoice) {
+                $this->addFlash('error', 'Une facture existe déjà pour ce devis.');
+                return $this->redirectToRoute('app_back_invoices_add');
+            }
+
             $invoiceNumber= "FAC". '-' . uniqid();
             $invoice = new Invoice();
             $client = $formData['quotes']->getClientId();
@@ -98,7 +104,6 @@ class InvoiceController extends AbstractController
             $invoice->setTotalHT($totalHT);
             $invoice->setTotalTTC($totalTTC);
             $invoice->setClient($client);
-
 
             $entityManager->persist($invoice);
             $entityManager->flush();

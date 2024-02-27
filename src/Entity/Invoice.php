@@ -33,11 +33,11 @@ class Invoice
     #[ORM\Column(nullable: true)]
     private ?\DateTime $updatedAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dueDate = null;
+    #[ORM\Column]
+    private ?\DateTime $dueDate = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $paymentDate = null;
+    #[ORM\Column( nullable: true)]
+    private ?\DateTime $paymentDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $userValidate = null;
@@ -131,22 +131,22 @@ class Invoice
         $this->updatedAt = $updatedAt;
     }
 
-    public function getDueDate(): ?\DateTimeInterface
+    public function getDueDate(): ?\DateTime
     {
         return $this->dueDate;
     }
 
-    public function setDueDate(?\DateTimeInterface $dueDate): void
+    public function setDueDate(?\DateTime $dueDate): void
     {
         $this->dueDate = $dueDate;
     }
 
-    public function getPaymentDate(): ?\DateTimeInterface
+    public function getPaymentDate(): ?\DateTime
     {
         return $this->paymentDate;
     }
 
-    public function setPaymentDate(?\DateTimeInterface $paymentDate): void
+    public function setPaymentDate(?\DateTime $paymentDate): void
     {
         $this->paymentDate = $paymentDate;
     }
