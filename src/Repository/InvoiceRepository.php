@@ -325,6 +325,41 @@ class InvoiceRepository extends ServiceEntityRepository
 
 
     }
+    public function getSalesByClient($companyId): array
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('c.id, c.lastName, c.firstName, COUNT(i.id) AS salesCount, SUM(i.totalTTC) AS totalTTC')
+            ->from('App\Entity\Invoice', 'i')
+            ->leftJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere('i.status = :status')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('status', 'Payé')
+            ->groupBy('c.id')
+            ->orderBy('c.lastName', 'ASC')
+            ->addOrderBy('c.firstName', 'ASC');
 
+        return $query->getQuery()->getResult();
+    }
+
+
+    public function getSalesByProduct($companyId): array
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('p.id', 'p.name', 'COUNT(i.id) AS salesCount', 'SUM(i.totalTTC) AS totalTTC')
+            ->from('App\Entity\Invoice', 'i')
+            ->innerJoin('i.quote', 'q')
+            ->innerJoin('q.quoteProducts', 'qp')
+            ->innerJoin('qp.product', 'p')
+            ->innerJoin('i.client', 'c')
+            ->where('c.companyId = :companyId')
+            ->andWhere('i.status = :status')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('status', 'Payé')
+            ->groupBy('p.id')
+            ->orderBy('p.name', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
 
 }
