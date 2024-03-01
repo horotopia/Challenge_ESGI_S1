@@ -1,36 +1,30 @@
 <?php
 
-namespace App\Form\PaymentType;
-use App\Entity\Quote;
-use Doctrine\ORM\EntityRepository;
+namespace App\Form\Invoice;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-
-
-
-class PaymentType extends AbstractType
+class UpdatePaymentForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {  $companyId= $options['companyId'];
         $today = new \DateTime();
-           $builder
-           ->add('quote', TextType::class, [
-            'label' => 'Devis N°:',
-            'disabled' => false,
-            'attr' => [
-                'readonly' => true,
-            ],
-             ])
+        $builder
+            ->add('quote', TextType::class, [
+                'label' => 'Devis N°:',
+                'disabled' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
+            ])
             ->add('client', TextType::class, [
                 'label' => 'Client',
                 'disabled' => false,
@@ -48,25 +42,33 @@ class PaymentType extends AbstractType
             ])
             ->add('IdClient' ,IntegerType::class, [
                 'label_attr' => [
-                    'class' => '',
+                    'class' => 'hidden',
                 ],
                 'attr' => [
-                    'class' => '',
+                    'class' => 'hidden',
                 ],
             ])
             ->add('IdDevis' ,IntegerType::class, [
                 'label_attr' => [
-                    'class' => '',
+                    'class' => 'hidden',
                 ],
                 'attr' => [
-                    'class' => '',
+                    'class' => 'hidden',
+                ],
+            ])
+            ->add('IdFacture' ,IntegerType::class, [
+                'label_attr' => [
+                    'class' => 'hidden',
+                ],
+                'attr' => [
+                    'class' => 'hidden',
                 ],
             ])
             ->add('dueDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de paiement',
-                'data' => $today, 
-                
+                'data' => $today,
+
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => [
@@ -90,6 +92,3 @@ class PaymentType extends AbstractType
         ]);
     }
 }
-
-
-

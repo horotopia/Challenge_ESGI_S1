@@ -5,8 +5,7 @@ namespace App\Controller;
 use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Form\Invoice\InvoiceType;
-use App\Form\PaymentType\PaymentType;
-use App\Form\PaymentType\UpdatePaymentType;
+use App\Form\Invoice\UpdatePaymentForm;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
@@ -36,7 +35,7 @@ class InvoiceController extends AbstractController
         $searchData = new SearchData();
         $companyId= $this->getUser()->getCompanyId()->getId();
         $userRole=$this->getUser()->getRoles();
-        $formInvoice = $this->createForm(UpdatePaymentType::class ,null, ["companyId" => $companyId]);
+        $formInvoice = $this->createForm(UpdatePaymentForm::class ,null, ["companyId" => $companyId]);
         $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);
@@ -76,7 +75,7 @@ class InvoiceController extends AbstractController
         ]);
     }
     #[Route('/admin/invoices/add', name: 'app_back_invoices_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
     {
         $companyId = $this->getUser()->getCompanyId()->getId();
         $form = $this->createForm(InvoiceType::class, null, ["companyId" => $companyId]);
@@ -84,6 +83,12 @@ class InvoiceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
+            $existingInvoice = $invoiceRepository->findOneBy(['quote' => $formData['quotes']]);
+            if ($existingInvoice) {
+                $this->addFlash('error', 'Une facture existe déjà pour ce devis.');
+                return $this->redirectToRoute('app_back_invoices_add');
+            }
+
             $invoiceNumber= "FAC". '-' . uniqid();
             $invoice = new Invoice();
             $client = $formData['quotes']->getClientId();
@@ -98,7 +103,6 @@ class InvoiceController extends AbstractController
             $invoice->setTotalHT($totalHT);
             $invoice->setTotalTTC($totalTTC);
             $invoice->setClient($client);
-
 
             $entityManager->persist($invoice);
             $entityManager->flush();
