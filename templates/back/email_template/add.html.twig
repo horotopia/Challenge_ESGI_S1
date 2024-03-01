@@ -1,0 +1,855 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Créer un nouveau modèle d'email{% endblock %}
+
+{% block body %}
+    {% apply inline_css %}
+        <style type="text/css">
+            #outlook a {
+                padding: 0;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+
+            strong a {
+                text-decoration: none;
+                color: #017AC2 !important;
+            }
+
+            table,
+            td {
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+            }
+
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                -ms-interpolation-mode: bicubic;
+            }
+
+            .bg-gray-500 .h-12 p {
+                display: block;
+                margin: 13px 0;
+            }
+        </style>
+        <!--[if mso]>
+        <noscript>
+            <xml>
+                <o:OfficeDocumentSettings>
+                    <o:AllowPNG/>
+                    <o:PixelsPerInch>96</o:PixelsPerInch>
+                </o:OfficeDocumentSettings>
+            </xml>
+        </noscript>
+        <![endif]-->
+        <!--[if lte mso 11]>
+        <style type="text/css">
+            .mj-outlook-group-fix {
+                width: 100% !important;
+            }
+        </style>
+        <![endif]-->
+        <style type="text/css">
+            @media only screen and (min-width: 480px) {
+                .mj-column-per-100 {
+                    width: 100% !important;
+                    max-width: 100%;
+                }
+
+                .mj-column-per-50 {
+                    width: 50% !important;
+                    max-width: 50%;
+                }
+            }
+        </style>
+        <style media="screen and (min-width:480px)">
+            .moz-text-html .mj-column-per-100 {
+                width: 100% !important;
+                max-width: 100%;
+            }
+
+            .moz-text-html .mj-column-per-50 {
+                width: 50% !important;
+                max-width: 50%;
+            }
+        </style>
+        <style type="text/css">
+            @media only screen and (max-width: 480px) {
+                table.mj-full-width-mobile {
+                    width: 100% !important;
+                }
+
+                td.mj-full-width-mobile {
+                    width: auto !important;
+                }
+            }
+        </style>
+
+        <div class="mt-10 flex flex-row justify-between items-center">
+            <nav class="flex px-5 py-3 ml-5 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B]  "
+                 aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="{{ path('app_back_index') }}"
+                           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            Accueil
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clipRule="evenodd"></path>
+                            </svg>
+                            <a href="{{ path('app_back_email_template') }}"
+                               class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Template
+                                d'email</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clipRule="evenodd"></path>
+                            </svg>
+                            <a href="{{ path('app_back_email_template_add') }}"
+                               class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Ajout</a>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="flex flex-row justify-between items-center p-4">
+            <a href="{{ path('app_back_email_template') }}" class="btn-primary">Revenir aux templates</a>
+        </div>
+
+        <div class="flex mb-4">
+            <div class="w-1/2 h-12 p-5">
+                {{ form_start(form) }}
+                <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+                    <h1 class="font-medium text-3xl text-center text-blue-400">Nouveau modèle d'email</h1>
+                    <hr class="my-2 mx-[1.2rem]">
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form.type,'Type de modèle') }}
+                            {{ form_widget(form.type, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class=" flex flex-row justify-around ">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form.name,'Titre de l\'email') }}
+                            {{ form_widget(form.name, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div id="contentBeforeButtonsSection" class="flex flex-row justify-around">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form.contentBeforeButtons,'Contenu de l\'email (avant boutons si il y en a)') }}
+                            {{ form_widget(form.contentBeforeButtons, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div id="contentAfterButtonsSection" style="display: none;"
+                         class="invoice-or-other flex flex-row justify-around">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form.contentAfterButtons,'Contenu de l\'email (après boutons si il y en a)') }}
+                            {{ form_widget(form.contentAfterButtons, {'attr': {
+                                'class': 'flex flex-col w-full mt-3 p-2 mb-3 mr-2 rounded border-2 border-solid border-[#A0A0A0] outline-none'
+                            }}) }}
+                        </div>
+                    </div>
+                    <button class="btn btn-success"
+                            style="display:inline-block;width:250px;background:#017AC2;color:#ffffff;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;"
+                            type="submit">Créer
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <div class="w-1/2 h-12 p-5">
+                <div class="p-5 bg-white shadow-md rounded-md mt-5 ">
+                    <h2 class="font-medium text-3xl text-center text-blue-400">Aperçu du modèle <br> (<span
+                                id="preview-type"
+                                class="font-medium text-xl text-center text-blue-400">{{ form.vars.value.type ? form.vars.value.type : 'Type' }}</span>)
+                    </h2>
+                    <hr class="my-2 mx-[1.2rem]">
+                    <body id="email-preview" style="word-spacing:normal;background-color:#E7E7E7;">
+                    <div style="background-color:#E7E7E7;">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                               style="background-image:url(" https:
+                        //i.goopics.net/ihzg0n.png");background-repeat:no-repeat;background-size:100% 100%;width:100%;">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <!--[if mso | IE]>
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;"
+                                       width="600" bgcolor="#040B4F">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                                <![endif]-->
+                                <div style="margin:0px auto;max-width:600px;">
+                                    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                           style="width:100%;">
+                                        <tbody>
+                                        <tr>
+                                            <td style="direction:ltr;font-size:0px;padding:20px 0;padding-bottom:0;text-align:center;">
+                                                <!--[if mso | IE]>
+                                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td class="" style="vertical-align:top;width:600px;">
+                                                <![endif]-->
+                                                <div class="mj-column-per-100 mj-outlook-group-fix"
+                                                     style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                                    <table border="0" cellpadding="0" cellspacing="0"
+                                                           role="presentation"
+                                                           style="vertical-align:top;" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="center"
+                                                                style="font-size:0px;padding:10px 25px;padding-top:30px;word-break:break-word;">
+                                                                <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;letter-spacing:1px;line-height:24px;text-align:center;text-transform:uppercase;color:#ffffff;">
+                                                                    <img src="https://i.goopics.net/g0scmw.png"
+                                                                         alt="Logo bleu Fast Invoice"> <br>
+                                                                    <span style="color: #979797; font-weight: normal">-</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!--[if mso | IE]></td></tr></table><![endif]-->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--[if mso | IE]></td></tr></table><![endif]-->
+                            </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <!--[if mso | IE]>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;"
+                               width="600"
+                               bgcolor="#017AC2">
+                            <tr>
+                                <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+                        <div style="background:#017AC2;background-color:#017AC2;margin:0px auto;max-width:600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="background:#017AC2;background-color:#017AC2;width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" style="vertical-align:top;width:600px;"><![endif]-->
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="body-section-outlook"
+                               style="width:600px;" width="600">
+                            <tr>
+                                <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+                        <div class="body-section"
+                             style="-webkit-box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); -moz-box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); margin: 0px auto; max-width: 600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:20px 0;padding-bottom:0;padding-top:0;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" width="600px">
+                                                    <table align="center" border="0" cellpadding="0" cellspacing="0"
+                                                           class=""
+                                                           style="width:600px;" width="600" bgcolor="#ffffff">
+                                                        <tr>
+                                                            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                                        <![endif]-->
+                                        <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0"
+                                                   role="presentation"
+                                                   style="background:#ffffff;background-color:#ffffff;width:100%;">
+                                                <tbody>
+                                                <tr>
+                                                    <td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;text-align:center;">
+                                                        <!--[if mso | IE]>
+                                                        <table role="presentation" border="0" cellpadding="0"
+                                                               cellspacing="0">
+                                                            <tr>
+                                                                <td class="" style="vertical-align:top;width:570px;">
+                                                        <![endif]-->
+                                                        <div class="mj-column-per-100 mj-outlook-group-fix"
+                                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                                            <table border="0" cellpadding="0" cellspacing="0"
+                                                                   role="presentation"
+                                                                   style="vertical-align:top;" width="100%">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td align="left"
+                                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                        <div id="preview-name"
+                                                                             style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:20px;font-weight:bold;line-height:24px;text-align:left;color:#212b35;">
+                                                                            {{ form.vars.value.name ? form.vars.value.name : 'Votre titre ici' }}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left"
+                                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+                                                                            Bonjour {{ clientFirstName|default('Prénom') }} {{ clientLastName|default('Nom') }}
+                                                                            ,
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left"
+                                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                        <div id="preview-content-before-buttons"
+                                                                             style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+                                                                            {{ form.vars.value.contentBeforeButtons ? form.vars.value.contentBeforeButtons : 'Nous vous remercions de nous avoir contactés et de l\'intérêt que vous portez à Fast Invoice. <br><br>
+                                                                    Veuillez trouver ci-joint le devis demandé. Ce document contient tous les détails concernant notre proposition, y compris les produits/services proposés, les prix, ainsi que les termes et conditions de paiement.' }}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                <tr>
+                                                                    <td align="center" vertical-align="middle"
+                                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                        <table border="0" cellpadding="0"
+                                                                               cellspacing="0"
+                                                                               role="presentation"
+                                                                               style="border-collapse:separate;width:300px;line-height:100%;">
+                                                                            <tr>
+                                                                                <td align="center" bgcolor="#F41718"
+                                                                                    role="presentation"
+                                                                                    style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:transparent;"
+                                                                                    valign="middle">
+                                                                                    <a href="#"
+                                                                                       style="display:inline-block;width:250px;background:transparent;color:#017ac2;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;border:1px solid #017ac2;"
+                                                                                       target="_blank">Refuser le
+                                                                                        devis</a>.
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center" vertical-align="middle"
+                                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                        <table border="0" cellpadding="0"
+                                                                               cellspacing="0"
+                                                                               role="presentation"
+                                                                               style="border-collapse:separate;width:300px;line-height:100%;">
+                                                                            <tr>
+                                                                                <td align="center" bgcolor="#017AC2"
+                                                                                    role="presentation"
+                                                                                    style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#017AC2;"
+                                                                                    valign="middle">
+                                                                                    <a href="#"
+                                                                                       style="display:inline-block;width:250px;background:#017AC2;color:#ffffff;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;"
+                                                                                       target="_blank">Accepter le
+                                                                                        devis</a>.
+
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                        <div id="preview-content-after-buttons"
+                                                             style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+                                                            {{ form.vars.value.contentAfterButtons ? form.vars.value.contentAfterButtons : 'Nous vous invitons à examiner le devis à votre convenance et à nous contacter pour toute question, modification ou pour confirmer votre accord. Nous sommes entièrement à votre disposition pour discuter de votre projet et pour assurer que nos services répondent au mieux à vos besoins.' }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table></td></tr>
+                        <tr>
+                            <td class="" width="600px">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;" width="600" bgcolor="#ffffff">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                        <![endif]-->
+                        <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="background:#ffffff;background-color:#ffffff;width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;padding-top:0;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" style="vertical-align:top;width:570px;"><![endif]-->
+                                        <div class="mj-column-per-100 mj-outlook-group-fix"
+                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                                   style="vertical-align:top;" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td align="center"
+                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                        <p style="border-top:solid 1px #DFE3E8;font-size:1px;margin:0px auto;width:100%;">
+                                                        </p>
+                                                        <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #DFE3E8;font-size:1px;margin:0px auto;width:520px;" role="presentation" width="520px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+                      </td></tr></table><![endif]-->
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table></td></tr>
+                        <tr>
+                            <td class="" width="600px">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;" width="600" bgcolor="#ffffff">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                        <![endif]-->
+                        <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="background:#ffffff;background-color:#ffffff;width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:0 15px 0 15px;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" style="vertical-align:top;width:570px;"><![endif]-->
+                                        <div class="mj-column-per-100 mj-outlook-group-fix"
+                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                                   style="vertical-align:top;" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;padding-bottom:0;word-break:break-word;">
+                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:20px;font-weight:bold;line-height:24px;text-align:left;color:#212b35;">
+                                                            Si vous rencontrez des difficultés pour vous connecter à
+                                                            votre compte, contactez-nous à
+                                                            <strong>help@fastinvoice.fr</strong>.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+                                                            Bien cordialement.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table></td></tr>
+                        <tr>
+                            <td class="" width="600px">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;" width="600" bgcolor="#ffffff">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                        <![endif]-->
+                        <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="background:#ffffff;background-color:#ffffff;width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" style="vertical-align:top;width:285px;"><![endif]-->
+                                        <div class="mj-column-per-50 mj-outlook-group-fix"
+                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                                   style="vertical-align:top;" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;padding-bottom:0;word-break:break-word;">
+                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:24px;text-align:left;text-transform:uppercase;color:#212b35;">
+                                                            L'équipe Fast Invoice.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td>
+                                        <td class="" style="vertical-align:top;width:285px;"><![endif]-->
+                                        <div class="mj-column-per-50 mj-outlook-group-fix"
+                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                                   style="vertical-align:top;" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;padding-bottom:0;word-break:break-word;">
+                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:24px;text-align:left;text-transform:uppercase;color:#212b35;">
+                                                            Horaires d'ouverture
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left"
+                                                        style="font-size:0px;padding:10px 25px;padding-top:0;word-break:break-word;">
+                                                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:14px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+                                                            Lundi-Vendredi: 8:00 - 20:00 <br> Samedi-Dimanche: 9:00 -
+                                                            18:00
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table></td></tr>
+                        <tr>
+                            <td class="" width="600px">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;" width="600" bgcolor="#ffffff">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                        <![endif]-->
+                        <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                   style="background:#ffffff;background-color:#ffffff;width:100%;">
+                                <tbody>
+                                <tr>
+                                    <td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;text-align:center;">
+                                        <!--[if mso | IE]>
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td class="" style="vertical-align:top;width:570px;"><![endif]-->
+                                        <div class="mj-column-per-100 mj-outlook-group-fix"
+                                             style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                                   style="vertical-align:top;" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td align="center"
+                                                        style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                        <table border="0" cellpadding="0" cellspacing="0"
+                                                               role="presentation"
+                                                               style="border-collapse:collapse;border-spacing:0px;">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="width:520px;">
+                                                                    <img alt height="auto"
+                                                                         src="https://res.cloudinary.com/dheck1ubc/image/upload/v1544153579/Email/Images/AnnouncementOffset/map.jpg"
+                                                                         style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
+                                                                         width="520">
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    <!--[if mso | IE]></td></tr></table><![endif]-->
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                           style="width:100%;">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <!--[if mso | IE]>
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" class=""
+                                       style="width:600px;"
+                                       width="600">
+                                    <tr>
+                                        <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                                <![endif]-->
+                                <div style="margin:0px auto;max-width:600px;">
+                                    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                           style="width:100%;">
+                                        <tbody>
+                                        <tr>
+                                            <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
+                                                <!--[if mso | IE]>
+                                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td class="" width="600px">
+                                                            <table align="center" border="0" cellpadding="0"
+                                                                   cellspacing="0"
+                                                                   class="" style="width:600px;" width="600">
+                                                                <tr>
+                                                                    <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                                                <![endif]-->
+                                                <div style="margin:0px auto;max-width:600px;">
+                                                    <table align="center" border="0" cellpadding="0" cellspacing="0"
+                                                           role="presentation" style="width:100%;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
+                                                                <!--[if mso | IE]>
+                                                                <table role="presentation" border="0" cellpadding="0"
+                                                                       cellspacing="0">
+                                                                    <tr>
+                                                                        <td class=""
+                                                                            style="vertical-align:top;width:600px;">
+                                                                <![endif]-->
+                                                                <div class="mj-column-per-100 mj-outlook-group-fix"
+                                                                     style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                                                    <table border="0" cellpadding="0" cellspacing="0"
+                                                                           role="presentation" width="100%">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td style="vertical-align:top;padding:0;">
+                                                                                <table border="0" cellpadding="0"
+                                                                                       cellspacing="0"
+                                                                                       role="presentation" style
+                                                                                       width="100%">
+                                                                                    <tbody>
+                                                                                    <tr>
+                                                                                        <td align="center"
+                                                                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:bold;line-height:24px;text-align:center;color:#445566;">
+                                                                                                <a href="#">www.fastinvoice.fr</a>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="center"
+                                                                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:bold;line-height:24px;text-align:center;color:#445566;">
+                                                                                                Afficher ce email dans
+                                                                                                votre navigateur
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="center"
+                                                                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;">
+                                                                                                Vous recevez cet e-mail
+                                                                                                publicitaire parce que
+                                                                                                vous vous êtes inscrit
+                                                                                                sur le site web de Fast
+                                                                                                Invoice. (242 Rue du
+                                                                                                Fauboursg-Saint-Antoine,
+                                                                                                Paris, 75012).
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="center"
+                                                                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;">
+                                                                                                &copy; Fast Invoice.,
+                                                                                                Tous droits réservés.
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--[if mso | IE]></td></tr></table><![endif]-->
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!--[if mso | IE]></td></tr></table></td></tr>
+                                                <tr>
+                                                    <td class="" width="600px">
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0"
+                                                               class="" style="width:600px;" width="600">
+                                                            <tr>
+                                                                <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                                                <![endif]-->
+                                                <div style="margin:0px auto;max-width:600px;">
+                                                    <table align="center" border="0" cellpadding="0" cellspacing="0"
+                                                           role="presentation" style="width:100%;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="direction:ltr;font-size:0px;padding:20px 0;padding-top:0;text-align:center;">
+                                                                <!--[if mso | IE]>
+                                                                <table role="presentation" border="0" cellpadding="0"
+                                                                       cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="" style="width:600px;"><![endif]-->
+                                                                <div class="mj-column-per-100 mj-outlook-group-fix"
+                                                                     style="font-size:0;line-height:0;text-align:left;display:inline-block;width:100%;direction:ltr;">
+                                                                    <!--[if mso | IE]>
+                                                                    <table border="0" cellpadding="0" cellspacing="0"
+                                                                           role="presentation">
+                                                                        <tr>
+                                                                            <td style="vertical-align:top;width:600px;">
+                                                                    <![endif]-->
+                                                                    <div class="mj-column-per-100 mj-outlook-group-fix"
+                                                                         style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                                                        <table border="0" cellpadding="0"
+                                                                               cellspacing="0"
+                                                                               role="presentation" width="100%">
+                                                                            <tbody>
+                                                                            <tr>
+                                                                                <td style="vertical-align:top;padding-right:0;">
+                                                                                    <table border="0" cellpadding="0"
+                                                                                           cellspacing="0"
+                                                                                           role="presentation"
+                                                                                           style width="100%">
+                                                                                        <tbody>
+                                                                                        <tr>
+                                                                                            <td align="center"
+                                                                                                style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                                                <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:bold;line-height:16px;text-align:center;color:#445566;">
+                                                                                                    <a class="footer-link"
+                                                                                                       href="https://www.google.com"
+                                                                                                       style="color: #888888;">Confidentialité</a>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;<a
+                                                                                                            class="footer-link"
+                                                                                                            href="#"
+                                                                                                            style="color: #888888;">Se
+                                                                                                        désabonner</a>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <!--[if mso | IE]></td></tr></table><![endif]-->
+                                                                </div>
+                                                                <!--[if mso | IE]></td></tr></table><![endif]-->
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--[if mso | IE]></td></tr></table><![endif]-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </body>
+            </div>
+        </div>
+        </div>
+    {% endapply %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            function updateFormAndPreview() {
+                var selectedType = $('#{{ form.type.vars.id }}').val();
+
+                switch (selectedType) {
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_QUOTE') }}':
+                        $('.quote-only').show();
+                        $('.invoice-or-other').show();
+                        break;
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_INVOICE') }}':
+                    case '{{ constant('App\\Entity\\EmailTemplate::TYPE_OTHER') }}':
+                        $('.quote-only').show();
+                        $('.invoice-or-other').hide();
+                        break;
+                    default:
+                        $('.quote-only').hide();
+                        $('.invoice-or-other').hide();
+                }
+            }
+
+            $('#{{ form.type.vars.id }}').change(updateFormAndPreview);
+            updateFormAndPreview();
+
+            $('#{{ form.name.vars.id }}, #{{ form.contentBeforeButtons.vars.id }}, #{{ form.contentAfterButtons.vars.id }}').on('input', function () {
+                var title = $('#{{ form.name.vars.id }}').val();
+                $('#preview-name').text(title || '[Votre titre ici]');
+
+                var contentBeforeButtons = $('#{{ form.contentBeforeButtons.vars.id }}').val();
+                $('#preview-content-before-buttons').text(contentBeforeButtons || '[Votre contenu ici]');
+
+                var contentAfterButtons = $('#{{ form.contentAfterButtons.vars.id }}').val();
+                $('#preview-content-after-buttons').text(contentAfterButtons || '[Votre contenu ici]');
+            });
+        });
+    </script>
+{% endblock %}
