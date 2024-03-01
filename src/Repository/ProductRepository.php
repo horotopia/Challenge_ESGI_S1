@@ -39,7 +39,7 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         $results = $queryBuilder->getQuery()->getResult();
-        return $this->paginator->paginate($results, $page, 5);
+        return $this->paginator->paginate($results, $page, 10);
     }
 
     public function getAllProducts(int $page):PaginationInterface
@@ -50,25 +50,53 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return $this->paginator->paginate($products, $page, 15);
+        return $this->paginator->paginate($products, $page, 5);
 
 
 
     }
 
 
-    public function findByProductNameOrCategoryName(SearchData $searchData,int $page):PaginationInterface
+    public function findByProductNameOrCategoryName(SearchData $searchData,$page, $companyId, $userRole):PaginationInterface
     {
-        $products = $this->createQueryBuilder('p')
-            ->select('p, c')
-            ->innerJoin('p.category', 'c')
-            ->where('p.name LIKE (:q) OR c.name LIKE (:q)')
-            ->setParameter('q', '%' . $searchData->q . '%')
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->select('p.id,com.id as company, p.name, p.description, p.brand, p.unitPrice, p.VAT, p.availableQuantity, p.createdAt, c.name as categoryName, c.id as categoryId ')
+            ->innerJoin('p.categoryId', 'c')
+            ->innerJoin('p.companyId', 'com')
+            ->where('LOWER(p.name) LIKE LOWER(:q) ')
+            ->orwhere('LOWER(p.brand) LIKE LOWER(:q) ')
+            ->orWhere('LOWER(c.name) LIKE LOWER(:q) ')
+            ->setParameter('q', '%' . $searchData->q . '%');
+        if (!in_array('ROLE_ADMIN', $userRole)) {
+            $queryBuilder->andWhere('com.id = :companyId')
+                ->setParameter('companyId', $companyId);
+        }
+
+         $products=$queryBuilder->getQuery()->getResult();
 
         return $this->paginator->paginate($products, $page, 5);
+
     }
+    public function countProductsAddedToday($companyId): int
+    {
+        $currentDate = new \DateTime();
+
+        $startDate = new \DateTime($currentDate->format('Y-m-d'));
+
+        $endDate = new \DateTime($currentDate->format('Y-m-d 23:59:59'));
+        $endDate->modify('+1 second');
+
+        $qb = $this->createQueryBuilder('p');
+        $qb->select($qb->expr()->count('p.id'));
+        $qb->where('p.createdAt BETWEEN :startDate AND :endDate');
+        $qb->andWhere('p.companyId = :companyId');
+        $qb->setParameter('startDate', $startDate);
+        $qb->setParameter('endDate', $endDate);
+        $qb->setParameter('companyId', $companyId);
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+
+}
 
 //    public function findOneBySomeField($value): ?Product
 //    {

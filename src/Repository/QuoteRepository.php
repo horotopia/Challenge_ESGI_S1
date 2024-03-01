@@ -30,7 +30,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function findQuoteDetails(int $page, $companyId, $userRole): PaginationInterface
     {
         $queryBuilder = $this->createQueryBuilder('d')
-            ->select('d.id, d.quotationNumber, d.createdAt, d.status, c.lastName, c.firstName, e.name as companyName, d.totalHT, d.totalTTC')
+            ->select('d.id,c.id as clientId, d.quotationNumber, d.createdAt, d.status, c.lastName, c.firstName, e.name as companyName, d.totalHT, d.totalTTC')
             ->innerJoin('d.clientId', 'c')
             ->innerJoin('c.companyId', 'e');
 

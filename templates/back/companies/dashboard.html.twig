@@ -79,8 +79,34 @@
                 </div>
             </div>
             <div class="accordion-content h-[12.5rem]">
-                <div class="mx-2">
-                    <p>Contenu de l'accordéon</p>
+                <div class="mx-2 flex flex-col items-center">
+                    <div>
+                        <p class="text-xl text-[#8C909C]">Sur l'exercice fiscal</p>
+                        <p class="text-center">{{ revenueOnFiscalYear }} €</p>
+                        <span class="flex flex-row items-center justify-center text-xs  text-[#8C909C] text-center"><svg class="mr-2" width="9" height="18"
+                                                                                              viewBox="0 0 9 18"
+                                                                                              fill="none"
+                                                                                              xmlns="http://www.w3.org/2000/svg">
+<path d="M8.55936 10.1476C9.1453 9.51287 9.1453 8.48201 8.55936 7.84725L2.55936 1.34725C2.12811 0.880061 1.48593 0.742951 0.923425 0.996857C0.360925 1.25076 -0.00469971 1.83983 -0.00469971 2.49998V15.5C-0.00469971 16.1551 0.360925 16.7492 0.923425 17.0031C1.48593 17.257 2.12811 17.1148 2.55936 16.6527L8.55936 10.1527V10.1476Z"
+      fill="#8C909C"/>
+</svg>  {{ variationPercentageYear }} %   {{ variationYear }} €</span>
+                    </div>
+                    <div>
+                        <p class="text-xl text-[#8C909C] text-center">Ce mois</p>
+                        <p class="text-center">{{ revenueByMonth }}€</p>
+                        <span class="flex flex-row items-center text-xs  text-[#8C909C]"><svg class="mr-2" width="9" height="18"
+                                                                                              viewBox="0 0 9 18"
+                                                                                              fill="none"
+                                                                                              xmlns="http://www.w3.org/2000/svg">
+<path d="M8.55936 10.1476C9.1453 9.51287 9.1453 8.48201 8.55936 7.84725L2.55936 1.34725C2.12811 0.880061 1.48593 0.742951 0.923425 0.996857C0.360925 1.25076 -0.00469971 1.83983 -0.00469971 2.49998V15.5C-0.00469971 16.1551 0.360925 16.7492 0.923425 17.0031C1.48593 17.257 2.12811 17.1148 2.55936 16.6527L8.55936 10.1527V10.1476Z"
+      fill="#8C909C"/>
+</svg>  {{ variationPercentageMonth }} %  {{ variationMonth }} €</span>
+                    </div>
+                    <div>
+                        <p class="text-xl text-[#8C909C]">Aujourd'hui</p>
+                        <p class="text-center">{{ revenueByDay }}€</p>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -112,48 +138,48 @@
             <div class="mx-2">
                 <div class="flex flex-row justify-between">
                     <div>
-                <div class="bg-[#FFA800] p-1 m-2 rounded w-[17rem]">
-                    <p>À régler</p>
+                        <div class="bg-[#FFA800] p-1 m-2 rounded w-[17rem]">
+                            <p>À régler</p>
 
-                    <div class="flex flex-row gap-4 ml-4">
-                        <div class=" flex flex-col ">
-                            <p class="text-center">{{  unpaidInvoices[0]['count']|number_format(2) }}</p>
-                            <span class="text-white font-medium text-xs">Factures</span>
+                            <div class="flex flex-row gap-4 ml-4">
+                                <div class=" flex flex-col ">
+                                    <p class="text-center">{{ unpaidInvoices[0]['count']|number_format(2) }}</p>
+                                    <span class="text-white font-medium text-xs">Factures</span>
+                                </div>
+                                <div class=" flex flex-col">
+                                    <p class="text-center">{{ unpaidInvoices[0]['total']|number_format(2) }} €</p>
+                                    <span class="text-white font-medium text-xs text-center">Montant</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class=" flex flex-col">
-                            <p class="text-center">{{  unpaidInvoices[0]['total']|number_format(2)}} €</p>
-                            <span class="text-white font-medium text-xs text-center">Montant</span>
+                        <hr class="m-2 w-[17rem]">
+                        <div class="bg-[#F41717] p-1 m-2 rounded w-[17rem]">
+                            <p>En retard</p>
+                            <div class="flex flex-row gap-4 ml-4">
+                                <div class=" flex flex-col ">
+                                    <p class="text-center">{{ overdueInvoices[0]['count']|number_format(2) }}</p>
+                                    <span class="text-white font-medium text-xs">Factures</span>
+                                </div>
+                                <div class=" flex flex-col">
+                                    <p class="text-center">{{ overdueInvoices[0]['total']|number_format(2) }} €</p>
+                                    <span class="text-white font-medium text-xs text-center">Montant</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <hr class="m-2 w-[17rem]">
-                <div class="bg-[#F41717] p-1 m-2 rounded w-[17rem]">
-                    <p>En retard</p>
-                    <div class="flex flex-row gap-4 ml-4">
-                        <div class=" flex flex-col ">
-                            <p class="text-center">{{ overdueInvoices[0]['count']|number_format(2)}}</p>
-                            <span class="text-white font-medium text-xs">Factures</span>
+                        <hr class="m-2 w-[17rem]">
+                        <div class="bg-[#0DE609] p-1 m-2 rounded w-[17rem]">
+                            <p>Régler</p>
+                            <div class="flex flex-row gap-4 ml-4">
+                                <div class=" flex flex-col  ">
+                                    <p class="text-center">{{ paidInvoices[0]['count']|number_format(2) }}</p>
+                                    <span class="text-white font-medium text-xs">Factures</span>
+                                </div>
+                                <div class=" flex flex-col">
+                                    <p class="text-center">{{ paidInvoices[0]['total']|number_format(2) }} €</p>
+                                    <span class="text-white font-medium text-xs text-center">Montant</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class=" flex flex-col">
-                            <p class="text-center">{{ overdueInvoices[0]['total']|number_format(2) }}  €</p>
-                            <span class="text-white font-medium text-xs text-center">Montant</span>
-                        </div>
-                    </div>
-                </div>
-                <hr class="m-2 w-[17rem]">
-                <div class="bg-[#0DE609] p-1 m-2 rounded w-[17rem]">
-                    <p>Régler</p>
-                    <div class="flex flex-row gap-4 ml-4">
-                        <div class=" flex flex-col  ">
-                            <p class="text-center">{{ paidInvoices[0]['count']|number_format(2)}}</p>
-                            <span class="text-white font-medium text-xs">Factures</span>
-                        </div>
-                        <div class=" flex flex-col">
-                            <p class="text-center">{{ paidInvoices[0]['total']|number_format(2) }}  €</p>
-                            <span class="text-white font-medium text-xs text-center">Montant</span>
-                        </div>
-                    </div>
-                </div>
                     </div>
                     <div class="w-30">
                         <canvas id="myChart" width="260" height="260"></canvas>
@@ -186,35 +212,38 @@
                 </div>
                 <div class="accordion-content h-[16rem]">
                     <div class="mx-2">
-                      <div class="bg-[#ECF7EB] p-1 m-2 rounded">
-                      <p>En attente de facturation</p>
-                          <div class="flex flex-row gap-4 ml-4">
-                              <div class=" flex flex-col ">
-                                  <p class="text-center">{{  quotePendingData[0]['quoteCount']|number_format(2) }}</p>
-                                  <span class="text-[#8C909C] font-medium text-xs">Devis</span>
-                              </div>
-                              <div class=" flex flex-col">
-                                  <p class="text-center">{{  quotePendingData[0]['totalAmount']|number_format(2)}} €</p>
-                                  <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
-                              </div>
-                          </div>
-                      </div>
-                        <hr class="mx-2 my-8">
                         <div class="bg-[#ECF7EB] p-1 m-2 rounded">
-                            <p>Devis  Expiré</p>
+                            <p>En attente de facturation</p>
                             <div class="flex flex-row gap-4 ml-4">
                                 <div class=" flex flex-col ">
-                                    <p class="text-center">{{ quoteExpiredData[0]['quoteCount']|number_format(2)}}</p>
+                                    <p class="text-center">{{ quotePendingData[0]['quoteCount']|number_format(2) }}</p>
                                     <span class="text-[#8C909C] font-medium text-xs">Devis</span>
                                 </div>
                                 <div class=" flex flex-col">
-                                    <p class="text-center">{{ quoteExpiredData[0]['totalAmount']|number_format(2) }}  €</p>
+                                    <p class="text-center">{{ quotePendingData[0]['totalAmount']|number_format(2) }}
+                                        €</p>
+                                    <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mx-2 my-8">
+                        <div class="bg-[#ECF7EB] p-1 m-2 rounded">
+                            <p>Devis Expiré</p>
+                            <div class="flex flex-row gap-4 ml-4">
+                                <div class=" flex flex-col ">
+                                    <p class="text-center">{{ quoteExpiredData[0]['quoteCount']|number_format(2) }}</p>
+                                    <span class="text-[#8C909C] font-medium text-xs">Devis</span>
+                                </div>
+                                <div class=" flex flex-col">
+                                    <p class="text-center">{{ quoteExpiredData[0]['totalAmount']|number_format(2) }}
+                                        €</p>
                                     <span class="text-[#8C909C] font-medium text-xs text-center">Montant</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex flex-row justify-end">
-                            <p class=" text-[#8C909C] text-xs mr-2 mt-5">Depuis le {{ 'now'|date('Y-m-01')|date('d/m/Y') }}</p>
+                            <p class=" text-[#8C909C] text-xs mr-2 mt-5">Depuis
+                                le {{ 'now'|date('Y-m-01')|date('d/m/Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -245,7 +274,7 @@
             labels: ['À régler', 'En retard', 'Réglé'],
             datasets: [{
                 label: 'Pourcentage',
-                data: [ unpaidPercentage,overduePercentage, paidPercentage],
+                data: [unpaidPercentage, overduePercentage, paidPercentage],
                 backgroundColor: ['#FFA800', '#F41717', '#0DE609']
             }]
         };
@@ -260,7 +289,7 @@
                     },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return context.label + ': ' + context.parsed.toFixed(2) + '%';
                             }
                         }
@@ -273,8 +302,6 @@
             document.getElementById('myChart'),
             config
         );
-
-
 
 
     </script>

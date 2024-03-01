@@ -4,10 +4,13 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
+
+
 use App\Entity\Quote;
 use App\Entity\QuoteProduct;
 use App\Entity\Product;
 use App\Entity\EmailLog;
+use App\Form\PaymentType\PaymentType;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
 use App\Form\User\SearchType;
@@ -21,6 +24,7 @@ use App\Service\PDFService;
 use App\Service\SendEmail;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Session;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,13 +39,51 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class QuoteController extends AbstractController
 {
     #[Route('/admin/quotes', name: 'app_back_quotes')]
-    public function index(QuoteRepository $quoteRepository, Request $request): Response
+    public function index(QuoteRepository $quoteRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $searchData = new SearchData();
+        $invoice=new Invoice();
         $companyId= $this->getUser()->getCompanyId()->getId();
         $userRole=$this->getUser()->getRoles();
         $form = $this->createForm(SearchType::class, $searchData);
+
+        $formInvoice = $this->createForm(PaymentType::class, null, ["companyId" => $companyId]);
+
+        $formInvoice->handleRequest($request);
         $form->handleRequest($request);
+        
+        if ($formInvoice->isSubmitted() && $formInvoice->isValid()) {
+            // $currentDateTime = new DateTimeImmutable();
+            $formData = $formInvoice->getData();
+            $curretDate = new \DateTime();
+           
+            $invoiceNumber= "FAC". '-' . uniqid();
+            $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $formData['quote']]);
+            $invoice->setQuote($quote);
+            $invoice->setDueDate($formData['dueDate']);
+            $invoice->setStatus('Payé');
+            $invoice->setInvoiceNumber($invoiceNumber);
+            $invoice->setPaymentMethod($formData['paymentMethod']);
+            
+            $totalHT=$quote->gettotalHT();
+            $totalTTC=$quote->gettotalTTC();
+            $client=  $quote->getClientId();
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+            $invoice->setClient($client);
+           
+            
+
+
+
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La facture a été payé avec succès.');
+
+            return $this->redirectToRoute('app_back_invoices');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData = $form->getData();
             $quoteList = $quoteRepository->findBySearchData($searchData,$companyId,$userRole);
@@ -49,11 +91,12 @@ class QuoteController extends AbstractController
 
             $quoteList = $quoteRepository->findQuoteDetails($request->query->getInt('page', 1),$companyId,$userRole);
         }
-
+        
         return $this->render('back/quotes/index.html.twig', [
             'controller_name' => 'Devis',
             'form' => $form->createView(),
             'quoteList' => $quoteList,
+            'formInvoice' => $formInvoice->createView(),
         ]);
     }
     #[Route('/admin/sendEmailQuote/{quotationNumber}', name: 'app_back_sendEmail_quote')]
@@ -552,7 +595,7 @@ class QuoteController extends AbstractController
     public function acceptQuote(string $quotationNumber, string $token, EntityManagerInterface $entityManager, PDFService $pdfService): Response
     {
         $quote = $entityManager->getRepository(Quote::class)->findOneBy(['quotationNumber' => $quotationNumber]);
-
+        $AutoInvoice=new Invoice();
         if (!$quote) {
             $this->addFlash('error', 'Devis non trouvé.');
             return $this->redirectToRoute('app_accept_quote');
@@ -573,6 +616,31 @@ class QuoteController extends AbstractController
         $quote->setAcceptToken(null);
         $quote->setRefuseToken(null);
         $entityManager->flush();
+
+        // Auto Generate Invoice From Accepted Quote
+        $curretDate = new \DateTime();
+        $invoice=new Invoice();
+        $invoiceNumber= "FAC". '-' . uniqid();
+        $invoice->setQuote($quote);
+        $invoice->setStatus('En attente');
+        $invoice->setInvoiceNumber($invoiceNumber);
+        $invoice->setCreatedAt($curretDate);
+        $invoice->setUpdatedAt($curretDate);
+        $invoice->setDueDate($curretDate);
+        $invoice->setPaymentDate($curretDate);
+        $invoice->setPaymentMethod('not defined');
+        $invoice->setUpdatedAt($curretDate);
+        $invoice->setUserValidate(0);
+        $totalHT=$quote->gettotalHT();
+        $totalTTC=$quote->gettotalTTC();
+        $client=  $quote->getClientId();
+        $invoice->setTotalHT($totalHT);
+        $invoice->setTotalTTC($totalTTC);
+        $invoice->setClient($client);
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        
         return $this->redirectToRoute('app_accept_quote');
 
 
@@ -606,6 +674,8 @@ class QuoteController extends AbstractController
 
         return $this->redirectToRoute('app_refuse_quote');
     }
+
+
 
 
 
