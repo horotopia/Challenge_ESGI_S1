@@ -279,17 +279,17 @@
     }
     update_payment_totalTTC
     // AJAX for update a product
-    function showFormPayment(form,quote,client,price,idClient,idDevis,idFacture) {
+    function showFormPayment(form,facture,client,price,idClient,idDevis,idFacture) {
         console.log('Devis '+ idDevis);
-        console.log('Facture'+ quote);
+        console.log('Facture'+ facture);
 
         $("#textQuoteForm").text('Paiement pour le client '+client);
-        $("#update_payment_quote").val(quote);
-        $("#update_payment_totalTTC").val(price);
-        $("#update_payment_client").val(client);
-        $("#update_payment_IdClient").val(idClient);
-        $("#update_payment_IdDevis").val(idDevis);
-        $("#update_payment_IdFacture").val(quote);
+        $("#update_payment_form_quote").val(idDevis);
+        $("#update_payment_form_totalTTC").val(price);
+        $("#update_payment_form_client").val(client);
+        $("#update_payment_form_IdClient").val(idClient);
+        $("#update_payment_form_IdDevis").val(idDevis);
+        $("#update_payment_form_IdFacture").val(facture);
         afficherFormulaire(form);
     };
 
