@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\UpdatePaymentForm;
+namespace App\Form\Invoice;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UpdatePaymentType extends AbstractType
+class UpdatePaymentForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {  $companyId= $options['companyId'];

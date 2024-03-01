@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Form\Invoice\InvoiceType;
-use App\Form\UpdatePaymentForm;;
+use App\Form\Invoice\UpdatePaymentForm;
 use App\Form\User\SearchType;
 use App\Model\SearchData;
 use App\Repository\ClientRepository;
@@ -35,7 +35,7 @@ class InvoiceController extends AbstractController
         $searchData = new SearchData();
         $companyId= $this->getUser()->getCompanyId()->getId();
         $userRole=$this->getUser()->getRoles();
-        $formInvoice = $this->createForm(UpdatePaymentForm\UpdatePaymentType::class ,null, ["companyId" => $companyId]);
+        $formInvoice = $this->createForm(UpdatePaymentForm::class ,null, ["companyId" => $companyId]);
         $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);

@@ -9,7 +9,7 @@ use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Entity\QuoteProduct;
 use App\Entity\Product;
-use App\Form\PaymentType\PaymentType;
+use App\Form\Invoice\PaymentType;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
 use App\Form\User\SearchType;
