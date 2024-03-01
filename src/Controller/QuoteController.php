@@ -9,6 +9,7 @@ use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Entity\QuoteProduct;
 use App\Entity\Product;
+use App\Entity\EmailLog;
 use App\Form\PaymentType\PaymentType;
 use App\Form\Quote\AddType;
 use App\Form\Quote\EditType;
@@ -153,7 +154,15 @@ class QuoteController extends AbstractController
         $email->attach($pdfContent, $quotationNumber, 'application/pdf');
         $mailer->send($email);
         $quote->setStatus('Envoyé');
+        $emailLog = new EmailLog();
+        $emailLog->setSender('ali.khelifa@se.univ-bejaia.dz');
+        $emailLog->setReceiver($clientInfo->getEmail());
+        $emailLog->setSubject('Votre devis');
+        $emailLog->setContent($html);
+        $emailLog->setStatus('Envoyé');
+        $emailLog->setSentAt(new \DateTime());
         $entityManager->persist($quote);
+        $entityManager->persist($emailLog);
         $entityManager->flush();
 
         $this->addFlash('success', 'Le devis a été envoyé par e-mail avec succès');
