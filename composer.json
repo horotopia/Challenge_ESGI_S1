@@ -52,7 +52,8 @@
         "symfonycasts/verify-email-bundle": "^1.14",
         "twig/cssinliner-extra": "^3.8",
         "twig/extra-bundle": "^3.8",
-        "twig/twig": "3.*"
+        "twig/twig": "3.*",
+        "vich/uploader-bundle": "^2.3"
     },
     "config": {
         "allow-plugins": {
@@ -102,7 +103,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "6.*"
         }
     },
