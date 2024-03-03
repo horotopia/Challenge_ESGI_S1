@@ -11,7 +11,7 @@ akhelifa7@myges.fr
 
 
 
-*****************   ### les fonctionnalités developpés par Ilyes KABRINE  **********************
+*****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
 -> MCD de la base de données 
 -> CRUD Produit + la recherche
 -> CRUD Catégorie + la recherche
