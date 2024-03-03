@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
                     'lifeTimeToken' => $user->getTokenRegistrationLifeTime()->format('d-m-H-i-s')
                 ],
                 (new TemplatedEmail())
-                    ->from(new Address('ali.khelifa@se.univ-bejaia.dz'))
+                    ->from(new Address('contact@fastinvoice.fr'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('front/registration/confirmation_email.html.twig')

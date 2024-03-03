@@ -141,7 +141,7 @@ class QuoteController extends AbstractController
 
         $pdfContent = $PDFService->generatePDF($html);
         $email = (new TemplatedEmail())
-            ->from('ali.khelifa@se.univ-bejaia.dz')
+            ->from('Fast Invoice <contact@fastinvoice.fr>')
             ->to($clientInfo->getEmail())
             ->subject('Votre devis')
             ->htmlTemplate('back/quotes/send_quote_email.html.twig')
@@ -155,7 +155,7 @@ class QuoteController extends AbstractController
         $mailer->send($email);
         $quote->setStatus('Envoyé');
         $emailLog = new EmailLog();
-        $emailLog->setSender('ali.khelifa@se.univ-bejaia.dz');
+        $emailLog->setSender('Fast Invoice <contact@fastinvoice.fr>');
         $emailLog->setReceiver($clientInfo->getEmail());
         $emailLog->setSubject('Votre devis');
         $emailLog->setContent($html);
