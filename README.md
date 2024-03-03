@@ -43,12 +43,23 @@ akhelifa7@myges.fr
     Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
     Pagination,recherche.
 *****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
--> MCD de la base de données 
--> CRUD Produit + la recherche
--> CRUD Catégorie + la recherche
--> Paiement d'une facture
--> Conversion d'un devis à une facture automatiquement
--> la page paiements + la recherche
--> les formulaires flotants avec le style et les fonctions Ajax
--> Sécurité paiements, produits et catégories 
--> page de contact  
+1. MCD de la base de données 
+2. CRUD Produit + la recherche
+3. CRUD Catégorie + la recherche
+4. Paiement d'une facture
+5. Conversion d'un devis à une facture automatiquement
+6. la page paiements + la recherche
+7. les formulaires flotants avec le style et les fonctions Ajax
+8. Sécurité paiements, produits et catégories 
+9. page de contact  
+
+### Fonctionnalités Ilyesse HAMCHERIF
+1. Intégration Pages front
+2. Gestion des factures :
+- CRD + envoi d'e-mails automatiques (front + back)
+- Génération du PDF automatique et manuelle
+3. Gestion des emails :
+- CR + envoi d'e-mails automatiques (front + back)
+- Statut des mails envoyé
+- CRUD modèle de mail
+- Refactorisation complète du projet
