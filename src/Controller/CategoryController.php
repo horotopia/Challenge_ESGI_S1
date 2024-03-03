@@ -98,7 +98,7 @@ class CategoryController extends AbstractController
         $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1),$companyId,$userRoles);
             // $categories=$catRepo->getCategoriesWithProductCount();
         }
-        dd($categories);
+        
         return $this->render('back/product_category_management/index.html.twig', [
             'formCategory' => $form->createView(),
             'categories' => $categories,
