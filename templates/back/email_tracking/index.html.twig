@@ -15,17 +15,19 @@
                 <li>
                     <div class="flex items-center">
                         <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
-                        <a href="{{path('app_back_email_tracking')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{ controller_name }}</a>
+                        <a href="{{path('app_back_email_tracking')}}" class = "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Suivi d'email</a>
                     </div>
                 </li>
             </ol>
         </nav>
     </div>
-    <div class="flex flex-row justify-between items-center p-4">
-        <a href="{{ path('app_back_email_template') }}" class="btn-primary">Voir les templates d'email</a>
-    </div>
-    <div class="flex flex-row justify-between items-center px-4">
-        <a href="{{ path('app_back_send_email') }}" class="btn-primary">Nouveau mail</a>
+    <div class="flex flex-row items-center pt-4">
+        <div class="flex flex-row justify-between items-center p-4">
+            <a href="{{ path('app_back_email_template') }}" class="btn-primary"><img src="https://i.goopics.net/9n9koj.png" alt="Icône Voir les templates d'email" class="w-5"> Voir les templates d'email</a>
+        </div>
+        <div class="flex flex-row justify-between items-center px-4">
+            <a href="{{ path('app_back_send_email') }}" class="btn-primary"><img src="https://i.goopics.net/sbvxsu.png" alt="Icône Nouveau mail" class="w-5"> Nouveau mail</a>
+        </div>
     </div>
     <div class="drop-shadow-lg mx-5 bg-white">
         <div class="overflow-x-auto mt-8">
@@ -73,11 +75,16 @@
                         <td class="px-6 py-4 text-center">{{ log.subject }}</td>
                         <td class="px-6 py-4 text-center">{{ log.sender }}</td>
                         <td class="px-6 py-4 text-center">{{ log.receiver }}</td>
-                        <td class="px-6 py-4 text-center">{{ log.status }}</td>
+                        <td class="px-6 py-4 text-center flex flex-rox gap-2">
+                            {% if log.status == 'Envoyé' %}
+                                <img src="https://i.goopics.net/4h9wpm.png" alt="Icon Envoyé" class="w-6 ml-2" title="Envoyé">
+                            {% endif %}
+                            {{ log.status }}
+                        </td>
                         <td class="px-6 py-4 text-center">{{ log.sentAt|date('Y-m-d H:i:s') }}</td>
                         <td class="px-6 py-4 text-center">{{ log.openedAt|date('Y-m-d H:i:s') }}</td>
                         <td class="px-6 py-4 text-center">
-                            <button onclick="toggleModal()">Voir le contenu</button>
+                            <button onclick="toggleModal()"><img src="https://i.goopics.net/hsjn7c.png" alt="Icon Oeil" class="w-6 ml-2" title="Voir le contenu"></button>
                         </td>
                     </tr>
                 {% endfor %}
