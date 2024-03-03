@@ -34,7 +34,8 @@ akhelifa7@myges.fr
 12. Génération de rapports financiers.
 13. Gestion des Utilisateurs, des Rôles et des Droits d'Accès (front-end, back-end).
 14. Page "À propos" et tarifs (front-end).
-
+15. Gestion des clients :
+    Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
 *****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
 -> MCD de la base de données 
 -> CRUD Produit + la recherche
