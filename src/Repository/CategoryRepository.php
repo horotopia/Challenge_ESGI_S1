@@ -60,14 +60,15 @@ class CategoryRepository extends ServiceEntityRepository
      */
 public function getCategoriesWithProductCount(int $page,$companyId,$userRole): PaginationInterface
     {
-        $category= $this->createQueryBuilder('c')
+        $queryBuilder= $this->createQueryBuilder('c')
             ->select('c', 'COUNT(p.id) as productCount')
             ->leftJoin('c.products', 'p') // Assurez-vous que le champ 'products' correspond à la relation dans votre entité Category
-            ->groupBy('c.id')
-            ->where('c.company_id = :companyId')
-            ->setParameter('companyId', $companyId)
-            ->getQuery()
-            ->getResult();
+            ->groupBy('c.id');
+            if (!in_array('ROLE_ADMIN', $userRole)) {
+                $queryBuilder->where('c.company_id = :companyId')
+            ->setParameter('companyId', $companyId);
+        };
+        $category=$queryBuilder->getQuery()->getResult();
             
             return $this->paginator->paginate($category, $page, 5);
     }
@@ -84,6 +85,7 @@ public function getCategoriesWithProductCount(int $page,$companyId,$userRole): P
             $queryBuilder->andWhere('com.id = :companyId')
                 ->setParameter('companyId', $companyId);
         }
+        $queryBuilder->orderBy('c.createdAt', 'DESC');
 
         $products=$queryBuilder->getQuery()->getResult();
 

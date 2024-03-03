@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[IsGranted('ROLE_ENTREPRISE')]
 
@@ -46,9 +47,13 @@ class ProductController extends AbstractController
         if($formProductUpdate->isSubmitted() && !$formProductUpdate->isValid()) {
             $errorsFormUpdate = $formProductUpdate->getErrors(true, false);
         }elseif($formProductUpdate->isSubmitted() && $formProductUpdate->isValid()) {
-        $currentDateTime = new DateTime();
         $id=$formProductUpdate->get('Id')->getData();
         $product = $entityManager->getRepository(Product::class)->find($id);
+        $companyProductId =$product->getCompanyId();
+        $companyUserId = $user->getCompanyId();
+        //verification if has right to modify or no  
+        if(($companyProductId==$companyUserId) or (in_array('ROLE_ADMIN', $userRoles))){
+        $currentDateTime = new DateTime();
         $product->setName($formProductUpdate->get('name')->getData());
         $product->setDescription($formProductUpdate->get('description')->getData());
         $product->setBrand($formProductUpdate->get('brand')->getData());
@@ -62,6 +67,10 @@ class ProductController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Produit modifié avec succès.');
         return $this->redirectToRoute('app_back_products');
+            }else{
+        $this->addFlash('error', 'Modification non autorisé.');
+        return $this->redirectToRoute('app_back_products');
+            }
         }
 
 
@@ -123,7 +132,7 @@ class ProductController extends AbstractController
         $entityManager->flush();
         return new JsonResponse(['success' => true]);
         }else{
-            return new JsonResponse(['success' => false]);
+        return new JsonResponse(['success' => false]);
         }
         
     }

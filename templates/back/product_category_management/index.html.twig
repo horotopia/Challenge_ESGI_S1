@@ -11,7 +11,21 @@
 
 
 {% block body %}
-
+{% for type,messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert  w-50 {{ (type == 'error') ? 'bg-red-200' : 'bg-green-200' }}  px-4 py-3 rounded absolute top-[7rem] left-[37rem]" role="alert">
+                <div class="  flex flex-row items-center ">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#3EEF00" aria-hidden="true"
+                         class="{{ (type == 'error') ? 'hidden' }} w-5 h-5">
+                        <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                              clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="{{ (type == 'error') ? 'text-red-900' : 'text-green-900' }} text-xs ml-2">{{ message }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
 
  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
@@ -276,7 +290,15 @@
 
 <script>
 
-   
+    // Sélectionnez l'élément de l'alerte
+    var alertElement = document.querySelector('.alert');
+
+    // Affichez l'alerte pendant 5 secondes
+    setTimeout(function() {
+        // Ajoutez la classe 'hidden' pour cacher l'alerte
+        alertElement.classList.add('hidden');
+    }, 5000);
+
 
     // Fonction pour afficher le formulaire avec une animation de haut en bas
     function afficherFormulaire(formulaireId) {

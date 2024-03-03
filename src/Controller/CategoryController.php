@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 #[IsGranted('ROLE_ENTREPRISE')]
@@ -67,6 +68,9 @@ class CategoryController extends AbstractController
         if($formCategoryUpdate->isSubmitted() && !$formCategoryUpdate->isValid()) {
             $errorsFormUpdate = $form->getErrors(true, false);
         }elseif($formCategoryUpdate->isSubmitted() && $formCategoryUpdate->isValid()) {
+            $companyUserId = $user->getCompanyId();
+            $companyCategorieId =$category->getCompanyId();
+            if(($companyCategorieId==$companyUserId) or (in_array('ROLE_ADMIN', $userRoles))){
             $currentDateTime = new DateTime();
             $id=$formCategoryUpdate->get('id')->getData();
             $category = $entityManager->getRepository(Category::class)->find($id);
@@ -76,8 +80,14 @@ class CategoryController extends AbstractController
             $category->setUserUpdated($user);
             $entityManager->persist($category);
             $entityManager->flush();
+            $this->addFlash('success', 'Produit modifié avec succès.');
+            return $this->redirectToRoute('product_category_management');
+        }else{
+            $this->addFlash('error', 'Opération non autorisé');
             return $this->redirectToRoute('product_category_management');
         }
+
+    }
 
         //here if search by data case
         if($formSearchCategory->isSubmitted() && $formSearchCategory->isValid()){
@@ -88,6 +98,7 @@ class CategoryController extends AbstractController
         $categories = $entityManager->getRepository(Category::class)->getCategoriesWithProductCount($request->query->getInt('page', 1),$companyId,$userRoles);
             // $categories=$catRepo->getCategoriesWithProductCount();
         }
+        dd($categories);
         return $this->render('back/product_category_management/index.html.twig', [
             'formCategory' => $form->createView(),
             'categories' => $categories,
@@ -112,7 +123,7 @@ class CategoryController extends AbstractController
         return new JsonResponse(['success' => true]);
         }else{
             $this->addFlash('error', "Opération refusé");
-            return $this->redirectToRoute('product_category_management');
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier ce client.');
         }
         
     }
