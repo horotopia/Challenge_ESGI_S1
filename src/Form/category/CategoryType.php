@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryType extends AbstractType
 {
@@ -16,9 +17,23 @@ class CategoryType extends AbstractType
         $builder
             ->add('name',TextType::class,[
                 'label' => "Nom",
+                'error_bubbling' => false,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Ce champ ne doit pas être vide.',
+                    ]),
+                    new Assert\Length(['max' => 255]),
+                ],
             ])
             ->add('description',TextType::class,[
                 'label' => "Description",
+                'error_bubbling' => false,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Ce champ ne doit pas être vide.',
+                    ]),
+                    new Assert\Length(['max' => 255]),
+                ],
             ])
             ->add('Enregistrer',SubmitType::class)
         ;
