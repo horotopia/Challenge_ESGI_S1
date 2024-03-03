@@ -34,16 +34,15 @@ class StatisticsController extends AbstractController
         $salesPercentageAddedToday = ($totalNumberOfSales > 0) ? ($numberOfSalesAddedToday / $totalNumberOfSales * 100) : 0;
 
         $invoiceTypesByMonth=$invoiceRepository->getInvoiceTypesByMonth($companyId);
-
-        $monthsLabels = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $invoicesData = [];
 
         foreach ($invoiceTypesByMonth as $month => $data) {
-            foreach ($data as $status => $count) {
-                $invoicesData[$month][$status] = $count;
+            if (!empty($data)) {
+                foreach ($data as $status => $count) {
+                    $invoicesData[$month][$status] = $count;
+                }
             }
         }
-
         $revenueByMonth=$invoiceRepository->getRevenueByMonth($companyId);
 
         return $this->render('back/statistics/index.html.twig', [
@@ -54,7 +53,6 @@ class StatisticsController extends AbstractController
             'productsPercentageAddedToday' => $productsPercentageAddedToday,
             'clientsPercentageAddedToday' => $clientsPercentageAddedToday,
             'salesPercentageAddedToday'=>$salesPercentageAddedToday,
-            'monthsLabels' => $monthsLabels,
             'invoicesData' => $invoicesData,
              'revenueByMonth'=>$revenueByMonth
         ]);
