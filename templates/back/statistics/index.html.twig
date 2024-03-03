@@ -112,17 +112,30 @@
     </div>
 
     <script>
-        const ctx = document.getElementById('myChartbar');
+        const monthNames1 = [
+            'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+            'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+        ];
 
-        const labels = {{ monthsLabels | json_encode | raw }};
+        const labels = [];
         const invoicesData = {{ invoicesData | json_encode | raw }};
 
+        // Convertir les clés de l'objet invoicesData en nombres
+        const monthsWithData = Object.keys(invoicesData).map(Number);
+
+        // Parcourir les mois avec données et récupérer les noms de mois correspondants
+        monthsWithData.forEach(month => {
+            const monthName = monthNames1[month - 1]; // -1 car les indices de tableau commencent à 0
+            labels.push(monthName);
+        });
+console.log(invoicesData);
         const dataRetard = Object.values(invoicesData).map(item => item['En retard'] ?? 0);
-        const dataARegler = Object.values(invoicesData).map(item => item['En attente'] ?? 0);
+        const dataARegler = Object.values(invoicesData).map(item => (item['En attente'] ?? 0) + (item['Envoyé'] ?? 0));
         const dataReglee = Object.values(invoicesData).map(item => item['Payé'] ?? 0);
 
-
         const totalFactures = dataRetard.map((val, index) => val + dataARegler[index] + dataReglee[index]);
+
+        const ctx = document.getElementById('myChartbar');
 
         new Chart(ctx, {
             type: 'bar',
@@ -152,7 +165,6 @@
                 scales: {
                     y: {
                         stacked: true,
-                        type: 'logarithmic',
                         title: {
                             display: true,
                             text: 'Nombre de factures'
@@ -165,7 +177,23 @@
                             text: 'Mois'
                         }
                     }
-                }
+                },
+                plugins: {
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 0,
+                        bottom: 0
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                barPercentage: 0.2,
             }
         });
         var ctx2 = document.getElementById('myChartLine').getContext('2d');

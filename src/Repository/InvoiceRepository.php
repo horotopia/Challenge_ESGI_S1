@@ -114,14 +114,15 @@ class InvoiceRepository extends ServiceEntityRepository
             ->from('App\Entity\Invoice', 'i')
             ->innerJoin('i.client', 'c')
             ->where('c.companyId = :companyId')
-            ->andWhere('i.dueDate <=:currentDate')
+            ->andWhere('i.dueDate <= :currentDate')
+            ->andWhere("i.status != 'Payé'")
             ->setParameter('companyId', $companyId)
             ->setParameter('currentDate', $currentDate)
             ->getQuery();
 
         return $query->getResult();
+    }
 
-}
     public function countSalesAddedToday($companyId, $status): int
     {
         $currentDate = new \DateTime();
@@ -174,11 +175,11 @@ class InvoiceRepository extends ServiceEntityRepository
             $createdAt = $invoice['createdAt'];
             $dueDate = $invoice['dueDate'];
 
-            if ($createdAt instanceof \DateTime && $dueDate instanceof \DateTimeInterface) {
+            if ($createdAt instanceof \DateTime && $dueDate instanceof \DateTime) {
                 $month = $createdAt->format('n');
                 $status = $invoice['status'];
 
-                if ($currentDate > $dueDate && $status === 'En attente') {
+                if ($currentDate > $dueDate && $status !== 'Payé' && $status !== 'En attente') {
                     $status = 'En retard';
                 }
 
