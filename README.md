@@ -22,20 +22,26 @@ akhelifa7@myges.fr
 3. Gestion des Entreprises :
      Création, lecture, mise à jour (CRU) (front-end, back-end)
 4. Gestion des devis :
-    Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
+    Création, lecture, mise à jour, suppression,envoi d'e-mails (CRUD) (front-end, back-end) 
+    Génération de PDF .
+    pagination,recherche.
 5. Gestion des factures :
-    Création, envoi d'e-mails (front-end, back-end)
-8. Gestion des Utilisateurs :
+    Création, envoi d'e-mails (front-end, back-end).
+    Génération de PDF .
+    Pagination,recherche.
+6. Gestion des Utilisateurs :
     Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
-9. Accueil administrateur :
+    Pagination,recherche.
+7. Accueil administrateur :
       Affichage des statistiques et des informations sur les devis, le chiffre d'affaires (front-end, back-end)
-10. Personnalisation des pages d'erreur.
-11. Statistiques.
-12. Génération de rapports financiers.
-13. Gestion des Utilisateurs, des Rôles et des Droits d'Accès (front-end, back-end).
-14. Page "À propos" et tarifs (front-end).
-15. Gestion des clients :
+8. Personnalisation des pages d'erreur.
+9. Statistiques.
+10. Génération de rapports financiers.
+11. Gestion des Utilisateurs, des Rôles et des Droits d'Accès (front-end, back-end).
+12. Page "À propos" et tarifs (front-end).
+13. Gestion des clients :
     Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
+    Pagination,recherche.
 *****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
 -> MCD de la base de données 
 -> CRUD Produit + la recherche
