@@ -219,14 +219,37 @@ class InvoiceController extends AbstractController
             'productList' => $products,
             'companyInfo' => $companyInfo
         ]);
+
+        $htmlContent = $this->renderView('back/invoices/send_invoice_email.html.twig', [
+            'invoiceInfo'=>$invoice,
+            'client' => $clientInfo,
+            'productList' => $products,
+            'companyInfo' => $companyInfo
+        ]);
+
+        $doc = new \DOMDocument();
+        @$doc->loadHTML(mb_convert_encoding($htmlContent, 'HTML-ENTITIES', 'UTF-8'));
+        $xpath = new \DOMXPath($doc);
+
+        $textContent = '';
+        foreach (['content1', 'content2', 'content3'] as $id) {
+            $elements = $xpath->query("//*[@id='$id']");
+            foreach ($elements as $element) {
+                $textContent .= trim($element->textContent) . "\n\n";
+            }
+        }
+
+        $htmlContentForDisplay = nl2br(htmlspecialchars($textContent));
+
         $pdfContent = $PDFService->generatePDF($html);
+
         $email = (new TemplatedEmail())
             ->from('Fast Invoice <contact@fastinvoice.fr>')
             ->to($clientInfo->getEmail())
             ->subject('Votre facture')
             ->htmlTemplate('back/invoices/send_invoice_email.html.twig')
             ->context([
-                'quotationNumber' => $invoiceNumber,
+                'invoiceNumber' => $invoiceNumber,
                 'client' => $clientInfo,
                 'acceptToken' => $acceptToken,
                 'refuseToken' => $refuseToken
@@ -238,7 +261,7 @@ class InvoiceController extends AbstractController
         $emailLog->setSender('Fast Invoice <contact@fastinvoice.fr>');
         $emailLog->setReceiver($clientInfo->getEmail());
         $emailLog->setSubject('Votre facture');
-        $emailLog->setContent($html);
+        $emailLog->setContent($htmlContentForDisplay);
         $emailLog->setStatus('Envoyé');
         $emailLog->setSentAt(new \DateTime());
         $entityManager->persist($invoice);

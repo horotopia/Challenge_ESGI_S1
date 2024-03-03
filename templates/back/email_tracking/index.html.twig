@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 {% for log in logs %}
-                    <div class="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden" id="modal">
+                    <div class="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden" id="modal-{{ loop.index }}">
                         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
                             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -54,17 +54,20 @@
                                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
                                                 Contenu de l'e-mail
-                                            </h3>
+                                            </h3><br>
                                             <div class="mt-2">
+                                                <h3 class="text-sm leading-4 font-bold text-gray-900">
+                                                    {{ log.subject }}
+                                                </h3><br>
                                                 <p id="email-content-{{ loop.index }}" class="text-sm text-gray-500 overflow-auto max-h-96">
-                                                    {{ log.content }}
+                                                    {{ log.content|raw }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-black hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleModal()">
+                                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-black hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleModal('modal-{{ loop.index }}')">
                                         Fermer
                                     </button>
                                 </div>
@@ -84,7 +87,7 @@
                         <td class="px-6 py-4 text-center">{{ log.sentAt|date('Y-m-d H:i:s') }}</td>
                         <td class="px-6 py-4 text-center">{{ log.openedAt|date('Y-m-d H:i:s') }}</td>
                         <td class="px-6 py-4 text-center">
-                            <button onclick="toggleModal()"><img src="https://i.goopics.net/hsjn7c.png" alt="Icon Oeil" class="w-6 ml-2" title="Voir le contenu"></button>
+                            <button onclick="toggleModal('modal-{{ loop.index }}')"><img src="https://i.goopics.net/hsjn7c.png" alt="Icon Oeil" class="w-6 ml-2" title="Voir le contenu"></button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -95,8 +98,13 @@
 
 {% block javascripts %}
     <script>
-        function toggleModal() {
-            document.getElementById('modal').classList.toggle('hidden')
+        function toggleModal(modalId) {
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
+            } else {
+                console.error('No modal found with ID:', modalId);
+            }
         }
     </script>
 {% endblock %}
