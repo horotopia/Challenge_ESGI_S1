@@ -35,3 +35,13 @@ akhelifa7@myges.fr
 13. Gestion des Utilisateurs, des Rôles et des Droits d'Accès (front-end, back-end).
 14. Page "À propos" et tarifs (front-end).
 
+*****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
+-> MCD de la base de données 
+-> CRUD Produit + la recherche
+-> CRUD Catégorie + la recherche
+-> Paiement d'une facture
+-> Conversion d'un devis à une facture automatiquement
+-> la page paiements + la recherche
+-> les formulaires flotants avec le style et les fonctions Ajax
+-> Sécurité paiements, produits et catégories 
+-> page de contact  

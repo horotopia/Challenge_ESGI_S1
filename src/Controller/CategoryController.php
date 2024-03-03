@@ -99,12 +99,22 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/admin/product-category-management/delete/{id}', name: 'app_category_delete')]
-    public function deleteCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator, Category $category)
+    public function deleteCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator, Category $category, Security $security)
     {
+        $user = $security->getUser();
+        $userId = $user->getId();
+        $companyUserId = $user->getCompanyId();
+        $userRoles = $user->getRoles();
+        $companyCategorieId =$category->getCompanyId();
+        if($companyCategorieId== $companyUserId){
         $entityManager->remove($category);
         $entityManager->flush();
-    
         return new JsonResponse(['success' => true]);
+        }else{
+            $this->addFlash('error', "Opération refusé");
+            return $this->redirectToRoute('product_category_management');
+        }
+        
     }
 
 }

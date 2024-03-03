@@ -44,7 +44,7 @@
         {% endfor %}
     {% endfor %}
 
-<section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
+ <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
             
 
         <div id="newProduct" class="container relative z-10 flex flex-col items-center hidden">
@@ -61,15 +61,14 @@
 
                 <div class="flex items-center">
                     <div>
-                        {{ form_widget(formProduct.name, {
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        
+                        {{ form_label(formProduct.name, 'Nom Du Produit', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProduct.name, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Nom Du Product',
-                                'name' : 'addNomProduit',
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Nom Du Produit',
                             }
                         }) }}
-
 
                         {% if formProduct.name.vars.errors|length > 0 %}
                             {% for error in formProduct.name.vars.errors %}
@@ -79,15 +78,13 @@
                     </div>
 
                     <div>
-                        {{ form_row(formProduct.brand, {
-                            'label_attr':{'class' : 'text-base e ml-10'},
+                         {{ form_label(formProduct.brand, 'La marque', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProduct.brand, {
                             'attr': {
-
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2  rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Marque'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La marque',
                             }
                         }) }}
-
                         {% if formProduct.brand.vars.errors|length > 0 %}
                             {% for error in formProduct.brand.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -100,11 +97,11 @@
                 <div class="flex flex-row  justify-around items-center">
                     
                     <div>
-                    {{ form_row(formProduct.unitPrice,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                         {{ form_label(formProduct.unitPrice, 'Le Prix', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProduct.unitPrice, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Le Prix'
+                                'placeholder': 'Le prix',
                             }
                         }) }}
 
@@ -116,11 +113,12 @@
                     </div>
 
                      <div>
-                    {{ form_row(formProduct.VAT,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+
+                         {{ form_label(formProduct.VAT, 'TVA ', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                        {{ form_widget(formProduct.VAT, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'TVA'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La TVA',
                             }
                         }) }}
 
@@ -139,14 +137,13 @@
                 <div class="flex flex-row  justify-around items-center">
                     
                      <div>
-                    {{ form_row(formProduct.availableQuantity,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        {{ form_label(formProduct.availableQuantity, 'La Quantité', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                        {{ form_widget(formProduct.availableQuantity, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Quantité'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Quantité',
                             }
                         }) }}
-
                          {% if formProduct.availableQuantity.vars.errors|length > 0 %}
                              {% for error in formProduct.availableQuantity.vars.errors %}
                                  <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -155,11 +152,11 @@
                     </div>
 
                     <div>
-                    {{ form_row(formProduct.categoryId,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                     {{ form_label(formProduct.categoryId, 'Nom Du categorie', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                     {{ form_widget(formProduct.categoryId, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Catégorie'
+                                'placeholder': 'La Catégorie',
                             }
                         }) }}
 
@@ -175,23 +172,23 @@
 
                 <div class="flex flex-row   items-center">
                     
-                     
-                    {{ form_row(formProduct.description,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                     {{ form_label(formProduct.description, 'Description', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formProduct.description, {
                             'attr': {
-                                'class': 'mt-3 w-full mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Description'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Description',
                             }
                         }) }}
 
-                    {% if formProduct.description.vars.errors|length > 0 %}
-                        {% for error in formProduct.description.vars.errors %}
-                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
-                        {% endfor %}
-                    {% endif %}
+                        {% if formProduct.description.vars.errors|length > 0 %}
+                            {% for error in formProduct.description.vars.errors %}
+                                <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                            {% endfor %}
+                        {% endif %}
+
                 </div>
 
-
+                <hr class='mt-8'>
                 <div class="flex flex-row justify-center">
                         {{ form_row(formProduct.Enregistrer,{
                             'attr': {
@@ -199,14 +196,16 @@
                             }
                                }) 
                         }}
-                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('newProduct')">Annuler</span>
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('newProduct','product')">Annuler</span>
                 </div>
                 {{ form_end(formProduct) }}
 
             </div>
 
         </div>
-</section> 
+</section>  
+
+
 
 
  <section class="mt-[14rem] ml-[18rem] flex justify-center z-[100] fixed sm:w-full sm:ml-[0] sm:mt-[14rem]">           
@@ -220,15 +219,15 @@
                 {{ form_start(formProductUpdate) }}
                 <div class="flex items-center">
                     <div>
-                        {{ form_row(formProductUpdate.name, {
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        
+
+                        {{ form_label(formProductUpdate.name, 'Nom Du Produit', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProductUpdate.name, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Nom Du Product',
-                                'name' : 'addNomProduit',
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Nom Du Produit',
                             }
                         }) }}
-
                         {% if formProductUpdate.name.vars.errors|length > 0 %}
                             {% for error in formProductUpdate.name.vars.errors %}
                                 <span class="text-xs text-red-500 error">{{ error.message }}</span>
@@ -237,11 +236,11 @@
                     </div>
 
                     <div>
-                        {{ form_row(formProductUpdate.brand, {
-                            'label_attr':{'class' : 'text-base e ml-10'},
+                         {{ form_label(formProductUpdate.brand, 'La marque', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProductUpdate.brand, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2  rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Marque'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La marque',
                             }
                         }) }}
 
@@ -257,11 +256,11 @@
                 <div class="flex flex-row  justify-around items-center">
                     
                     <div>
-                    {{ form_row(formProductUpdate.unitPrice,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                    {{ form_label(formProductUpdate.unitPrice, 'Le Prix', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                         {{ form_widget(formProductUpdate.unitPrice, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Le Prix'
+                                'placeholder': 'Le prix',
                             }
                         }) }}
                         {% if formProductUpdate.unitPrice.vars.errors|length > 0 %}
@@ -272,13 +271,14 @@
                     </div>
 
                      <div>
-                    {{ form_row(formProductUpdate.VAT,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                   {{ form_label(formProductUpdate.VAT, 'TVA ', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                        {{ form_widget(formProductUpdate.VAT, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'TVA'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La TVA',
                             }
                         }) }}
+
 
                          {% if formProductUpdate.VAT.vars.errors|length > 0 %}
                              {% for error in formProductUpdate.VAT.vars.errors %}
@@ -295,11 +295,11 @@
                 <div class="flex flex-row  justify-around items-center">
                     
                      <div>
-                    {{ form_row(formProductUpdate.availableQuantity,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                     {{ form_label(formProductUpdate.availableQuantity, 'La Quantité', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                        {{ form_widget(formProductUpdate.availableQuantity, {
                             'attr': {
-                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px]  border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Quantité'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'La Quantité',
                             }
                         }) }}
 
@@ -311,11 +311,11 @@
                     </div>
 
                     <div>
-                    {{ form_row(formProductUpdate.categoryId,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                    {{ form_label(formProductUpdate.categoryId, 'Nom Du categorie', {'label_attr': {'class': 'text-base ml-10 required'}}) }}
+                     {{ form_widget(formProductUpdate.categoryId, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Catégorie'
+                                'placeholder': 'La Catégorie',
                             }
                         }) }}
                         {% if formProductUpdate.categoryId.vars.errors|length > 0 %}
@@ -331,11 +331,11 @@
                 <div class="flex flex-row   items-center">
                     
                      
-                    {{ form_row(formProductUpdate.description,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                    {{ form_label(formProductUpdate.description, 'Description', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formProductUpdate.description, {
                             'attr': {
-                                'class': 'mt-3 w-full mb-[10px] ml-10 p-2 rounded-[25px] flex relative border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'La Description'
+                                'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
+                                'placeholder': 'Description',
                             }
                         }) }}
 
@@ -345,7 +345,7 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
+                <hr class='mt-8'>
 
                 <div class="flex flex-row justify-center">
                     {# <button type="submit" class="btn-primary">Enregistrer</button> #}
@@ -360,7 +360,7 @@
                         }}
                     
 
-                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('editProduct')">Annuler</span> 
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('editProduct','edit_product')">Annuler</span> 
 
                    
                 </div>
@@ -509,21 +509,30 @@
         }, 500);
     }
 
-    function cacherFormulaire(formulaireId) {
+    function cacherFormulaire(formulaireId,form) {
         var formulaire = document.getElementById(formulaireId);
-        formulaire.classList.add('fadeOutUp');
-        setTimeout(function() {
-            formulaire.classList.add('hidden');
-            formulaire.classList.remove('fadeOutUp');
-        }, 500);
+        formulaire.classList.add('hidden');
 
-        $('form[name="product"] :input').val('');
+        $('form[name='+form+'] :input').val('');
+        $('form[name='+form+'] span.error').each(function() {
+            // Videz le contenu de chaque <span error>
+            $(this).empty();
+        });
     }
+
+    // Sélectionnez l'élément de l'alerte
+    var alertElement = document.querySelector('.alert');
+
+    // Affichez l'alerte pendant 5 secondes
+    setTimeout(function() {
+        // Ajoutez la classe 'hidden' pour cacher l'alerte
+        alertElement.classList.add('hidden');
+    }, 5000);
 
     // AJAX for deleting a product
     function deleteProd(id) {
         var productId = $(this).data('id');
-        if (confirm("Êtes-vous sûr de vouloir supprimer ce products ?")) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
         console.log(id);
         $.ajax({
             type: 'DELETE',
