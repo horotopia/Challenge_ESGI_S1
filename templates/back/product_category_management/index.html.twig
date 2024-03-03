@@ -27,27 +27,37 @@
                 {{ form_start(formCategory) }}
                 <div class="flex flex-row  justify-around items-center">
                     <div>
-                        {{ form_row(formCategory.name, {
-                            'label_attr':{'class' : 'text-base  ml-10'},
-                            'attr': {
 
+                     {{ form_label(formCategory.name, 'Nom', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formCategory.name, {
+                            'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Nom de la catégorie'
+                                'placeholder': 'Nom de la catégorie',
                             }
                         }) }}
 
-
+                    {% if formCategory.name.vars.errors|length > 0 %}
+                        {% for error in formCategory.name.vars.errors %}
+                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
                         
                     </div>
 
                     <div>
-                        {{ form_row(formCategory.description,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                         {{ form_label(formCategory.description, 'Description', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formCategory.description, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Description'
+                                'placeholder': 'Description',
                             }
                         }) }}
+
+                    {% if formCategory.description.vars.errors|length > 0 %}
+                        {% for error in formCategory.description.vars.errors %}
+                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
                     </div>
 
                   
@@ -68,7 +78,7 @@
                                }) 
                         }}
                     
-                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('newCategory')">Annuler</span> 
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('newCategory','category')">Annuler</span> 
                    
                 </div>
 
@@ -94,31 +104,36 @@
                 {{ form_start(formCategoryUpdate) }}
                 <div class="flex flex-row  justify-around items-center">
                     <div>
-                        {{ form_row(formCategoryUpdate.name, {
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        {{ form_label(formCategoryUpdate.name, 'Nom', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formCategoryUpdate.name, {
                             'attr': {
-
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Nom de la catégorie'
+                                'placeholder': 'Nom de la catégorie',
                             }
                         }) }}
+
+                    {% if formCategoryUpdate.name.vars.errors|length > 0 %}
+                        {% for error in formCategoryUpdate.name.vars.errors %}
+                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
                     </div>
 
                     <div>
-                        {{ form_row(formCategoryUpdate.description,{
-                            'label_attr':{'class' : 'text-base  ml-10'},
+                        {{ form_label(formCategoryUpdate.description, 'Description', {'label_attr': {'class': 'text-base flex-row ml-10 required'}}) }}
+                     {{ form_widget(formCategoryUpdate.description, {
                             'attr': {
                                 'class': 'w-[290px] mt-3 mb-[10px] ml-10 p-2 rounded-[25px] border border-solid border-[#A0A0A0] outline-none',
-                                'placeholder': 'Description'
+                                'placeholder': 'Description de la catégorie',
                             }
                         }) }}
+
+                    {% if formCategoryUpdate.description.vars.errors|length > 0 %}
+                        {% for error in formCategoryUpdate.description.vars.errors %}
+                            <span class="text-xs text-red-500 error">{{ error.message }}</span>
+                        {% endfor %}
+                    {% endif %}
                     </div>
-
-
-
-
-
-
                 </div>
                 {{ form_row(formCategoryUpdate.id) }}
 
@@ -133,7 +148,7 @@
                     })
                     }}
 
-                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('updateCategory')">Annuler</span>
+                    <span  class="btn-primary mt-4 mb-8" onclick="cacherFormulaire('updateCategory','category')">Annuler</span>
 
                 </div>
 
@@ -184,7 +199,7 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-center">Numéro</th>
+                           
                             <th scope="col" class="px-6 py-3 text-center">Catégorie</th>
                             <th scope="col" class="px-6 py-3 text-center">Description</th>
                             <th scope="col" class="px-6 py-3 text-center">Nombre des produits</th>
@@ -196,7 +211,7 @@
                     {% for category in categories %}
                         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
 
-                            <td class="px-6 py-4 text-center">{{ category[0].id }}</td>
+                            
                             <td class="px-6 py-4 text-center">{{ category[0].name }}</td>
                             <td class="px-6 py-4 text-center">{{category[0].description}}</td>
                             <td class="px-6 py-4 text-center">{{category.productCount}}</td>
@@ -278,10 +293,15 @@
         }, 500);
     }
 
-    function cacherFormulaire(formulaireId) {
+    function cacherFormulaire(formulaireId,form) {
         var formulaire = document.getElementById(formulaireId);
         formulaire.classList.add('fadeOutUp');
-
+        
+        $('form[name='+form+'] :input').val('');
+        $('form[name='+form+'] span.error').each(function() {
+            // Videz le contenu de chaque <span error>
+            $(this).empty();
+        });
         setTimeout(function() {
             formulaire.classList.add('hidden');
             formulaire.classList.remove('fadeOutUp');

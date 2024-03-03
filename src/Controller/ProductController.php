@@ -110,12 +110,22 @@ class ProductController extends AbstractController
     }
 
     #[Route('/admin/products/delete/{id}', name: 'app_back_products_delete')]
-    public function deleteCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator, Product $product)
+    public function deleteCategory(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator, Product $product, Security $security)
     {
+        $user = $security->getUser();
+        $userId = $user->getId();
+        $companyUserId = $user->getCompanyId();
+        $userRoles = $user->getRoles();
+        $companyProductId =$product->getCompanyId();
+        
+        if($companyProductId== $companyUserId){
         $entityManager->remove($product);
         $entityManager->flush();
-    
         return new JsonResponse(['success' => true]);
+        }else{
+            return new JsonResponse(['success' => false]);
+        }
+        
     }
 
 

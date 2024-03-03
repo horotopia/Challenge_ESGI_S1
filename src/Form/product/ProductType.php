@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,6 +28,7 @@ class ProductType extends AbstractType
                     new Assert\Length(['max' => 255]),
                 ],
                 'label' => 'Nom',
+                'error_bubbling' => false,
             ])
             ->add('description',TextType::class, [
                 'constraints' => [
@@ -77,11 +79,15 @@ class ProductType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'label' => 'Nom category',
+                'error_bubbling' => false,
                 'query_builder' => function (CategoryRepository $repository) use ($companyId) {
                     return $repository->createQueryBuilder('c')
                         ->andWhere('c.company_id = :companyId')
                         ->setParameter('companyId', $companyId);
                 },
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez sélectionner une catégorie.']),
+                ],
             ])
             ->add('Enregistrer',SubmitType::class)
             
