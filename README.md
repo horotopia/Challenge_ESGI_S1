@@ -42,16 +42,20 @@ akhelifa7@myges.fr
 13. Gestion des clients :
     Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
     Pagination,recherche.
-*****************   ### les fonctionnalités developpés par Ilyes KABRINE  ********************
+
+### Fonctionnalités Ilyes KABRINE
 1. MCD de la base de données 
 2. CRUD Produit + la recherche
 3. CRUD Catégorie + la recherche
 4. Paiement d'une facture
 5. Conversion d'un devis à une facture automatiquement
 6. la page paiements + la recherche
-7. les formulaires flotants avec le style et les fonctions Ajax
-8. Sécurité paiements, produits et catégories 
-9. page de contact  
+7. la sécurité des paiements
+8. les formulaires flotants avec le style et les fonctions Ajax
+9. Sécurité paiements, produits et catégories 
+10. page de contact front
+11. Mettre en prod l'application avec Ali 
+ 
 
 ### Fonctionnalités Ilyesse HAMCHERIF
 1. Intégration Pages front
