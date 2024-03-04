@@ -64,4 +64,4 @@ akhelifa7@myges.fr
 - CR + envoi d'e-mails automatiques (front + back)
 - Statut des mails envoyé
 - CRUD modèle de mail
-- Refactorisation complète du projet
+3. Refactorisation complète du projet
