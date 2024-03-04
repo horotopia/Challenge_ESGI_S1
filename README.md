@@ -60,10 +60,7 @@ akhelifa7@myges.fr
 
 ### Fonctionnalités Ilyesse HAMCHERIF
 1. Intégration Pages front
-2. Gestion des factures :
-- CRD + envoi d'e-mails automatiques (front + back)
-- Génération du PDF automatique et manuelle
-3. Gestion des emails :
+2. Gestion des emails :
 - CR + envoi d'e-mails automatiques (front + back)
 - Statut des mails envoyé
 - CRUD modèle de mail
