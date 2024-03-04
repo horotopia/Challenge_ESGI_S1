@@ -42,6 +42,7 @@ akhelifa7@myges.fr
 13. Gestion des clients :
     Création, lecture, mise à jour, suppression (CRUD) (front-end, back-end)
     Pagination,recherche.
+14. Mise en prod    
 
 ### Fonctionnalités Ilyes KABRINE
 1. MCD de la base de données 
